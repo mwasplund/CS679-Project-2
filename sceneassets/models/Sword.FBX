@@ -10,11 +10,11 @@ FBXHeaderExtension:  {
         Version: 1000
         Year: 2011
         Month: 10
-        Day: 15
-        Hour: 19
-        Minute: 9
-        Second: 37
-        Millisecond: 31
+        Day: 17
+        Hour: 16
+        Minute: 41
+        Second: 4
+        Millisecond: 276
     }
     Creator: "FBX SDK/FBX Plugins version 2011.1"
     SceneInfo: "SceneInfo::GlobalInfo", "UserData" {
@@ -30,19 +30,19 @@ FBXHeaderExtension:  {
             Comment: ""
         }
         Properties70:  {
-            P: "DocumentUrl", "KString", "Url", "", "C:\Users\mwasplund\Documents\3dsMax\export\Sword.FBX"
-            P: "SrcDocumentUrl", "KString", "Url", "", "C:\Users\mwasplund\Documents\3dsMax\export\Sword.FBX"
+            P: "DocumentUrl", "KString", "Url", "", "C:\Users\mwasplund\Documents\My Web Sites\mwasplund\CS679\Project2\sceneassets\models\Sword.FBX"
+            P: "SrcDocumentUrl", "KString", "Url", "", "C:\Users\mwasplund\Documents\My Web Sites\mwasplund\CS679\Project2\sceneassets\models\Sword.FBX"
             P: "Original", "Compound", "", ""
             P: "Original|ApplicationVendor", "KString", "", "", "Autodesk"
             P: "Original|ApplicationName", "KString", "", "", "3ds Max"
             P: "Original|ApplicationVersion", "KString", "", "", "2011.1"
-            P: "Original|DateTime_GMT", "DateTime", "", "", "16/10/2011 00:09:37.029"
-            P: "Original|FileName", "KString", "", "", "C:\Users\mwasplund\Documents\3dsMax\export\Sword.FBX"
+            P: "Original|DateTime_GMT", "DateTime", "", "", "17/10/2011 21:41:04.275"
+            P: "Original|FileName", "KString", "", "", "C:\Users\mwasplund\Documents\My Web Sites\mwasplund\CS679\Project2\sceneassets\models\Sword.FBX"
             P: "LastSaved", "Compound", "", ""
             P: "LastSaved|ApplicationVendor", "KString", "", "", "Autodesk"
             P: "LastSaved|ApplicationName", "KString", "", "", "3ds Max"
             P: "LastSaved|ApplicationVersion", "KString", "", "", "2011.1"
-            P: "LastSaved|DateTime_GMT", "DateTime", "", "", "16/10/2011 00:09:37.029"
+            P: "LastSaved|DateTime_GMT", "DateTime", "", "", "17/10/2011 21:41:04.275"
         }
     }
 }
@@ -72,7 +72,7 @@ GlobalSettings:  {
 
 Documents:  {
     Count: 1
-    Document: 745329328, "", "Scene" {
+    Document: 745328656, "", "Scene" {
         Properties70:  {
             P: "SourceObject", "object", "", ""
             P: "ActiveAnimStackName", "KString", "", "", ""
@@ -92,7 +92,7 @@ References:  {
 
 Definitions:  {
     Version: 100
-    Count: 14
+    Count: 13
     ObjectType: "GlobalSettings" {
         Count: 1
     }
@@ -239,35 +239,13 @@ Definitions:  {
             }
         }
     }
-    ObjectType: "Texture" {
-        Count: 1
-        PropertyTemplate: "KFbxTexture" {
-            Properties70:  {
-                P: "TextureTypeUse", "enum", "", "",0
-                P: "Texture alpha", "Number", "", "A+",1
-                P: "CurrentMappingType", "enum", "", "",0
-                P: "WrapModeU", "enum", "", "",0
-                P: "WrapModeV", "enum", "", "",0
-                P: "UVSwap", "bool", "", "",0
-                P: "Translation", "Vector", "", "A+",0,0,0
-                P: "Rotation", "Vector", "", "A+",0,0,0
-                P: "Scaling", "Vector", "", "A+",1,1,1
-                P: "TextureRotationPivot", "Vector3D", "Vector", "",0,0,0
-                P: "TextureScalingPivot", "Vector3D", "Vector", "",0,0,0
-                P: "UseMaterial", "bool", "", "",0
-                P: "UseMipMap", "bool", "", "",0
-                P: "CurrentTextureBlendMode", "enum", "", "",1
-                P: "UVSet", "KString", "", "", "default"
-            }
-        }
-    }
 }
 
 ; Object properties
 ;------------------------------------------------------------------
 
 Objects:  {
-    Geometry: 1231279632, "Geometry::", "Mesh" {
+    Geometry: 1231278800, "Geometry::", "Mesh" {
         Properties70:  {
             P: "Color", "ColorRGB", "Color", "",0.83921568627451,0.894117647058824,0.6
         }
@@ -536,7 +514,7 @@ a: 0
             }
         }
     }
-    Geometry: 1231279216, "Geometry::", "Mesh" {
+    Geometry: 1514216992, "Geometry::", "Mesh" {
         Properties70:  {
             P: "Color", "ColorRGB", "Color", "",0.882352941176471,0.345098039215686,0.780392156862745
         }
@@ -598,7 +576,7 @@ a: 0
             }
         }
     }
-    Geometry: 1511966336, "Geometry::", "Mesh" {
+    Geometry: 1514217408, "Geometry::", "Mesh" {
         Properties70:  {
             P: "Color", "ColorRGB", "Color", "",0.603921568627451,0.725490196078431,0.898039215686275
         }
@@ -659,7 +637,7 @@ a: 0
             }
         }
     }
-    Model: 1511953568, "Model::Cylinder001", "Mesh" {
+    Model: 1231163088, "Model::Handle", "Mesh" {
         Version: 232
         Properties70:  {
             P: "PreRotation", "Vector3D", "Vector", "",-90,0,0
@@ -667,9 +645,9 @@ a: 0
             P: "InheritType", "enum", "", "",1
             P: "ScalingMin", "Vector3D", "Vector", "",1,1,1
             P: "DefaultAttributeIndex", "int", "Integer", "",0
-            P: "Lcl Translation", "Lcl Translation", "", "A+",8.01318264007568,0.0947928726673126,0.550999402999878
-            P: "Lcl Rotation", "Lcl Rotation", "", "A+",0,-89.880207801123,0
-            P: "Lcl Scaling", "Lcl Scaling", "", "A+",0.0198495058188255,0.019849507138133,0.0198495058188255
+            P: "Lcl Translation", "Lcl Translation", "", "A+",32.6028709411621,0.0863611996173859,0.501985847949982
+            P: "Lcl Rotation", "Lcl Rotation", "", "A+",0,-89.8802078047983,0
+            P: "Lcl Scaling", "Lcl Scaling", "", "A+",0.107037465273084,0.107037469744682,0.107037465273084
             P: "MaxHandle", "int", "Integer", "U",15
         }
         MultiLayer: 0
@@ -677,7 +655,7 @@ a: 0
         Shading: T
         Culling: "CullingOff"
     }
-    Model: 1511957936, "Model::Sphere001", "Mesh" {
+    Model: 1231164576, "Model::Pommel", "Mesh" {
         Version: 232
         Properties70:  {
             P: "PreRotation", "Vector3D", "Vector", "",-90,0,0
@@ -685,8 +663,8 @@ a: 0
             P: "InheritType", "enum", "", "",1
             P: "ScalingMin", "Vector3D", "Vector", "",1,1,1
             P: "DefaultAttributeIndex", "int", "Integer", "",0
-            P: "Lcl Translation", "Lcl Translation", "", "A+",8.54940795898438,0.0947928726673126,0.550999402999878
-            P: "Lcl Scaling", "Lcl Scaling", "", "A+",0.019849507138133,0.019849507138133,0.019849507138133
+            P: "Lcl Translation", "Lcl Translation", "", "A+",35.4944381713867,0.0863611996173859,0.501985847949982
+            P: "Lcl Scaling", "Lcl Scaling", "", "A+",0.107037469744682,0.107037469744682,0.107037469744682
             P: "MaxHandle", "int", "Integer", "U",16
         }
         MultiLayer: 0
@@ -694,7 +672,7 @@ a: 0
         Shading: T
         Culling: "CullingOff"
     }
-    Model: 1511962304, "Model::Box001", "Mesh" {
+    Model: 1231166064, "Model::Hand Guard", "Mesh" {
         Version: 232
         Properties70:  {
             P: "PreRotation", "Vector3D", "Vector", "",-90,0,0
@@ -702,8 +680,8 @@ a: 0
             P: "InheritType", "enum", "", "",1
             P: "ScalingMin", "Vector3D", "Vector", "",1,1,1
             P: "DefaultAttributeIndex", "int", "Integer", "",0
-            P: "Lcl Translation", "Lcl Translation", "", "A+",1.9510213136673,-0.759682655334473,0.550999402999878
-            P: "Lcl Scaling", "Lcl Scaling", "", "A+",0.019849507138133,0.026861721649766,0.0286529790610075
+            P: "Lcl Translation", "Lcl Translation", "", "A+",-0.0870298147201538,-4.52135515213013,0.501985847949982
+            P: "Lcl Scaling", "Lcl Scaling", "", "A+",0.107037469744682,0.144850492477417,0.154509752988815
             P: "MaxHandle", "int", "Integer", "U",17
         }
         MultiLayer: 0
@@ -711,7 +689,7 @@ a: 0
         Shading: T
         Culling: "CullingOff"
     }
-    Model: 1511963760, "Model::Box002", "Mesh" {
+    Model: 1231167552, "Model::Blade", "Mesh" {
         Version: 232
         Properties70:  {
             P: "PreRotation", "Vector3D", "Vector", "",-90,0,0
@@ -719,8 +697,8 @@ a: 0
             P: "InheritType", "enum", "", "",1
             P: "ScalingMin", "Vector3D", "Vector", "",1,1,1
             P: "DefaultAttributeIndex", "int", "Integer", "",0
-            P: "Lcl Translation", "Lcl Translation", "", "A+",-5.58310127258301,0.00127611309289932,0.854520976543427
-            P: "Lcl Scaling", "Lcl Scaling", "", "A+",0.019849507138133,0.019849507138133,0.019849507138133
+            P: "Lcl Translation", "Lcl Translation", "", "A+",-40.7144088745117,-0.417923241853714,2.13871073722839
+            P: "Lcl Scaling", "Lcl Scaling", "", "A+",0.107037469744682,0.107037469744682,0.107037469744682
             P: "MaxHandle", "int", "Integer", "U",19
         }
         MultiLayer: 0
@@ -735,22 +713,22 @@ a: 0
         Properties70:  {
             P: "ShadingModel", "KString", "", "", "phong"
             P: "EmissiveFactor", "double", "Number", "",0
-            P: "AmbientColor", "ColorRGB", "Color", "",0.588235318660736,0.588235318660736,0.588235318660736
-            P: "DiffuseColor", "ColorRGB", "Color", "",0.588235318660736,0.588235318660736,0.588235318660736
+            P: "AmbientColor", "ColorRGB", "Color", "",0.105882361531258,0.105882361531258,0.105882361531258
+            P: "DiffuseColor", "ColorRGB", "Color", "",0.105882361531258,0.105882361531258,0.105882361531258
             P: "TransparentColor", "ColorRGB", "Color", "",1,1,1
             P: "SpecularColor", "ColorRGB", "Color", "",0.899999976158142,0.899999976158142,0.899999976158142
             P: "SpecularFactor", "double", "Number", "",0
             P: "ShininessExponent", "double", "Number", "",1.99999991737042
             P: "Emissive", "Vector3D", "Vector", "",0,0,0
-            P: "Ambient", "Vector3D", "Vector", "",0.588235318660736,0.588235318660736,0.588235318660736
-            P: "Diffuse", "Vector3D", "Vector", "",0.588235318660736,0.588235318660736,0.588235318660736
+            P: "Ambient", "Vector3D", "Vector", "",0.105882361531258,0.105882361531258,0.105882361531258
+            P: "Diffuse", "Vector3D", "Vector", "",0.105882361531258,0.105882361531258,0.105882361531258
             P: "Specular", "Vector3D", "Vector", "",0,0,0
             P: "Shininess", "double", "Number", "",1.99999991737042
             P: "Opacity", "double", "Number", "",1
             P: "Reflectivity", "double", "Number", "",0
         }
     }
-    Material: 1511323744, "Material::02 - Default", "" {
+    Material: 74786064, "Material::02 - Default", "" {
         Version: 102
         ShadingModel: "phong"
         MultiLayer: 0
@@ -772,44 +750,9 @@ a: 0
             P: "Reflectivity", "double", "Number", "",0
         }
     }
-    Texture: 1230438288, "Texture::Map #1", "" {
-        Type: "TextureVideoClip"
-        Version: 202
-        TextureName: "Texture::Map #1"
-        Properties70:  {
-            P: "3dsMax", "Compound", "", ""
-            P: "3dsMax|ClassIDa", "int", "Integer", "",1925732223
-            P: "3dsMax|ClassIDb", "int", "Integer", "",966789659
-            P: "3dsMax|SuperClassID", "int", "Integer", "",3088
-            P: "3dsMax|ParamBlock_0", "Compound", "", ""
-            P: "3dsMax|ParamBlock_0|Swirl", "Color", "", "A",0,0.100000001490116,0.200000002980232
-            P: "3dsMax|ParamBlock_0|Base", "Color", "", "A",0.899999976158142,0.579999983310699,0.300000011920929
-            P: "3dsMax|ParamBlock_0|Swirl Intensity", "Float", "", "A",2
-            P: "3dsMax|ParamBlock_0|Twist", "Float", "", "A",1
-            P: "3dsMax|ParamBlock_0|Color Contrast", "Float", "", "A",0.4
-            P: "3dsMax|ParamBlock_0|Center Position Y", "Float", "", "A",-0.5
-            P: "3dsMax|ParamBlock_0|Center Position X", "Float", "", "A",-0.5
-            P: "3dsMax|ParamBlock_0|Swirl Amount", "Float", "", "A",1
-            P: "3dsMax|ParamBlock_0|_Unnamed_Parameter_8", "float", "", "",0
-            P: "3dsMax|ParamBlock_0|Constant Detail", "Integer", "", "A",4
-            P: "3dsMax|ParamBlock_0|Random Seed", "Float", "", "A",11994.183594
-            P: "3dsMax|ParamBlock_0|_Unnamed_Parameter_11", "float", "", "",0
-            P: "3dsMax|ParamBlock_0|_Unnamed_Parameter_12", "int", "Integer", "",0
-            P: "3dsMax|ParamBlock_0|Lock Background", "int", "Integer", "",1
-            P: "3dsMax|ParamBlock_0|_Unnamed_Parameter_14", "float", "", "",0
-            P: "3dsMax|ParamBlock_0|_Unnamed_Parameter_15", "float", "", "",0
-        }
-        Media: ""
-        FileName: ""
-        RelativeFilename: ""
-        ModelUVTranslation: 0,0
-        ModelUVScaling: 1,1
-        Texture_Alpha_Source: "None"
-        Cropping: 0,0,0,0
+    AnimationStack: 1227060976, "AnimStack::Take 001", "" {
     }
-    AnimationStack: 1227033184, "AnimStack::Take 001", "" {
-    }
-    AnimationLayer: 745330000, "AnimLayer::BaseLayer", "" {
+    AnimationLayer: 745328880, "AnimLayer::BaseLayer", "" {
     }
 }
 
@@ -817,20 +760,19 @@ a: 0
 ;------------------------------------------------------------------
 
 Connections:  {
-    C: "OO",1511953568,0
-    C: "OO",1511957936,0
-    C: "OO",1511962304,0
-    C: "OO",1511963760,0
-    C: "OO",745330000,1227033184
-    C: "OO",1231279632,1511953568
-    C: "OO",74786800,1511953568
-    C: "OO",1231280048,1511957936
-    C: "OO",74786800,1511957936
-    C: "OO",1231279216,1511962304
-    C: "OO",74786800,1511962304
-    C: "OO",1511966336,1511963760
-    C: "OO",1511323744,1511963760
-    C: "OP",1230438288,74786800, "DiffuseColor"
+    C: "OO",1231163088,0
+    C: "OO",1231164576,0
+    C: "OO",1231166064,0
+    C: "OO",1231167552,0
+    C: "OO",745328880,1227060976
+    C: "OO",1231278800,1231163088
+    C: "OO",74786800,1231163088
+    C: "OO",1231280048,1231164576
+    C: "OO",74786800,1231164576
+    C: "OO",1514216992,1231166064
+    C: "OO",74786800,1231166064
+    C: "OO",1514217408,1231167552
+    C: "OO",74786064,1231167552
 }
 ;Takes section
 ;----------------------------------------------------
