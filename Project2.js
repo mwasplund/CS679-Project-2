@@ -2,6 +2,7 @@
 LoadjsFile("Model/Model.js");
 LoadjsFile("Helper.js");
 LoadjsFile("Events.js");
+LoadjsFile("Player.js");
 LoadjsFile("Model/glMatrix-0.9.5.min.js");
 
 var gl;
