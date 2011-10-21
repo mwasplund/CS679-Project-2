@@ -105,7 +105,7 @@ function FBX_Parser_ParseProperties70(i_FileContainer)
 				}
 				default:
 				{
-					Debug.Trace("We do not know how to parse this type of property");
+					//Debug.Trace("We do not know how to parse this type of property");
 					break;
 				}
 			}

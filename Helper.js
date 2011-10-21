@@ -16,8 +16,8 @@
     }
     
     // Make the position in canvas space
-    x -= gCanvasElement.offsetLeft;
-    y -= gCanvasElement.offsetTop;
+    x -= Canvas.offsetLeft;
+    y -= Canvas.offsetTop;
     
     return new Point(x, y);
   }

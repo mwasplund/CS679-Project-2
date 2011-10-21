@@ -1,36 +1,32 @@
 ﻿LoadjsFile("Model/FBX/FBX_Parser.js");
 LoadjsFile("Model/Mesh.js");
 
-function Model(i_FilePath)
+function Model(i_FileName)
 {
   // Functions
   this.ParseFile = Model_ParseFile;
   this.Draw = Model_Draw;
   
   // Variables
+  this.Name = i_FileName;
   var NewModel      = this;
   NewModel.Ready    = false;
-  NewModel.FilePath = i_FilePath;
   
   // Load the file
-  var XMLHttp = CreateXMLHttpRequest();
-  XMLHttp.onreadystatechange = function()
-  { 
-    if (XMLHttp.readyState == 4 &&
-        XMLHttp.status == 200)
-    {
-      Debug.Trace("Model Loaded: " + NewModel.FilePath);
-      NewModel.ParseFile(XMLHttp.responseText);
-    }
-  };
-  XMLHttp.open("GET", this.FilePath, true);
-  XMLHttp.send();
+  NewModel.FilePath = "sceneassets/models/" + i_FileName + ".FBX";
+  $.get(NewModel.FilePath,
+      function(returned_data)
+      {
+          Debug.Trace("Model ("+ NewModel.Name +") Loaded: " + NewModel.FilePath);
+          NewModel.ParseFile(returned_data);
+      });
+
   Debug.Trace("Loading Model: " + this.FilePath);
 }
 
 function Model_ParseFile(i_File)
 {
-  Debug.Trace("Parsing Model: " + this.FilePath);
+  Debug.Trace("Parsing Model ("+ this.Name +"): " + this.FilePath);
 
   var Parser = new FBX_Parser(i_File);
   if(Parser == null)
@@ -52,12 +48,13 @@ function Model_ParseFile(i_File)
   }
   
   this.Meshes = new Array();
-  for(var i = 0; i < Parser.Objects.GeometryList.length; i++)
+  for(var i = 0; i < Parser.Models.length; i++)
   {
-    var CurrentGeometry = Parser.Objects.GeometryList[i];
-    this.Meshes.push(new Mesh(CurrentGeometry.Vertices, CurrentGeometry.Indices));
+    var CurrentModel = Parser.Models[i];
+	// Ignore Models that failed to load and models that do not have geometry, i.e. Cameras
+	if(CurrentModel != null && CurrentModel.Geometry != null)
+    	this.Meshes.push(new Mesh(CurrentModel));
   }
-  
   
   Debug.Trace("Model Parsed");
   this.Ready = true;

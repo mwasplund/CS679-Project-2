@@ -1,8 +1,9 @@
 
-  
+  var MousePos;
   function MouseClick(e)
   {
     Debug.Trace("Mouse Click");
+	MousePos = getMousePosition(e);
   }
   
   var MousePressed = false;
@@ -10,6 +11,7 @@
   function MouseDown(e)
   {
     MousePressed = true;
+	MousePos = getMousePosition(e);
     Debug.Trace("Mouse Down");
   }
   
@@ -21,9 +23,16 @@
   
   function MouseMove(e)
   {
+	//  Debug.Trace("Mouse Move");
     if(MousePressed)
     {
-
+		var NewMousePos = getMousePosition(e);
+		var Delta = new Point(NewMousePos.X - MousePos.X, NewMousePos.Y - MousePos.Y);
+		
+		
+		Camera_Position[0] -= Delta.X / 500;
+		Camera_Position[1] += Delta.Y / 500;
+		MousePos = NewMousePos;
     }
   }
   
@@ -146,4 +155,45 @@
               break;    
        }
     }
+  }
+
+
+
+  ///////////////////////////////////////////////////////////////////
+  // KeyUp
+  //
+  // Listen for Keyboard events
+  ///////////////////////////////////////////////////////////////////
+  function MouseWheel(e)
+  {
+	var Delta = 0;
+	if (!e) 
+		e = window.event;
+	
+	if (e.wheelDelta) 
+	{
+		Delta = e.wheelDelta/120;
+		if (window.opera) 
+			delta = -delta;
+	} 
+	else if(e.detail) 
+	{
+			Delta = -e.detail/3;
+	}
+
+	
+	if(!isNaN(Delta))
+	{
+		// Move toward the lookat 
+		var Direction = vec3.create();
+		vec3.subtract(Camera_LookAt, Camera_Position, Direction)
+	    vec3.normalize(Direction);
+		var Offset = vec3.create();
+		vec3.scale(Direction, Delta, Offset)
+		vec3.add(Camera_Position, Offset, Camera_Position);
+		
+		
+		// place the lookat exactly one unit ahead of the camera
+		vec3.add(Camera_Position, Direction, Camera_LookAt)
+	}
   }

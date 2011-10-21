@@ -1,1 +1,36 @@
-﻿
+﻿body
+{
+ 
+ background-color:#000000;
+}
+canvas#CanvasOne 
+{
+  position:absolute;
+  top:0px;
+  left:0px;
+}
+
+div#Debug 
+{
+	/*background-color:#FFFFFF;
+	width:200px;
+	height:50px;*/
+	
+  position: absolute;
+	bottom: 0px;
+	left: 0px;
+	color: #FFFFFF;
+	width: 315px;
+}
+
+input.Color
+{
+ 	width:30px;
+ 
+}
+#SelectModel {
+	width: 150px;
+}
+#SelectShader {
+	width: 150px;
+}

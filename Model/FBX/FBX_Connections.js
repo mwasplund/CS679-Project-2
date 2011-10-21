@@ -23,7 +23,7 @@ function FBX_Connection(i_Line)
 		this.Property = null;
 	}
 	
-	Debug.Trace("Found Connection");
+	//Debug.Trace("Found Connection");
 }
 
 function FBX_Parser_ParseConnections(i_FileContainer)

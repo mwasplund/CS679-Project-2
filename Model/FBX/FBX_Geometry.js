@@ -70,16 +70,33 @@ function FBX_Parser_ParseGeometry(i_FileContainer)
     	// Verify that they were actually triangles
      	// Negative numbers indicate the end of a polygon, but we only know how to 
      	// handle triangles as of now... so fail if we dont have a triangle
-     	if(NewGeometry.PolygonVertexIndex.length != NewGeometry.LayerElementUV.UVIndex.length ||
-     		 NewGeometry.PolygonVertexIndex.length != NewGeometry.LayerElementNormal.Normals.length / 3)
+		if(NewGeometry.PolygonVertexIndex == null)
+		{
+			Debug.Trace("There was no PolygonVertexIndex in the Geometry");
+			return NewGeometry;	
+		}
+		
+     	if(NewGeometry.LayerElementUV == null || NewGeometry.PolygonVertexIndex.length != NewGeometry.LayerElementUV.UVIndex.length)
+		{
+			Debug.Trace("There was either no LayerElementUV or its length was invalid, did not initialize triangle UV");
+			//alert("There was either no LayerElementUV or its length was invalid, did not initialize triangle UV");	
+		}
+		else
+		{
+			NewGeometry.TriangleUVIndices = new Array();
+		}
+		
+		if(NewGeometry.LayerElementNormal == null || NewGeometry.PolygonVertexIndex.length != NewGeometry.LayerElementNormal.Normals.length / 3)
  		  {
- 		 		Debug.Trace("The Number of Polygon Indices did not match the number of normals or UVIndices");
- 		 		return null;
+ 		 		Debug.Trace("There was either no LayerEementNormal or its length was invalid, did not initialize the triangle Normals");
+				alert("There was either no LayerEementNormal or its length was invalid, did not initialize the triangle Normals");
  		  }
+		  else
+		  {
+			  NewGeometry.TriangleNormals = new Array();
+		  }
  		  
  		  NewGeometry.TriangleIndices = new Array();
- 		  NewGeometry.TriangleNormals = new Array();
- 		  NewGeometry.TriangleUVIndices = new Array();
      	for(var i = 0; i < NewGeometry.PolygonVertexIndex.length; i++)
      	{
      		var Start = i;
@@ -96,21 +113,27 @@ function FBX_Parser_ParseGeometry(i_FileContainer)
 					NewGeometry.TriangleIndices.push( NewGeometry.PolygonVertexIndex[Start+1]);
 					NewGeometry.TriangleIndices.push(-NewGeometry.PolygonVertexIndex[Start+2] - 1);
 					
-					// Copy over the UV Indices
-        	NewGeometry.TriangleUVIndices.push(NewGeometry.LayerElementUV.UVIndex[Start+0]);
-					NewGeometry.TriangleUVIndices.push(NewGeometry.LayerElementUV.UVIndex[Start+1]);
-					NewGeometry.TriangleUVIndices.push(NewGeometry.LayerElementUV.UVIndex[Start+2]);
+					if(NewGeometry.TriangleUVIndices != null)
+					{
+						// Copy over the UV Indices
+						NewGeometry.TriangleUVIndices.push(NewGeometry.LayerElementUV.UVIndex[Start+0]);
+						NewGeometry.TriangleUVIndices.push(NewGeometry.LayerElementUV.UVIndex[Start+1]);
+						NewGeometry.TriangleUVIndices.push(NewGeometry.LayerElementUV.UVIndex[Start+2]);
+					}
 					
-					// Copy over the Normals
-					NewGeometry.TriangleNormals.push(NewGeometry.LayerElementNormal.Normals[Start*3+0]);
-					NewGeometry.TriangleNormals.push(NewGeometry.LayerElementNormal.Normals[Start*3+1]);
-					NewGeometry.TriangleNormals.push(NewGeometry.LayerElementNormal.Normals[Start*3+2]);
-					NewGeometry.TriangleNormals.push(NewGeometry.LayerElementNormal.Normals[Start*3+3]);
-					NewGeometry.TriangleNormals.push(NewGeometry.LayerElementNormal.Normals[Start*3+4]);
-					NewGeometry.TriangleNormals.push(NewGeometry.LayerElementNormal.Normals[Start*3+5]);
-					NewGeometry.TriangleNormals.push(NewGeometry.LayerElementNormal.Normals[Start*3+6]);
-					NewGeometry.TriangleNormals.push(NewGeometry.LayerElementNormal.Normals[Start*3+7]);
-					NewGeometry.TriangleNormals.push(NewGeometry.LayerElementNormal.Normals[Start*3+8]);
+					if(NewGeometry.TriangleNormals != null)
+					{
+						// Copy over the Normals
+						NewGeometry.TriangleNormals.push(NewGeometry.LayerElementNormal.Normals[Start*3+0]);
+						NewGeometry.TriangleNormals.push(NewGeometry.LayerElementNormal.Normals[Start*3+1]);
+						NewGeometry.TriangleNormals.push(NewGeometry.LayerElementNormal.Normals[Start*3+2]);
+						NewGeometry.TriangleNormals.push(NewGeometry.LayerElementNormal.Normals[Start*3+3]);
+						NewGeometry.TriangleNormals.push(NewGeometry.LayerElementNormal.Normals[Start*3+4]);
+						NewGeometry.TriangleNormals.push(NewGeometry.LayerElementNormal.Normals[Start*3+5]);
+						NewGeometry.TriangleNormals.push(NewGeometry.LayerElementNormal.Normals[Start*3+6]);
+						NewGeometry.TriangleNormals.push(NewGeometry.LayerElementNormal.Normals[Start*3+7]);
+						NewGeometry.TriangleNormals.push(NewGeometry.LayerElementNormal.Normals[Start*3+8]);
+					}
        	}
        	else if(NumSides == 4)
        	{
@@ -123,36 +146,41 @@ function FBX_Parser_ParseGeometry(i_FileContainer)
 					NewGeometry.TriangleIndices.push( NewGeometry.PolygonVertexIndex[Start+2]);
 					NewGeometry.TriangleIndices.push(-NewGeometry.PolygonVertexIndex[Start+3] - 1);
 					
-					// UV Indices
-					NewGeometry.TriangleUVIndices.push(NewGeometry.LayerElementUV.UVIndex[Start+0]);
-					NewGeometry.TriangleUVIndices.push(NewGeometry.LayerElementUV.UVIndex[Start+1]);
-					NewGeometry.TriangleUVIndices.push(NewGeometry.LayerElementUV.UVIndex[Start+2]);
-
-					NewGeometry.TriangleUVIndices.push(NewGeometry.LayerElementUV.UVIndex[Start+0]);
-					NewGeometry.TriangleUVIndices.push(NewGeometry.LayerElementUV.UVIndex[Start+2]);
-					NewGeometry.TriangleUVIndices.push(NewGeometry.LayerElementUV.UVIndex[Start+3]);
+					if(NewGeometry.TriangleUVIndices != null)
+					{
+						// UV Indices
+						NewGeometry.TriangleUVIndices.push(NewGeometry.LayerElementUV.UVIndex[Start+0]);
+						NewGeometry.TriangleUVIndices.push(NewGeometry.LayerElementUV.UVIndex[Start+1]);
+						NewGeometry.TriangleUVIndices.push(NewGeometry.LayerElementUV.UVIndex[Start+2]);
+	
+						NewGeometry.TriangleUVIndices.push(NewGeometry.LayerElementUV.UVIndex[Start+0]);
+						NewGeometry.TriangleUVIndices.push(NewGeometry.LayerElementUV.UVIndex[Start+2]);
+						NewGeometry.TriangleUVIndices.push(NewGeometry.LayerElementUV.UVIndex[Start+3]);
+					}
 					
-					// Normals
-					NewGeometry.TriangleNormals.push(NewGeometry.LayerElementNormal.Normals[Start*3+0]);
-					NewGeometry.TriangleNormals.push(NewGeometry.LayerElementNormal.Normals[Start*3+1]);
-					NewGeometry.TriangleNormals.push(NewGeometry.LayerElementNormal.Normals[Start*3+2]);
-					NewGeometry.TriangleNormals.push(NewGeometry.LayerElementNormal.Normals[Start*3+3]);
-					NewGeometry.TriangleNormals.push(NewGeometry.LayerElementNormal.Normals[Start*3+4]);
-					NewGeometry.TriangleNormals.push(NewGeometry.LayerElementNormal.Normals[Start*3+5]);
-					NewGeometry.TriangleNormals.push(NewGeometry.LayerElementNormal.Normals[Start*3+6]);
-					NewGeometry.TriangleNormals.push(NewGeometry.LayerElementNormal.Normals[Start*3+7]);
-					NewGeometry.TriangleNormals.push(NewGeometry.LayerElementNormal.Normals[Start*3+8]);
-
-					NewGeometry.TriangleNormals.push(NewGeometry.LayerElementNormal.Normals[Start*3+0]);
-					NewGeometry.TriangleNormals.push(NewGeometry.LayerElementNormal.Normals[Start*3+1]);
-					NewGeometry.TriangleNormals.push(NewGeometry.LayerElementNormal.Normals[Start*3+2]);
-					NewGeometry.TriangleNormals.push(NewGeometry.LayerElementNormal.Normals[Start*3+3]);
-					NewGeometry.TriangleNormals.push(NewGeometry.LayerElementNormal.Normals[Start*3+4]);
-					NewGeometry.TriangleNormals.push(NewGeometry.LayerElementNormal.Normals[Start*3+5]);
-					NewGeometry.TriangleNormals.push(NewGeometry.LayerElementNormal.Normals[Start*3+9]);
-					NewGeometry.TriangleNormals.push(NewGeometry.LayerElementNormal.Normals[Start*3+10]);
-					NewGeometry.TriangleNormals.push(NewGeometry.LayerElementNormal.Normals[Start*3+11]);
-
+					if(NewGeometry.TriangleNormals != null)
+					{
+						// Normals
+						NewGeometry.TriangleNormals.push(NewGeometry.LayerElementNormal.Normals[Start*3+0]);
+						NewGeometry.TriangleNormals.push(NewGeometry.LayerElementNormal.Normals[Start*3+1]);
+						NewGeometry.TriangleNormals.push(NewGeometry.LayerElementNormal.Normals[Start*3+2]);
+						NewGeometry.TriangleNormals.push(NewGeometry.LayerElementNormal.Normals[Start*3+3]);
+						NewGeometry.TriangleNormals.push(NewGeometry.LayerElementNormal.Normals[Start*3+4]);
+						NewGeometry.TriangleNormals.push(NewGeometry.LayerElementNormal.Normals[Start*3+5]);
+						NewGeometry.TriangleNormals.push(NewGeometry.LayerElementNormal.Normals[Start*3+6]);
+						NewGeometry.TriangleNormals.push(NewGeometry.LayerElementNormal.Normals[Start*3+7]);
+						NewGeometry.TriangleNormals.push(NewGeometry.LayerElementNormal.Normals[Start*3+8]);
+	
+						NewGeometry.TriangleNormals.push(NewGeometry.LayerElementNormal.Normals[Start*3+0]);
+						NewGeometry.TriangleNormals.push(NewGeometry.LayerElementNormal.Normals[Start*3+1]);
+						NewGeometry.TriangleNormals.push(NewGeometry.LayerElementNormal.Normals[Start*3+2]);
+						NewGeometry.TriangleNormals.push(NewGeometry.LayerElementNormal.Normals[Start*3+3]);
+						NewGeometry.TriangleNormals.push(NewGeometry.LayerElementNormal.Normals[Start*3+4]);
+						NewGeometry.TriangleNormals.push(NewGeometry.LayerElementNormal.Normals[Start*3+5]);
+						NewGeometry.TriangleNormals.push(NewGeometry.LayerElementNormal.Normals[Start*3+9]);
+						NewGeometry.TriangleNormals.push(NewGeometry.LayerElementNormal.Normals[Start*3+10]);
+						NewGeometry.TriangleNormals.push(NewGeometry.LayerElementNormal.Normals[Start*3+11]);
+					}
        	}
        	else
        	{
@@ -166,7 +194,7 @@ function FBX_Parser_ParseGeometry(i_FileContainer)
     }
     else if(CurrentLine[0] == "Properties70:")
     {
-      Debug.Trace("Found Properties70");
+      //Debug.Trace("Found Properties70");
       i_FileContainer.StepBack();
       NewGeometry.Properties = FBX_Parser_ParseProperties70(i_FileContainer);
     }
@@ -183,7 +211,7 @@ function FBX_Parser_ParseGeometry(i_FileContainer)
     }
     else if(CurrentLine[0] == "PolygonVertexIndex:")
     {
-      Debug.Trace("Found PolygonVertexIndex");
+      //Debug.Trace("Found PolygonVertexIndex");
       i_FileContainer.StepBack();
       NewGeometry.PolygonVertexIndex = FBX_Parser_ParsePolygonVertexIndex(i_FileContainer);
       if(NewGeometry.PolygonVertexIndex == null)

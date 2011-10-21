@@ -59,14 +59,14 @@ function FBX_Parser(i_File)
 		for(var i = 0; i < this.Connections.length; i++)
 		{
 			var Connection = this.Connections[i];
-			Debug.Trace("Connecting Connection");
+			//Debug.Trace("Connecting Connection");
 			if(Connection.Origin == 0)
 			{
 				// Find the Model and add it to the list of models
 				var Model = this.GetModel(Connection.Destination);
 				if(Model != null)
 				{
-					Debug.Trace("Match Model (" + Model.Name + ") to origin");
+					//Debug.Trace("Match Model (" + Model.Name + ") to origin");
 					this.Models.push(Model);
 				}
 			}
@@ -80,7 +80,7 @@ function FBX_Parser(i_File)
 					var Geometry = this.GetGeometry(Connection.Destination);
 					if(Geometry != null)
 					{
-						Debug.Trace("Match Model (" + Model.Name  + ") to Geometry (" + Geometry.Name + ")");
+						//Debug.Trace("Match Model (" + Model.Name  + ") to Geometry (" + Geometry.Name + ")");
 						Model.Geometry = Geometry;
 					}
 					else
@@ -88,7 +88,7 @@ function FBX_Parser(i_File)
 						var Material = this.GetMaterial(Connection.Destination);
 						if(Material != null)
 						{
-							Debug.Trace("Match Model (" + Model.Name  + ") to Material (" + Material.Name + ")");
+							//Debug.Trace("Match Model (" + Model.Name  + ") to Material (" + Material.Name + ")");
 							Model.Material = Material;
 						}
 					}
@@ -105,7 +105,7 @@ function FBX_Parser(i_File)
 						{
 							if(Connection.Property == "DiffuseColor")
 							{
-  							Debug.Trace("Match Material (" + Material.Name  + ") to Texture (" + Texture.Name + ")");
+  							//Debug.Trace("Match Material (" + Material.Name  + ") to Texture (" + Texture.Name + ")");
   							Material.Texture = Texture;
   						}
   						else

@@ -1,7 +1,9 @@
 ﻿window.addEventListener("load", WindowLoaded, false);
 LoadjsFile("Model/Model.js");
+LoadjsFile("Model/Vector3D.js");
 LoadjsFile("Helper.js");
 LoadjsFile("Events.js");
+LoadjsFile("Shader/GLSL_Shader.js");
 LoadjsFile("Model/glMatrix-0.9.5.min.js");
 
 var gl;
@@ -19,23 +21,27 @@ function LoadjsFile(i_FilePath)
     document.getElementsByTagName("head")[0].appendChild(FileRef)
 }
 
+
 function InitializeWebGL()
 {
   // Initialize
   Debug.Trace("Initializing WebGL...");
   
-  gl = Canvas.getContext("experimental-webgl"); // Chrome
-  
+  gl = Canvas.getContext("webgl"); // Webgl
+
   if(!gl)
-    gl = theCanvas.getContext("moz-webgl"); // Firefox
+    gl = Canvas.getContext("experimental-webgl"); // Development
   if(!gl)
-    gl = theCanvas.getContext("webkit-3d"); // Safari or Chrome
+    gl = Canvas.getContext("moz-webgl"); // Firefox
+  if(!gl)
+    gl = Canvas.getContext("webkit-3d"); // Safari or Chrome
     
   gl.viewportWidth  = Canvas.width;
   gl.viewportHeight = Canvas.height;
   
   gl.clearColor(0.0, 0.0, 0.0, 1.0);
   gl.enable(gl.DEPTH_TEST);
+  gl.depthFunc(gl.LESS);
   
   mvMatrix = mat4.create();
   pMatrix = mat4.create();
@@ -71,14 +77,16 @@ function WindowLoaded()
   
   // Load the models
   Debug.Trace("Start");
-  TestModel = new Model("Model/Box.FBX");
-  
+  InitializeModels();
+ 
   // Set initial time
   var CurDate = new Date();
   PrevTime = CurDate.getTime();
 
   // Start the gameloop
   GameLoop();
+  
+  checkGLError();
 }
 
 function UpdateWindowSize()
@@ -90,10 +98,10 @@ function UpdateWindowSize()
     Canvas.width = WindowSize.X;
     
     // It the window is too short then limit the canvas
-    if(WindowSize.Y < 700)
+    //if(WindowSize.Y < 700)
       Canvas.height = WindowSize.Y;
-    else
-      Canvas.height = 700;
+    //else
+    //  Canvas.height = 700;
 
     Width  = Canvas.width;
     Height = Canvas.height;
@@ -117,6 +125,7 @@ function InitializeCanvas()
     Canvas.addEventListener('mousemove', MouseMove, false);
     Canvas.addEventListener('mouseout', MouseOut, false);
     Canvas.addEventListener('click', MouseClick, false);
+	Canvas.addEventListener('DOMMouseScroll', MouseWheel, false);
   }
 
 var Debug = function() {};
@@ -138,31 +147,6 @@ function CanvasSupported()
   return !document.createElement('TestCanvas').getContext;
 }
 
-var REQUEST_NOT_INITIALIZED = 0;
-var SERVER_CONNECTION_ESTABLISHED = 1;
-var REQUESED_RECEIVED = 2;
-var PROCESSING_REQUEST = 3;
-var REQUEST_FINISHED_RESPONSE_READY = 4;
-var STATUS_OK = 200;
-var STATUS_PAGE_NOT_FOUND = 404;
-
-function CreateXMLHttpRequest()
-{
-  var XMLHttp;
-  if (window.XMLHttpRequest)
-  {// code for IE7+, Firefox, Chrome, Opera, Safari
-    XMLHttp = new XMLHttpRequest();
-  }
-  else
-  {// code for IE6, IE5
-    XMLHttp = new ActiveXObject("Microsoft.XMLHTTP");
-  }
-  
-  return XMLHttp;
-}
-
-
-
 var Timer;
 var PrevTime;
 var DEBUG = false;
@@ -178,6 +162,7 @@ function GameLoop()
   PrevTime = CurTime;
   
   //Update(DeltaMiliSec);
+  animate();
   Draw();
   
   if(DEBUG)
@@ -192,211 +177,220 @@ function GameLoop()
   Timer = setTimeout("GameLoop()", 1/30 * 1000);
 
 }
-  
+ 
+var ClearColor = [0.0, 0.0, 0.0];
+function SetClearColor_Red(i_Value)
+{
+  Debug.Trace("Set Clear Color Red");
+  if(!isNaN(i_Value))
+  {
+    // Limit the value to 0.0 to 1.0
+    if(i_Value > 1.0)  
+      ClearColor[0] = 1.0;
+    else if(i_Value < 0.0)
+      ClearColor[0] = 0.0;
+    else 
+      ClearColor[0] = i_Value;
+      
+    gl.clearColor(ClearColor[0], ClearColor[1], ClearColor[2], 1.0);
+  }
+}
+ 
+function SetClearColor_Blue(i_Value)
+{
+  Debug.Trace("Set Clear Color Blue");
+  if(!isNaN(i_Value))
+  {
+    // Limit the value to 0.0 to 1.0
+    if(i_Value > 1.0)  
+      ClearColor[1] = 1.0;
+    else if(i_Value < 0.0)
+      ClearColor[1] = 0.0;
+    else 
+      ClearColor[1] = i_Value;
+      
+    gl.clearColor(ClearColor[0], ClearColor[1], ClearColor[2], 1.0);
+  }
+}
 
-    function getShader(gl, id) {
-        var shaderScript = document.getElementById(id);
-        if (!shaderScript) {
-            return null;
-        }
+function SetClearColor_Green(i_Value)
+{
+  Debug.Trace("Set Clear Color Green");
+  if(!isNaN(i_Value))
+  {
+    // Limit the value to 0.0 to 1.0
+    if(i_Value > 1.0)  
+      ClearColor[2] = 1.0;
+    else if(i_Value < 0.0)
+      ClearColor[2] = 0.0;
+    else 
+      ClearColor[2] = i_Value;
+      
+    gl.clearColor(ClearColor[0], ClearColor[1], ClearColor[2], 1.0);
+  }
+}
+ 
+var Models = new Array();
+function InitializeModels() 
+{
+    Models.push(new Model("Brick_Block"));
+    Models.push(new Model("Test"));
+    Models.push(new Model("TestCube"));
+    Models.push(new Model("Title"));
+    Models.push(new Model("Sword"));
+    Models.push(new Model("Human"));
+    TestModel = Models[0];
+}
 
-        var str = "";
-        var k = shaderScript.firstChild;
-        while (k) {
-            if (k.nodeType == 3) {
-                str += k.textContent;
-            }
-            k = k.nextSibling;
-        }
-
-        var shader;
-        if (shaderScript.type == "x-shader/x-fragment") {
-            shader = gl.createShader(gl.FRAGMENT_SHADER);
-        } else if (shaderScript.type == "x-shader/x-vertex") {
-            shader = gl.createShader(gl.VERTEX_SHADER);
-        } else {
-            return null;
-        }
-
-        gl.shaderSource(shader, str);
-        gl.compileShader(shader);
-
-        if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-            alert(gl.getShaderInfoLog(shader));
-            return null;
-        }
-
-        return shader;
-    }
-
-
-    var shaderProgram;
-
-    function InitializeShaders() 
-    {
-        var fragmentShader = getShader(gl, "shader-fs");
-        var vertexShader = getShader(gl, "shader-vs");
-
-        shaderProgram = gl.createProgram();
-        gl.attachShader(shaderProgram, vertexShader);
-        gl.attachShader(shaderProgram, fragmentShader);
-        gl.linkProgram(shaderProgram);
-
-        if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) 
-            alert("Could not initialize shaders");
-
-        gl.useProgram(shaderProgram);
-
-        shaderProgram.vertexPositionAttribute = gl.getAttribLocation(shaderProgram, "aVertexPosition");
-        gl.enableVertexAttribArray(shaderProgram.vertexPositionAttribute);
-
-        shaderProgram.pMatrixUniform = gl.getUniformLocation(shaderProgram, "uPMatrix");
-        shaderProgram.mvMatrixUniform = gl.getUniformLocation(shaderProgram, "uMVMatrix");
-    }
+function SelectModel(i_ModelName)
+{
+	Debug.Trace("Select Model " + i_ModelName);
+	for(var i = 0; i < Models.length; i++)
+	{
+		if(Models[i].Name == i_ModelName)
+		{
+			TestModel = Models[i];
+			return;
+		}
+	}
+}
 
 
-    var mvMatrix;
-    var pMatrix;
-    var mvMatrixStack = [];
-
-    function setMatrixUniforms() 
-    {
-        gl.uniformMatrix4fv(shaderProgram.pMatrixUniform, false, pMatrix);
-        gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, mvMatrix);
-    }
-
+var Shaders = new Array();
+function InitializeShaders() 
+{
+    Shaders.push(LoadShader("PerFragmentLighting"));
+    Shaders.push(LoadShader("PerVertexLighting"));
+    Shaders.push(LoadShader("TimeTest"));
+    CurrentShader = Shaders[0];
+}
 
 
-    var cubeVertexPositionBuffer;
-    var cubeVertexColorBuffer;
-    var cubeVertexIndexBuffer;
+function SelectShader(i_ShaderName)
+{
+	Debug.Trace("Select Shader " + i_ShaderName);
+	for(var i = 0; i < Shaders.length; i++)
+	{
+		if(Shaders[i].Name == i_ShaderName)
+		{
+			CurrentShader = Shaders[i];
+			return;
+		}
+	}
+}
+
+var mvMatrix;
+var pMatrix;
+var mvMatrixStack = [];
+
+function setMatrixUniforms() 
+{
+    gl.uniformMatrix4fv(CurrentShader.Program.pMatrixUniform, false, pMatrix);
+    gl.uniformMatrix4fv(CurrentShader.Program.mvMatrixUniform, false, mvMatrix);
     
-    function InitializeBuffers()
+    var normalMatrix = mat3.create();
+    mat4.toInverseMat3(mvMatrix, normalMatrix);
+    mat3.transpose(normalMatrix);
+    gl.uniformMatrix3fv(CurrentShader.Program.nMatrixUniform, false, normalMatrix);
+}
+
+function mvPushMatrix() 
+{
+    var copy = mat4.create();
+    mat4.set(mvMatrix, copy);
+    mvMatrixStack.push(copy);
+}
+
+function mvPopMatrix() 
+{
+    if (mvMatrixStack.length == 0) 
+        throw "Invalid popMatrix!";
+    mvMatrix = mvMatrixStack.pop();
+}
+    
+var rPyramid = 0;
+var rCube = 0;
+var lastTime = 0;
+var Time = 0;
+function animate() 
+{
+    var timeNow = new Date().getTime();
+    if (lastTime != 0) 
     {
-       cubeVertexPositionBuffer = gl.createBuffer();
-        gl.bindBuffer(gl.ARRAY_BUFFER, cubeVertexPositionBuffer);
-        vertices = [
-            // Front face
-            -1.0, -1.0,  1.0,
-             1.0, -1.0,  1.0,
-             1.0,  1.0,  1.0,
-            -1.0,  1.0,  1.0,
-
-            // Back face
-            -1.0, -1.0, -1.0,
-            -1.0,  1.0, -1.0,
-             1.0,  1.0, -1.0,
-             1.0, -1.0, -1.0,
-
-            // Top face
-            -1.0,  1.0, -1.0,
-            -1.0,  1.0,  1.0,
-             1.0,  1.0,  1.0,
-             1.0,  1.0, -1.0,
-
-            // Bottom face
-            -1.0, -1.0, -1.0,
-             1.0, -1.0, -1.0,
-             1.0, -1.0,  1.0,
-            -1.0, -1.0,  1.0,
-
-            // Right face
-             1.0, -1.0, -1.0,
-             1.0,  1.0, -1.0,
-             1.0,  1.0,  1.0,
-             1.0, -1.0,  1.0,
-
-            // Left face
-            -1.0, -1.0, -1.0,
-            -1.0, -1.0,  1.0,
-            -1.0,  1.0,  1.0,
-            -1.0,  1.0, -1.0
-        ];
-        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
-        cubeVertexPositionBuffer.itemSize = 3;
-        cubeVertexPositionBuffer.numItems = 24;
-
-        cubeVertexColorBuffer = gl.createBuffer();
-        gl.bindBuffer(gl.ARRAY_BUFFER, cubeVertexColorBuffer);
-        colors = [
-            [1.0, 0.0, 0.0, 1.0], // Front face
-            [1.0, 1.0, 0.0, 1.0], // Back face
-            [0.0, 1.0, 0.0, 1.0], // Top face
-            [1.0, 0.5, 0.5, 1.0], // Bottom face
-            [1.0, 0.0, 1.0, 1.0], // Right face
-            [0.0, 0.0, 1.0, 1.0]  // Left face
-        ];
-        var unpackedColors = [];
-        for (var i in colors) {
-            var color = colors[i];
-            for (var j=0; j < 4; j++) {
-                unpackedColors = unpackedColors.concat(color);
-            }
-        }
-        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(unpackedColors), gl.STATIC_DRAW);
-        cubeVertexColorBuffer.itemSize = 4;
-        cubeVertexColorBuffer.numItems = 24;
-
-        cubeVertexIndexBuffer = gl.createBuffer();
-        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, cubeVertexIndexBuffer);
-        var cubeVertexIndices = [
-            0, 1, 2,      0, 2, 3,    // Front face
-            4, 5, 6,      4, 6, 7,    // Back face
-            8, 9, 10,     8, 10, 11,  // Top face
-            12, 13, 14,   12, 14, 15, // Bottom face
-            16, 17, 18,   16, 18, 19, // Right face
-            20, 21, 22,   20, 22, 23  // Left face
-        ];
-        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(cubeVertexIndices), gl.STATIC_DRAW);
-        cubeVertexIndexBuffer.itemSize = 1;
-        cubeVertexIndexBuffer.numItems = 36;   
+        var elapsed = timeNow - lastTime;
+        Time += elapsed / 1000.0;
+        //rPyramid += (90 * elapsed) / 1000.0;
+        //rCube -= (40 * elapsed) / 1000.0;
     }
+    lastTime = timeNow;
+}
 
-    function mvPushMatrix() {
-        var copy = mat4.create();
-        mat4.set(mvMatrix, copy);
-        mvMatrixStack.push(copy);
-    }
+var Light0_Enabled = true;
+var Camera_LookAt = [0,0,0];
+var Camera_Position = [
+          0.0,
+          0.0,
+          50.0
+      ];
+var Up = [0,1,0];
+function Draw() 
+{
+	gl.useProgram(CurrentShader.Program);
 
-    function mvPopMatrix() {
-        if (mvMatrixStack.length == 0) {
-            throw "Invalid popMatrix!";
-        }
-        mvMatrix = mvMatrixStack.pop();
-    }
+	gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
+	gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+	gl.uniform1f(CurrentShader.Program.Time_Uniform, Time);
 
-  var rCube = 0;
-    function Draw() 
-    {
-        gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
-        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+	gl.uniform1i(CurrentShader.Program.Light0_Enabled_Uniform, Light0_Enabled);
+  if (Light0_Enabled) 
+  {
+      gl.uniform3f(
+          CurrentShader.Program.AmbientColor_Uniform,
+          0.1,
+          0.1,
+          0.1
+      );
 
-        mat4.perspective(45, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0, pMatrix);
+      
+      gl.uniform3fv(CurrentShader.Program.Light0_Position_Uniform, Camera_Position);
 
-        mat4.identity(mvMatrix);
+      gl.uniform3f(
+          CurrentShader.Program.DiffuseColor_Uniform,
+          0.8,
+          0.8,
+          0.8
+      );
+      
+      gl.uniform3f(
+          CurrentShader.Program.SpecularColor_Uniform,
+          0.8,
+          0.8,
+          0.8
+      );
+      
+      gl.uniform1f(
+          CurrentShader.Program.Shininess_Uniform,
+          30.0      
+      );
 
-        mat4.translate(mvMatrix, [-1.5, 0.0, -8.0]);
 
-        mvPushMatrix();
-
-        mvPopMatrix();
-
-
-        mat4.translate(mvMatrix, [3.0, 0.0, 0.0]);
-
-        mvPushMatrix();
-        mat4.rotate(mvMatrix, degToRad(rCube), [1, 1, 1]);
-
-        gl.bindBuffer(gl.ARRAY_BUFFER, cubeVertexPositionBuffer);
-        gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, cubeVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
-
-        gl.bindBuffer(gl.ARRAY_BUFFER, cubeVertexColorBuffer);
-        gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, cubeVertexColorBuffer.itemSize, gl.FLOAT, false, 0, 0);
-
-        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, cubeVertexIndexBuffer);
-        setMatrixUniforms();
-        gl.drawElements(gl.TRIANGLES, cubeVertexIndexBuffer.numItems, gl.UNSIGNED_SHORT, 0);
-        checkGLError();
-        Debug.Trace("Draw");
-        mvPopMatrix();  
-    }
+  }
+	
+	
+	mat4.perspective(45, gl.viewportWidth / gl.viewportHeight, 1.0, 1000.0, pMatrix);
+	
+	//mat4.identity(mvMatrix);
+	
+	// Setup the camera
+	$("#CameraPos_X").val(Camera_Position[0]);
+	$("#CameraPos_Y").val(Camera_Position[1]);
+	$("#CameraPos_Z").val(Camera_Position[2]);
+	gl.uniform3fv(CurrentShader.Program.Camera_Position_Uniform, Camera_Position);
+	//mat4.translate(mvMatrix, [-Camera_Position[0], -Camera_Position[1], -Camera_Position[2]]);
+	mat4.lookAt(Camera_Position, Camera_LookAt, Up, mvMatrix);
+	
+	mvPushMatrix();
+	mat4.rotate(mvMatrix, degToRad(rCube), [1, 1, 1]);
+	TestModel.Draw();
+	mvPopMatrix();
+}
