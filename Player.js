@@ -42,7 +42,8 @@ function Record(){
 
 	//Pass in a player, this adds the players pos vector to its timeslice array
 	this.addSlice = function(pl) {
-		this.ts[this.p]=new Vector3(pl.pos.x, pl.pos.y, pl.pos.z);
+		this.ts[this.p]=new Player();
+		this.ts[this.p].pos.setVect3(pl.pos.x, pl.pos.y, pl.pos.z);
 		this.p++;
 	}
 
