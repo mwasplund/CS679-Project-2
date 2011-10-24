@@ -1,23 +1,23 @@
-function Vector3(a,b,c) = {
+function Vector3(a,b,c){
 	this.x;
 	this.y;
 	this.z;
 
-	this.setVect3 = function(a,b,c) = {
+	this.setVect3 = function(a,b,c){
 		this.x = a;
 		this.y = b;
 		this.z = c;
 	}
 	
-	setVect3(a,b,c);
+	this.setVect3(a,b,c);
 }
 
-function Player() = {
+function Player(){
 	this.pos = new Vector3(0,0,0);
 }
 
 //Pass in position, velocity, and time shot
-function Shot(px, py, pz, vx, vy, vz, t) = {
+function Shot(px, py, pz, vx, vy, vz, t){
 	this.time = t;
 	this.pos = new Vector(px, py, pz);
 	this.org = new Vector(px, py, pz); //Origin of shot- DOES NOT CHANGE
@@ -34,15 +34,16 @@ function Shot(px, py, pz, vx, vy, vz, t) = {
 	}
 }
 
-function Record() = {
+function Record(){
 	this.recordDead = false;
 	this.ts = new Array(); //ts = 'timeSlice'. An array of 'Vector3's.
 	this.shots = new Array(); //an array of 'Shot's
 	this.p = 0; //Current playback location. Think playhead.
 
 	//Pass in a player, this adds the players pos vector to its timeslice array
-	this.addSlice = function(p) {
-		this.ts[this.ts.length]=p.pos;
+	this.addSlice = function(pl) {
+		this.ts[this.p]=new Vector3(pl.pos.x, pl.pos.y, pl.pos.z);
+		this.p++;
 	}
 
 	//Pass in a shot
@@ -50,11 +51,17 @@ function Record() = {
 		this.shots[this.shots.length] = s;
 	}
 
+	//Resets playhead to 0
+	this.resetP = function(){
+		this.p = 0;
+	}
+
 	//Gets next frame to play. If no frames left, returns last available
 	this.playNextSlice = function() {
-		this.updateShots();
-		if(p > this.ts.length) p = this.ts.length;
-		return this.ts[p++];
+//		this.updateShots();
+		this.p++;
+		if(this.p > this.ts.length) this.p = this.ts.length;
+		return this.ts[this.p-1];
 	}
 
 	this.updateShots = function() {
