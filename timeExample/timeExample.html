@@ -306,20 +306,26 @@ function animate(){
 		rCube -= (75 * elapsed) / 1000.0;
 		
 		if(time < 500){
-			if(leftPressed) p.pos.x+=.05;
-			if(rightPressed)p.pos.x-=.05;
-			if(upPressed)p.pos.z+=.05;
-			if(downPressed)p.pos.z-=.05;
+			if(p.mLeft) p.pos.x+=.05;
+			if(p.mRight)p.pos.x-=.05;
+			if(p.mForward)p.pos.z+=.05;
+			if(p.mBackward)p.pos.z-=.05;
 			time++;
 			recording.addSlice(p);
 		}
 		else if(time == 500){
 			recording.resetP();
 			time++;
+			p = new Player();
 		}
-		else{
+		else{	
 			v = recording.playNextSlice();
-			p = v;
+			if(v.mLeft) p.pos.x+=.05;
+			if(v.mRight)p.pos.x-=.05;
+			if(v.mForward)p.pos.z+=.05;
+			if(v.mBackward)p.pos.z-=.05;
+			time++;
+			recording.addSlice(p);	
 		}
 		mat4.identity(mvMatrix);
 		mat4.translate(mvMatrix, [p.pos.x, p.pos.y, p.pos.z]);
@@ -355,12 +361,6 @@ var time = 0;
 var recording = new Record();
 var playing = new Record();
 
-var spacePressed = false;
-var leftPressed = false;
-var rightPressed = false;
-var upPressed = false;
-var downPressed = false;
-
 function initGame()
 {
 	document.onkeydown=handleKeyDown;
@@ -369,18 +369,18 @@ function initGame()
 }
 
 function handleKeyDown(evt) {
-        if(evt.keyCode == 32) spacePressed = true;
-        if(evt.keyCode == 37) leftPressed = true;
-        if(evt.keyCode == 39) rightPressed = true;
-	if(evt.keyCode == 38) upPressed = true;
-	if(evt.keyCode == 40) downPressed = true;
+        if(evt.keyCode == 32) p.jump = true;
+        if(evt.keyCode == 37) p.mLeft = true;
+        if(evt.keyCode == 39) p.mRight = true;
+	if(evt.keyCode == 38) p.mForward = true;
+	if(evt.keyCode == 40) p.mBackward = true;
 }
 function handleKeyUp(evt) {
-        if(evt.keyCode == 32) spacePressed = false;
-        if(evt.keyCode == 37) leftPressed = false;
-        if(evt.keyCode == 39) rightPressed = false;
-	if(evt.keyCode == 38) upPressed = false;
-	if(evt.keyCode == 40) downPressed = false;
+        if(evt.keyCode == 32) p.jump = false;
+        if(evt.keyCode == 37) p.mLeft = false;
+        if(evt.keyCode == 39) p.mRight = false;
+	if(evt.keyCode == 38) p.mForward = false;
+	if(evt.keyCode == 40) p.mBackward = false;
 }
 </script>
 </head>
