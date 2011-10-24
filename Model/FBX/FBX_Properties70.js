@@ -140,7 +140,7 @@ function FBX_Parser_ParsePropertyAsVector3D(i_Line)
 		return null;
 	}
 	
-	return new Vector3D(X, Y, Z);
+	return vec3.create([X, Y, Z]);
 }
 
 

@@ -1,11 +1,10 @@
 ﻿window.addEventListener("load", WindowLoaded, false);
 LoadjsFile("Model/Model.js");
-LoadjsFile("Model/Vector3D.js");
 LoadjsFile("Helper.js");
 LoadjsFile("Events.js");
 LoadjsFile("Shader/GLSL_Shader.js");
 LoadjsFile("Player.js");
-LoadjsFile("Model/glMatrix-0.9.5.min.js");
+LoadjsFile("Model/glMatrix.js");
 
 var gl;
 var Height

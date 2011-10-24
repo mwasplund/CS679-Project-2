@@ -67,9 +67,9 @@
   */
   
   // Check if model has predefined rotaion, translation, scale... etc
-  this.Scale    = new Vector3D(1, 1, 1);
-  this.Translate = new Vector3D(0, 0, 0);
-	this.Rotate   = new Vector3D(0, 0, 0);
+  this.Scale     = vec3.create([1, 1, 1]);
+  this.Translate = vec3.create([0, 0, 0]);
+	this.Rotate    = vec3.create([0, 0, 0]);
 
 	Debug.Trace("Properties.length = " + i_Model.Properties.length);
   for(var i = 0; i < i_Model.Properties.length; i++)
@@ -79,33 +79,31 @@
   	{
   		case "Lcl Translation":
   		{
-  			Debug.Trace("Translate (" + Property.Value.X + ", " + Property.Value.Y + ", " + Property.Value.Z + ")");
-  			this.Translate = Property.Value;
+  			Debug.Trace("Translate " + vec3.str(Property.Value));
+  			vec3.add(this.Translate, Property.Value);
   			break;
   		}
   		case "PreRotation":
   		{
-  			Debug.Trace("PreRotate (" + Property.Value.X + ", " + Property.Value.Y + ", " + Property.Value.Z + ")");
+  			Debug.Trace("PreRotate " + vec3.str(Property.Value));
 	
-  			this.Rotate.X += Property.Value.X;
-  			this.Rotate.Y += Property.Value.Y;
-  			this.Rotate.Z += Property.Value.Z;
+  			vec3.add(this.Rotate, Property.Value);
   			break;
   		}
   		case "Lcl Rotation":
   		{
-  			Debug.Trace("Rotate (" + Property.Value.X + ", " + Property.Value.Y + ", " + Property.Value.Z + ")");
+  			Debug.Trace("Rotate " + vec3.str(Property.Value));
 	
-  			this.Rotate.X += Property.Value.X;
-  			this.Rotate.Y += Property.Value.Y;
-  			this.Rotate.Z += Property.Value.Z;
+  			vec3.add(this.Rotate, Property.Value);
   			break;
   		}
       case "Lcl Scaling":
       {
-      	Debug.Trace("Scale (" + Property.Value.X + ", " + Property.Value.Y + ", " + Property.Value.Z + ")");
+      	Debug.Trace("Scale " + vec3.str(Property.Value));
 
-      	this.Scale = Property.Value;
+      	this.Scale[0] *= Property.Value[0];
+      	this.Scale[1] *= Property.Value[1];
+      	this.Scale[2] *= Property.Value[2];
       	break;
      	}
   	}
@@ -154,12 +152,12 @@ function Mesh_HandleLoadedTexture(i_Texture)
 function Mesh_Draw()
 {
 	mvPushMatrix();
-	mat4.translate(mvMatrix, [this.Translate.X, this.Translate.Y, this.Translate.Z]);
-	mat4.rotate(mvMatrix, degToRad(this.Rotate.X), [1, 0, 0]);
-	mat4.rotate(mvMatrix, degToRad(this.Rotate.Y), [0, 1, 0]);
-	mat4.rotate(mvMatrix, degToRad(this.Rotate.Z), [0, 0, 1]);
+	mat4.translate(mvMatrix, this.Translate);
+	mat4.rotate(mvMatrix, degToRad(this.Rotate[0]), [1, 0, 0]);
+	mat4.rotate(mvMatrix, degToRad(this.Rotate[1]), [0, 1, 0]);
+	mat4.rotate(mvMatrix, degToRad(this.Rotate[2]), [0, 0, 1]);
 	
-	mat4.scale(mvMatrix, [this.Scale.X, this.Scale.Y, this.Scale.Z]);
+	mat4.scale(mvMatrix, this.Scale);
 	
 	// Bind the texture UV
 	gl.uniform1i(CurrentShader.Program.Texture0_Enabled_Uniform, this.Texture != null);
