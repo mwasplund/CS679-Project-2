@@ -255,15 +255,7 @@ function initBuffers() {
 var rPyramid = 0;
 var rCube = 0;
 
-function drawScene() {
-	gl.viewport(0,0,gl.viewportWidth, gl.viewportHeight);
-	gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
-	mat4.perspective(45, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0, pMatrix);
-
-
-	mat4.translate(mvMatrix, [-1.5, 0.0, -8.0]);
-
+function drawPyr(){
 	mvPushMatrix();
 	mat4.rotate(mvMatrix, degToRad(rPyramid), [0, 1, 0]);
 
@@ -276,9 +268,9 @@ function drawScene() {
 	setMatrixUniforms();
 	gl.drawArrays(gl.TRIANGLES,0,pyramidVertexPositionBuffer.numItems);
 	mvPopMatrix();
+}
 
-	mat4.translate(mvMatrix, [3.0, 0.0, 0.0]);
-
+function drawCube(){
 	mvPushMatrix();
 	mat4.rotate(mvMatrix, degToRad(rCube), [1,1,1]);
 
@@ -293,6 +285,20 @@ function drawScene() {
         gl.drawElements(gl.TRIANGLES, cubeVertexIndexBuffer.numItems, gl.UNSIGNED_SHORT, 0);
 
 	mvPopMatrix();
+}
+
+function drawScene() {
+	gl.viewport(0,0,gl.viewportWidth, gl.viewportHeight);
+	gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+	mat4.perspective(45, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0, pMatrix);
+
+	drawClones();
+
+	mat4.translate(mvMatrix, [-1.5, 0.0, -8.0]);
+	drawCube();
+	mat4.translate(mvMatrix, [3.0, 0.0, 0.0]);
+	drawPyr();
+
 }
 
 
@@ -312,13 +318,7 @@ function animate(){
 	else if(time == 500){
 		endTurn();
 	}
-	else{	
-		v = recs[turn].playNextSlice();
-		if(v.mLeft) p.pos.x+=.05;
-		if(v.mRight)p.pos.x-=.05;
-		if(v.mForward)p.pos.z+=.05;
-		if(v.mBackward)p.pos.z-=.05;
-	}
+	
 	mat4.identity(mvMatrix);
 	mat4.translate(mvMatrix, [p.pos.x, p.pos.y, p.pos.z]);
 	setMatrixUniforms();
@@ -356,6 +356,7 @@ function endTurn(){
 	turn++;
 	time = 0;
 	resetPlayheads();
+	resetClonePos();
 	p = new Player();
 	recs[turn] = new Record();
 	clones[turn-1]=new Player();
@@ -367,6 +368,12 @@ function resetPlayheads(){
 	}
 }
 
+function resetClonePos(){
+	for(var i = 0; i < turn-1; i++){
+		clones[i].pos = new Vector3(0,0,0);
+	}
+}
+
 function updateClones(){
 	for(var i = 0; i < turn; i++){
 		var cDead = clones[i].dead;
@@ -374,6 +381,22 @@ function updateClones(){
 		clones[i] = recs[i].playNextSlice();
 		clones[i].dead = cDead;
 		clones[i].pos = cPos;
+		if(!cDead){
+			if(clones[i].mLeft) clones[i].pos.x-=.05;
+			if(clones[i].mRight)clones[i].pos.x+=.05;
+			if(clones[i].mForward)clones[i].pos.z-=.05;
+			if(clones[i].mBackward)clones[i].pos.z+=.05;
+		}
+	}
+}
+
+function drawClones(){
+	for(var i = 0; i < turn; i++){
+		mvPushMatrix();
+		mat4.translate(mvMatrix, [clones[i].pos.x, clones[i].pos.y, clones[i].pos.z]);
+		setMatrixUniforms();
+		drawPyr();	
+		mvPopMatrix();
 	}
 }
 
