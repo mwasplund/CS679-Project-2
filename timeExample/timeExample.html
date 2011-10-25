@@ -295,43 +295,33 @@ function drawScene() {
 	mvPopMatrix();
 }
 
-var lastTime = 0;
 
 function animate(){
-	var timeNow = new Date().getTime();
-	if(lastTime != 0){
-		var elapsed = timeNow - lastTime;
-
-		rPyramid += (90 * elapsed) / 1000.0;
-		rCube -= (75 * elapsed) / 1000.0;
-		
-		if(time < 500){
-			if(p.mLeft) p.pos.x+=.05;
-			if(p.mRight)p.pos.x-=.05;
-			if(p.mForward)p.pos.z+=.05;
-			if(p.mBackward)p.pos.z-=.05;
-			time++;
-			recording.addSlice(p);
-		}
-		else if(time == 500){
-			recording.resetP();
-			time++;
-			p = new Player();
-		}
-		else{	
-			v = recording.playNextSlice();
-			if(v.mLeft) p.pos.x+=.05;
-			if(v.mRight)p.pos.x-=.05;
-			if(v.mForward)p.pos.z+=.05;
-			if(v.mBackward)p.pos.z-=.05;
-			time++;
-			recording.addSlice(p);	
-		}
-		mat4.identity(mvMatrix);
-		mat4.translate(mvMatrix, [p.pos.x, p.pos.y, p.pos.z]);
-		setMatrixUniforms();
+	rPyramid += 90.0 / 1000.0;
+	rCube -= 75.0 / 1000.0;
+	document.getElementById("debug").innerHTML = 500-time;
+	if(time < 500){
+		if(p.mLeft) p.pos.x+=.05;
+		if(p.mRight)p.pos.x-=.05;
+		if(p.mForward)p.pos.z+=.05;
+		if(p.mBackward)p.pos.z-=.05;
+		time++;
+		recs[turn].addSlice(p);
+		updateClones();
 	}
-	lastTime = timeNow;
+	else if(time == 500){
+		endTurn();
+	}
+	else{	
+		v = recs[turn].playNextSlice();
+		if(v.mLeft) p.pos.x+=.05;
+		if(v.mRight)p.pos.x-=.05;
+		if(v.mForward)p.pos.z+=.05;
+		if(v.mBackward)p.pos.z-=.05;
+	}
+	mat4.identity(mvMatrix);
+	mat4.translate(mvMatrix, [p.pos.x, p.pos.y, p.pos.z]);
+	setMatrixUniforms();
 }
 
 function tick(){
@@ -356,10 +346,36 @@ function webGLStart()
 }
 
 var p = new Player();
-var v = new Vector3(0,0,0);
 var time = 0;
-var recording = new Record();
-var playing = new Record();
+var turn = 0;
+var recs = new Array();
+recs[turn] = new Record();
+var clones = new Array();
+
+function endTurn(){
+	turn++;
+	time = 0;
+	resetPlayheads();
+	p = new Player();
+	recs[turn] = new Record();
+	clones[turn-1]=new Player();
+}
+
+function resetPlayheads(){
+	for(var i = 0; i < turn; i++){
+		recs[i].resetP();
+	}
+}
+
+function updateClones(){
+	for(var i = 0; i < turn; i++){
+		var cDead = clones[i].dead;
+		var cPos = clones[i].pos;
+		clones[i] = recs[i].playNextSlice();
+		clones[i].dead = cDead;
+		clones[i].pos = cPos;
+	}
+}
 
 function initGame()
 {
@@ -384,7 +400,7 @@ function handleKeyUp(evt) {
 }
 </script>
 </head>
-<body onload="initGame();">
+<body onload="initGame()">
 <canvas id="canvas" style="border: none;" width="500" height="500"></canvas>
 <div id="debug"></div>
 </body>
