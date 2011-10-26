@@ -102,22 +102,16 @@
 			  
 		      break;
           case KEY_LEFT_ARROW :
-              //Debug.Trace("left");
-              //MainPlayer.Velocity.X -= 0.02;
-              KEY_LEFT_ARROW_PRESSED = true;
+              MainPlayer.mLeft = true;              
               break;    
           case KEY_UP_ARROW :
-              //Debug.Trace("up");
-              if(GameState == STATE_PLAYING && MainPlayer.OnGround)
-                MainPlayer.Jump();
+              MainPlayer.mForward = true;              
               break;    
           case KEY_RIGHT_ARROW :
-              //Debug.Trace("right");
-              //MainPlayer.Velocity.X += 0.02;
-              KEY_RIGHT_ARROW_PRESSED = true;
+              MainPlayer.mRight = true;
               break;    
           case KEY_DOWN_ARROW :
-              //Debug.Trace("down");
+              MainPlayer.mBackward = true;
               break;    
        }
     }
@@ -140,18 +134,16 @@
       switch(Unicode ) 
       {
           case KEY_LEFT_ARROW :
-              Debug.Trace("left arrow up");
-              KEY_LEFT_ARROW_PRESSED = false;
+              MainPlayer.mLeft = false;              
               break;    
           case KEY_UP_ARROW :
-              Debug.Trace("up arrow up");
+              MainPlayer.mForward = false;              
               break;    
           case KEY_RIGHT_ARROW :
-              Debug.Trace("right arrow up");
-              KEY_RIGHT_ARROW_PRESSED = false;
+              MainPlayer.mRight = false;
               break;    
           case KEY_DOWN_ARROW :
-              Debug.Trace("down arrow up");
+              MainPlayer.mBackward = false;
               break;    
        }
     }

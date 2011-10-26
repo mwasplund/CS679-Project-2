@@ -19,6 +19,7 @@ function Vector3(a,b,c){
 
 function Player(){
 	this.pos = new Vector3(0,0,0);
+	this.lookat = vec3.create([0,0,0]);
 	this.mForward = false;
 	this.mBackward = false;
 	this.mLeft = false;
@@ -36,6 +37,18 @@ function Player(){
 		dup.jump = this.jump;
 		dup.dead = this.dead;
 		return dup;
+	}
+	
+	this.Update = function(){
+	  var PosChanged = false;
+	  if(this.mLeft)     {this.pos.x += 0.5; PosChanged = true;}
+ 		if(this.mRight)    {this.pos.x -= 0.5; PosChanged = true;}
+ 		if(this.mForward)  {this.pos.z += 0.5; PosChanged = true;}
+ 		if(this.mBackward) {this.pos.z -= 0.5; PosChanged = true;}
+ 		
+ 		// Set the Lookat to right in front of the player's eyes
+ 		if(PosChanged)
+ 		  vec3.add(this.lookat, [0, 0, 1]);
 	}
 }
 

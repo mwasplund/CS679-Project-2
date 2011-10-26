@@ -6,7 +6,7 @@ window.addEventListener("load", WindowLoaded, false);
 LoadjsFile("Model/Model.js");
 LoadjsFile("Events.js");
 LoadjsFile("Shader/GLSL_Shader.js");
-LoadjsFile("Player.js");
+LoadjsFile("timeExample/Player.js");
 LoadjsFile("glMatrix.js");
 LoadjsFile("Debug.js");
 
@@ -30,14 +30,9 @@ var mvMatrixStack = [];
 var lastTime = 0;
 var Time = 0;
 var Light0_Enabled = true;
-var Camera_LookAt = [0,0,0];
-var Camera_Position = [
-          0.0,
-          0.0,
-          50.0
-      ];
+var MainPlayer;
 var Up = [0,1,0];
-
+var CurrentShader
 
 /******************************************************/
 /* InitializeWebGL
@@ -61,7 +56,7 @@ function InitializeWebGL()
   gl.viewportWidth  = Canvas.width;
   gl.viewportHeight = Canvas.height;
   
-  gl.clearColor(clearColor[0], clearColor[1], clearColor[2] , 1.0);
+  gl.clearColor(ClearColor[0], ClearColor[1], ClearColor[2] , 1.0);
   gl.enable(gl.DEPTH_TEST);
   gl.depthFunc(gl.LESS);
   
@@ -108,6 +103,7 @@ function WindowLoaded()
   UpdateWindowSize();
   
   // Load the models
+  MainPlayer = new Player();
   InitializeModels();
  
   // Set initial time
@@ -186,8 +182,7 @@ function GameLoop()
   var DeltaMiliSec = CurTime - PrevTime;
   PrevTime = CurTime;
   
-  //Update(DeltaMiliSec);
-  animate();
+  Update(DeltaMiliSec);
   Draw();
   
   if(DEBUG)
@@ -279,13 +274,16 @@ function mvPopMatrix()
 /*
 /* Animate the test model... This should be removed...
 /******************************************************/
-function animate() 
+function Update() 
 {
     var timeNow = new Date().getTime();
     if (lastTime != 0) 
     {
         var elapsed = timeNow - lastTime;
         Time += elapsed / 1000.0;
+        
+        MainPlayer.Update();
+
     }
     lastTime = timeNow;
 }
@@ -314,7 +312,7 @@ function Draw()
       );
 
       
-      gl.uniform3fv(CurrentShader.Program.Light0_Position_Uniform, Camera_Position);
+      gl.uniform3fv(CurrentShader.Program.Light0_Position_Uniform, [0, 0, 100]);
 
       gl.uniform3f(
           CurrentShader.Program.DiffuseColor_Uniform,
@@ -344,15 +342,15 @@ function Draw()
 	//mat4.identity(mvMatrix);
 	
 	// Setup the camera
-	$("#CameraPos_X").val(Camera_Position[0]);
-	$("#CameraPos_Y").val(Camera_Position[1]);
-	$("#CameraPos_Z").val(Camera_Position[2]);
-	gl.uniform3fv(CurrentShader.Program.Camera_Position_Uniform, Camera_Position);
+	$("#CameraPos_X").val(MainPlayer.pos.x);
+	$("#CameraPos_Y").val(MainPlayer.pos.y);
+	$("#CameraPos_Z").val(MainPlayer.pos.z);
+	gl.uniform3fv(CurrentShader.Program.Camera_Position_Uniform, [MainPlayer.pos.x, MainPlayer.pos.y, MainPlayer.pos.z]);
 	//mat4.translate(mvMatrix, [-Camera_Position[0], -Camera_Position[1], -Camera_Position[2]]);
-	mat4.lookAt(Camera_Position, Camera_LookAt, Up, mvMatrix);
+	mat4.lookAt([MainPlayer.pos.x, MainPlayer.pos.y, MainPlayer.pos.z], MainPlayer.lookat, Up, mvMatrix);
 	
 	mvPushMatrix();
-	mat4.rotate(mvMatrix, degToRad(rCube), [1, 1, 1]);
+	//mat4.rotate(mvMatrix, degToRad(rCube), [1, 1, 1]);
 	TestModel.Draw();
 	mvPopMatrix();
 }
