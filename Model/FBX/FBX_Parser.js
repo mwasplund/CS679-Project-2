@@ -216,16 +216,15 @@ function FBX_FileContainer(i_File)
   for(var i = 0; i < i_File.length; i++)
   {
     if((i_File[i] == "\n") || // Windows NewLine
-       (i_File[i] == "\r" && i+1 < i_File.length && i_File[i+1] == "\n")) // Linux NewLine
+       (i_File[i] == "\r" && ++i < i_File.length && i_File[i] == "\n")) // Linux NewLine
     {
       var Tokens = FBX_Parser_ParseLine(Line);
       // Don't add empty lines or lines that are comments
-      if(Tokens.length > 0 && Tokens[0][0] != ';')
+      if(Tokens.length > 0 && Tokens[0][0] != ";")
       {
         this.Lines.push(Tokens);
       }
 
-      i++;
       Line = "";
     }
     else
