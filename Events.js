@@ -11,7 +11,7 @@
   function MouseDown(e)
   {
     MousePressed = true;
-	MousePos = getMousePosition(e);
+	  MousePos = getMousePosition(e);
     Debug.Trace("Mouse Down");
   }
   
@@ -30,8 +30,8 @@
 		var Delta = new Point(NewMousePos.X - MousePos.X, NewMousePos.Y - MousePos.Y);
 		
 		
-		Camera_Position[0] -= Delta.X / 500;
-		Camera_Position[1] += Delta.Y / 500;
+		//Camera_Position[0] -= Delta.X / 500;
+		//Camera_Position[1] += Delta.Y / 500;
 		MousePos = NewMousePos;
     }
   }
@@ -48,6 +48,10 @@
   }
   
   
+  var KEY_A = 65;
+  var KEY_S = 83;
+  var KEY_D = 68;
+  var KEY_W = 87;
   
   var KEY_SPACEBAR    = 32;
   var KEY_LEFT_ARROW  = 37;
@@ -101,17 +105,29 @@
           }
 			  
 		      break;
-          case KEY_LEFT_ARROW :
+		      case KEY_A :
               MainPlayer.mLeft = true;              
               break;    
-          case KEY_UP_ARROW :
+          case KEY_W :
               MainPlayer.mForward = true;              
               break;    
-          case KEY_RIGHT_ARROW :
+          case KEY_D :
               MainPlayer.mRight = true;
               break;    
-          case KEY_DOWN_ARROW :
+          case KEY_S :
               MainPlayer.mBackward = true;
+              break;    
+          case KEY_LEFT_ARROW :
+              MainPlayer.rLeft = true;              
+              break;    
+          case KEY_UP_ARROW :
+              MainPlayer.rUp = true;              
+              break;    
+          case KEY_RIGHT_ARROW :
+              MainPlayer.rRight = true;
+              break;    
+          case KEY_DOWN_ARROW :
+              MainPlayer.rDown = true;
               break;    
        }
     }
@@ -133,17 +149,29 @@
       
       switch(Unicode ) 
       {
-          case KEY_LEFT_ARROW :
+        case KEY_A :
               MainPlayer.mLeft = false;              
               break;    
-          case KEY_UP_ARROW :
+          case KEY_W :
               MainPlayer.mForward = false;              
               break;    
-          case KEY_RIGHT_ARROW :
+          case KEY_D :
               MainPlayer.mRight = false;
               break;    
-          case KEY_DOWN_ARROW :
+          case KEY_S :
               MainPlayer.mBackward = false;
+              break;    
+          case KEY_LEFT_ARROW :
+              MainPlayer.rLeft = false;              
+              break;    
+          case KEY_UP_ARROW :
+              MainPlayer.rUp = false;              
+              break;    
+          case KEY_RIGHT_ARROW :
+              MainPlayer.rRight = false;
+              break;    
+          case KEY_DOWN_ARROW :
+              MainPlayer.rDown = false;
               break;    
        }
     }

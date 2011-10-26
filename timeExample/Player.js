@@ -1,3 +1,7 @@
+// Constants
+var Player_MoveSpeed = 0.5;
+var Player_RotateSpeed = 2.5;
+
 function Vector3(a,b,c){
 	this.x;
 	this.y;
@@ -18,8 +22,17 @@ function Vector3(a,b,c){
 }
 
 function Player(){
-	this.pos = new Vector3(0,0,0);
-	this.lookat = vec3.create([0,0,0]);
+	this.pos = vec3.create([0,0,0]);
+	this.lookat = vec3.create([0,0,1]);
+	this.dir = vec3.create([0, 0, 1]);
+	this.dir_Up = vec3.create([0,1,0]);
+	this.pos_Up = vec3.create([0,1,0]);
+	this.yaw = 0;
+	this.pitch = 0;
+	this.rRight = false;
+	this.rLeft = false;
+	this.rUp = false;
+	this.rDown = false;
 	this.mForward = false;
 	this.mBackward = false;
 	this.mLeft = false;
@@ -40,15 +53,78 @@ function Player(){
 	}
 	
 	this.Update = function(){
-	  var PosChanged = false;
-	  if(this.mLeft)     {this.pos.x += 0.5; PosChanged = true;}
- 		if(this.mRight)    {this.pos.x -= 0.5; PosChanged = true;}
- 		if(this.mForward)  {this.pos.z += 0.5; PosChanged = true;}
- 		if(this.mBackward) {this.pos.z -= 0.5; PosChanged = true;}
+	  var Changed = false;
+	  if(this.mLeft)     
+	  {
+	    // Caluculate Direction forward
+	    vec3.direction(this.pos, this.lookat, this.dir);
+	    
+	    // Calculate the Direction Up
+	    vec3.add(this.pos, [0,1,0], this.pos_Up);
+	    vec3.direction(this.pos_Up, this.pos, this.dir_Up)
+	    
+	    // Calculate direction right
+	    vec3.cross(this.dir_Up, this.dir, this.dir);
+	    
+	    // Move in direction
+	    vec3.scale(this.dir, Player_MoveSpeed);
+	    vec3.subtract(this.pos, this.dir)
+	    Changed = true;
+	  }
+ 		if(this.mRight)     
+	  {
+	    // Caluculate Direction forward
+	    vec3.direction(this.pos, this.lookat, this.dir);
+	    
+	    // Calculate the Direction Up
+	    vec3.add(this.pos, [0,1,0], this.pos_Up);
+	    vec3.direction(this.pos_Up, this.pos, this.dir_Up)
+	    
+	    // Calculate direction right
+	    vec3.cross(this.dir_Up, this.dir, this.dir);
+	    
+	    // Move in direction
+	    vec3.scale(this.dir, Player_MoveSpeed);
+	    vec3.add(this.pos, this.dir)
+	    Changed = true;
+	  }
+    if(this.mForward)     
+	  {
+	    vec3.direction(this.lookat, this.pos, this.dir);
+	    vec3.scale(this.dir, Player_MoveSpeed);
+	    vec3.add(this.pos, this.dir)
+	    Changed = true;
+	  }
+    if(this.mBackward)     
+	  {
+	    vec3.direction(this.lookat, this.pos, this.dir);
+	    vec3.scale(this.dir, Player_MoveSpeed);
+	    vec3.subtract(this.pos, this.dir)
+	    Changed = true;
+	  }
+ 		
+ 		if(this.rRight) 
+ 		{
+ 		  this.yaw += Player_RotateSpeed;
+ 		  Changed = true;
+ 		  if(this.yaw > 360.0)
+ 		    this.yaw -= 360.0;
+ 		}
+ 		if(this.rLeft) 
+ 		{
+ 		  this.yaw -= Player_RotateSpeed;
+ 		  Changed = true;
+ 		  if(this.yaw < 0.0)
+ 		    this.yaw += 360.0;
+ 		}
+
  		
  		// Set the Lookat to right in front of the player's eyes
- 		if(PosChanged)
- 		  vec3.add(this.lookat, [0, 0, 1]);
+ 		if(Changed)
+ 		{
+ 		  var Percent_Yaw =  -degToRad(this.yaw);
+ 		  vec3.add(this.pos, [Math.sin(Percent_Yaw), 0, Math.cos(Percent_Yaw)], this.lookat);
+ 		}
 	}
 }
 

@@ -342,12 +342,14 @@ function Draw()
 	//mat4.identity(mvMatrix);
 	
 	// Setup the camera
-	$("#CameraPos_X").val(MainPlayer.pos.x);
-	$("#CameraPos_Y").val(MainPlayer.pos.y);
-	$("#CameraPos_Z").val(MainPlayer.pos.z);
-	gl.uniform3fv(CurrentShader.Program.Camera_Position_Uniform, [MainPlayer.pos.x, MainPlayer.pos.y, MainPlayer.pos.z]);
+	$("#CameraPos_X").val(MainPlayer.pos[0]);
+	$("#CameraPos_Y").val(MainPlayer.pos[1]);
+	$("#CameraPos_Z").val(MainPlayer.pos[2]);
+	$("#CameraPos_Yaw").val(MainPlayer.yaw);
+	$("#CameraPos_Pitch").val(MainPlayer.pitch);
+	gl.uniform3fv(CurrentShader.Program.Camera_Position_Uniform, MainPlayer.pos);
 	//mat4.translate(mvMatrix, [-Camera_Position[0], -Camera_Position[1], -Camera_Position[2]]);
-	mat4.lookAt([MainPlayer.pos.x, MainPlayer.pos.y, MainPlayer.pos.z], MainPlayer.lookat, Up, mvMatrix);
+	mat4.lookAt(MainPlayer.pos, MainPlayer.lookat, Up, mvMatrix);
 	
 	mvPushMatrix();
 	//mat4.rotate(mvMatrix, degToRad(rCube), [1, 1, 1]);
