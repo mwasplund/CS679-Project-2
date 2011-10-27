@@ -11,7 +11,7 @@
   function MouseDown(e)
   {
     MousePressed = true;
-	MousePos = getMousePosition(e);
+	  MousePos = getMousePosition(e);
     Debug.Trace("Mouse Down");
   }
   
@@ -30,8 +30,8 @@
 		var Delta = new Point(NewMousePos.X - MousePos.X, NewMousePos.Y - MousePos.Y);
 		
 		
-		Camera_Position[0] -= Delta.X / 500;
-		Camera_Position[1] += Delta.Y / 500;
+		//Camera_Position[0] -= Delta.X / 500;
+		//Camera_Position[1] += Delta.Y / 500;
 		MousePos = NewMousePos;
     }
   }
@@ -48,6 +48,10 @@
   }
   
   
+  var KEY_A = 65;
+  var KEY_S = 83;
+  var KEY_D = 68;
+  var KEY_W = 87;
   
   var KEY_SPACEBAR    = 32;
   var KEY_LEFT_ARROW  = 37;
@@ -101,23 +105,29 @@
           }
 			  
 		      break;
+		      case KEY_A :
+              MainPlayer.mLeft = true;              
+              break;    
+          case KEY_W :
+              MainPlayer.mForward = true;              
+              break;    
+          case KEY_D :
+              MainPlayer.mRight = true;
+              break;    
+          case KEY_S :
+              MainPlayer.mBackward = true;
+              break;    
           case KEY_LEFT_ARROW :
-              //Debug.Trace("left");
-              //MainPlayer.Velocity.X -= 0.02;
-              KEY_LEFT_ARROW_PRESSED = true;
+              MainPlayer.rLeft = true;              
               break;    
           case KEY_UP_ARROW :
-              //Debug.Trace("up");
-              if(GameState == STATE_PLAYING && MainPlayer.OnGround)
-                MainPlayer.Jump();
+              MainPlayer.rUp = true;              
               break;    
           case KEY_RIGHT_ARROW :
-              //Debug.Trace("right");
-              //MainPlayer.Velocity.X += 0.02;
-              KEY_RIGHT_ARROW_PRESSED = true;
+              MainPlayer.rRight = true;
               break;    
           case KEY_DOWN_ARROW :
-              //Debug.Trace("down");
+              MainPlayer.rDown = true;
               break;    
        }
     }
@@ -139,19 +149,29 @@
       
       switch(Unicode ) 
       {
+        case KEY_A :
+              MainPlayer.mLeft = false;              
+              break;    
+          case KEY_W :
+              MainPlayer.mForward = false;              
+              break;    
+          case KEY_D :
+              MainPlayer.mRight = false;
+              break;    
+          case KEY_S :
+              MainPlayer.mBackward = false;
+              break;    
           case KEY_LEFT_ARROW :
-              Debug.Trace("left arrow up");
-              KEY_LEFT_ARROW_PRESSED = false;
+              MainPlayer.rLeft = false;              
               break;    
           case KEY_UP_ARROW :
-              Debug.Trace("up arrow up");
+              MainPlayer.rUp = false;              
               break;    
           case KEY_RIGHT_ARROW :
-              Debug.Trace("right arrow up");
-              KEY_RIGHT_ARROW_PRESSED = false;
+              MainPlayer.rRight = false;
               break;    
           case KEY_DOWN_ARROW :
-              Debug.Trace("down arrow up");
+              MainPlayer.rDown = false;
               break;    
        }
     }

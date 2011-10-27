@@ -1,37 +1,53 @@
-﻿window.addEventListener("load", WindowLoaded, false);
+﻿/******************************************************/
+/* Attach load event and load the needed Javascript 
+/* files.
+/******************************************************/
+window.addEventListener("load", WindowLoaded, false);
 LoadjsFile("Model/Model.js");
-LoadjsFile("Model/Vector3D.js");
-LoadjsFile("Helper.js");
 LoadjsFile("Events.js");
 LoadjsFile("Shader/GLSL_Shader.js");
-LoadjsFile("Player.js");
-LoadjsFile("Model/glMatrix-0.9.5.min.js");
 LoadjsFile("Model/Level.js");
 LoadjsFile("Model/Layout.js");
+LoadjsFile("timeExample/Player.js");
+LoadjsFile("glMatrix.js");
+LoadjsFile("Debug.js");
 
+/******************************************************/
+/* Global Variables
+/******************************************************/
 var gl;
 var Height
 var Width;
 var Canvas;
+var Timer;
+var PrevTime;
+var DEBUG = false;
+var TestModel;
+var ClearColor = [0.0, 0.0, 0.0];
+var Models = new Array();
+var Shaders = new Array();
+var mvMatrix;
+var pMatrix;
+var mvMatrixStack = [];
+var lastTime = 0;
+var Time = 0;
+var Light0_Enabled = true;
+var MainPlayer;
+var Up = [0,1,0];
+var CurrentShader
+var TestLevel;
 
-function LoadjsFile(i_FilePath)
-{
-  var FileRef = document.createElement('script')
-  FileRef.setAttribute("type","text/javascript")
-  FileRef.setAttribute("src", i_FilePath)
-  
-  if (typeof FileRef!= "undefined")
-    document.getElementsByTagName("head")[0].appendChild(FileRef)
-}
-
-
+/******************************************************/
+/* InitializeWebGL
+/*
+/* Initialize Web GL
+/******************************************************/
 function InitializeWebGL()
 {
   // Initialize
   Debug.Trace("Initializing WebGL...");
   
-  gl = Canvas.getContext("webgl"); // Webgl
-
+  gl = Canvas.getContext("webgl"); // Completed Webgl
   if(!gl)
     gl = Canvas.getContext("experimental-webgl"); // Development
   if(!gl)
@@ -39,10 +55,11 @@ function InitializeWebGL()
   if(!gl)got 
     gl = Canvas.getContext("webkit-3d"); // Safari or Chrome
     
+  // Set the viewport to the same size as the Canvas
   gl.viewportWidth  = Canvas.width;
   gl.viewportHeight = Canvas.height;
   
-  gl.clearColor(0.0, 0.0, 0.0, 1.0);
+  gl.clearColor(ClearColor[0], ClearColor[1], ClearColor[2] , 1.0);
   gl.enable(gl.DEPTH_TEST);
   gl.depthFunc(gl.LESS);
   
@@ -53,12 +70,19 @@ function InitializeWebGL()
   InitializeBuffers();
 }
 
+/******************************************************/
+/* WindowLoaded
+/*
+/* This function is attached to the Window Loaded event
+/* and is where we initialize our variables and then 
+/* start the game loop
+/******************************************************/
 function WindowLoaded()
 {
-  // EXECUTION START
+  // Check if the Canvas is supported
   if(!CanvasSupported())
   {
-    Debug.Trace("Canvas is not supported.");
+    Debug.Trace("ERROR: Html5 Canvas is not supported.");
     return;
   } 
   
@@ -69,17 +93,20 @@ function WindowLoaded()
   }
   catch(e)
   {
+    Debug.Trace(e);
   }
   
   if(!gl)
   {
-    alert("Could Not Initialize WebGL!");
+    alert("ERROR: Could Not Initialize WebGL!");
+    return;
   }
   
+  // Check window size initially
   UpdateWindowSize();
   
   // Load the models
-  Debug.Trace("Start");
+  MainPlayer = new Player();
   InitializeModels();
   
   //Load levels
@@ -91,86 +118,77 @@ function WindowLoaded()
 
   // Start the gameloop
   GameLoop();
-  
   checkGLError();
 }
 
+/******************************************************/
+/* UpdateWindowSize
+/*
+/* This function checks the windows current size and
+/* makes sure that the Canvas fills the entire window, 
+/* it then makes sure that the Viewport size is the same 
+/* as the Canvas.
+/******************************************************/
 function UpdateWindowSize()
 {
   var WindowSize = GetWindowSize();
-  Debug.Trace("Window Resized ("+ WindowSize.X +", "+ WindowSize.Y +")");
+  //Debug.Trace("Window Resized ("+ WindowSize.X +", "+ WindowSize.Y +")");
+  // Only update the sizes if they are larget than zero
   if(WindowSize.X != 0 && WindowSize.Y != 0)
   {
+    // Update the canvas size
     Canvas.width = WindowSize.X;
+    Canvas.height = WindowSize.Y;
     
-    // It the window is too short then limit the canvas
-    //if(WindowSize.Y < 700)
-      Canvas.height = WindowSize.Y;
-    //else
-    //  Canvas.height = 700;
-
+    // Save the Canvas size
     Width  = Canvas.width;
     Height = Canvas.height;
     
+    // Update the Vieport to match the size of the canvas
     gl.viewportWidth  = Canvas.width;
     gl.viewportHeight = Canvas.height;
   }
 }
 
-
+/******************************************************/
+/* InitializeCanvas
+/*
+/* This function initializes the canvas by attaching all
+/* the event listeners
+/******************************************************/
 function InitializeCanvas()
 {
-    // Attach event listeners
-    window.addEventListener('resize', WindowResized, false);
-    document.addEventListener('keydown', KeyDown, false);
-    document.addEventListener('keyup', KeyUp, false);
-    
-    Canvas = document.getElementById("CanvasOne");
-    Canvas.addEventListener('mousedown', MouseDown, false);
-    Canvas.addEventListener('mouseup', MouseUp, false);
-    Canvas.addEventListener('mousemove', MouseMove, false);
-    Canvas.addEventListener('mouseout', MouseOut, false);
-    Canvas.addEventListener('click', MouseClick, false);
-	Canvas.addEventListener('DOMMouseScroll', MouseWheel, false);
-  }
-
-var Debug = function() {};
-Debug.Trace = function(i_Message)
-{
-  try
-  {
-    console.log(i_Message);
-  }
-  catch(e)
-  {
-    return;
-  }
+  // Attach event listeners
+  window.addEventListener('resize', WindowResized, false);
+  document.addEventListener('keydown', KeyDown, false);
+  document.addEventListener('keyup', KeyUp, false);
+  
+  Canvas = document.getElementById("CanvasOne");
+  Canvas.addEventListener('mousedown', MouseDown, false);
+  Canvas.addEventListener('mouseup', MouseUp, false);
+  Canvas.addEventListener('mousemove', MouseMove, false);
+  Canvas.addEventListener('mouseout', MouseOut, false);
+  Canvas.addEventListener('click', MouseClick, false);
+  Canvas.addEventListener('DOMMouseScroll', MouseWheel, false);
 }
 
-
-function CanvasSupported()
-{
-  return !document.createElement('TestCanvas').getContext;
-}
-
-var Timer;
-var PrevTime;
-var DEBUG = false;
-
-var TestModel;
-
-var TestLevel;
-
+/******************************************************/
+/* GameLoop
+/*
+/* This function is called every Frame and then updates
+/* all the game objects and then draws them. It then
+/* sets a timer so the function will call itself in 
+/* another 60th of a second
+/******************************************************/
 function GameLoop()
 {
-  //Timer = setTimeout("GameLoop()", 1/30 * 1000);
+  Timer = setTimeout("GameLoop()", 1/30 * 1000);
   var CurDate = new Date();
   var CurTime = CurDate.getTime();
   var DeltaMiliSec = CurTime - PrevTime;
   PrevTime = CurTime;
   
-  //Update(DeltaMiliSec);
-  animate();
+  Update(DeltaMiliSec);
   Draw();
   
   if(DEBUG)
@@ -182,63 +200,15 @@ function GameLoop()
     Context.fillText("CURRENT POS.X = " + Math.round(CurrentPosition), 20, 60); 
   }
   
-  Timer = setTimeout("GameLoop()", 1/30 * 1000);
-
+  // Timer = setTimeout("GameLoop()", 1/30 * 1000);
 }
  
-var ClearColor = [0.0, 0.0, 0.0];
-function SetClearColor_Red(i_Value)
-{
-  Debug.Trace("Set Clear Color Red");
-  if(!isNaN(i_Value))
-  {
-    // Limit the value to 0.0 to 1.0
-    if(i_Value > 1.0)  
-      ClearColor[0] = 1.0;
-    else if(i_Value < 0.0)
-      ClearColor[0] = 0.0;
-    else 
-      ClearColor[0] = i_Value;
-      
-    gl.clearColor(ClearColor[0], ClearColor[1], ClearColor[2], 1.0);
-  }
-}
- 
-function SetClearColor_Blue(i_Value)
-{
-  Debug.Trace("Set Clear Color Blue");
-  if(!isNaN(i_Value))
-  {
-    // Limit the value to 0.0 to 1.0
-    if(i_Value > 1.0)  
-      ClearColor[1] = 1.0;
-    else if(i_Value < 0.0)
-      ClearColor[1] = 0.0;
-    else 
-      ClearColor[1] = i_Value;
-      
-    gl.clearColor(ClearColor[0], ClearColor[1], ClearColor[2], 1.0);
-  }
-}
-
-function SetClearColor_Green(i_Value)
-{
-  Debug.Trace("Set Clear Color Green");
-  if(!isNaN(i_Value))
-  {
-    // Limit the value to 0.0 to 1.0
-    if(i_Value > 1.0)  
-      ClearColor[2] = 1.0;
-    else if(i_Value < 0.0)
-      ClearColor[2] = 0.0;
-    else 
-      ClearColor[2] = i_Value;
-      
-    gl.clearColor(ClearColor[0], ClearColor[1], ClearColor[2], 1.0);
-  }
-}
- 
-var Models = new Array();
+/******************************************************/
+/* InitializeModels
+/*
+/* This function Loads all the models that will be used 
+/* during the time of the game
+/******************************************************/
 function InitializeModels() 
 {
     Models.push(new Model("Brick_Block"));
@@ -248,19 +218,6 @@ function InitializeModels()
     Models.push(new Model("Sword"));
     Models.push(new Model("Human"));
     TestModel = Models[0];
-}
-
-function SelectModel(i_ModelName)
-{
-	Debug.Trace("Select Model " + i_ModelName);
-	for(var i = 0; i < Models.length; i++)
-	{
-		if(Models[i].Name == i_ModelName)
-		{
-			TestModel = Models[i];
-			return;
-		}
-	}
 }
 
 //Xixi, enable levels
@@ -275,7 +232,6 @@ function InitializeLevels()
 
 function SelectLevel(i_LevelName)
 {
-	
 	for(var k = 0; k < 2; k++)
 	{
 		if(Levels[k].Name == i_LevelName)
@@ -291,7 +247,13 @@ function SelectLevel(i_LevelName)
 }
 //End of levels
 
-var Shaders = new Array();
+
+/******************************************************/
+/* InitializeShaders
+/*
+/* This function Loads all the shaders that will be used 
+/* during the time of the game.
+/******************************************************/
 function InitializeShaders() 
 {
     Shaders.push(LoadShader("PerFragmentLighting"));
@@ -300,24 +262,12 @@ function InitializeShaders()
     CurrentShader = Shaders[0];
 }
 
-
-function SelectShader(i_ShaderName)
-{
-	Debug.Trace("Select Shader " + i_ShaderName);
-	for(var i = 0; i < Shaders.length; i++)
-	{
-		if(Shaders[i].Name == i_ShaderName)
-		{
-			CurrentShader = Shaders[i];
-			return;
-		}
-	}
-}
-
-var mvMatrix;
-var pMatrix;
-var mvMatrixStack = [];
-
+/******************************************************/
+/* setMatrixUniforms
+/*
+/* This function binds the Matrixs used by the shader 
+/* programs.
+/******************************************************/
 function setMatrixUniforms() 
 {
     gl.uniformMatrix4fv(CurrentShader.Program.pMatrixUniform, false, pMatrix);
@@ -329,6 +279,11 @@ function setMatrixUniforms()
     gl.uniformMatrix3fv(CurrentShader.Program.nMatrixUniform, false, normalMatrix);
 }
 
+/******************************************************/
+/* mvPushMatrix
+/*
+/* Save the current model view matrix.
+/******************************************************/
 function mvPushMatrix() 
 {
     var copy = mat4.create();
@@ -336,6 +291,11 @@ function mvPushMatrix()
     mvMatrixStack.push(copy);
 }
 
+/******************************************************/
+/* mvPopMatrix
+/*
+/* load the previously saved model view matrix.
+/******************************************************/
 function mvPopMatrix() 
 {
     if (mvMatrixStack.length == 0) 
@@ -343,34 +303,31 @@ function mvPopMatrix()
     mvMatrix = mvMatrixStack.pop();
 }
     
-var rPyramid = 0;
-var rCube = 0;
-var lastTime = 0;
-var Time = 0;
-function animate() 
+/******************************************************/
+/* animate
+/*
+/* Animate the test model... This should be removed...
+/******************************************************/
+function Update() 
 {
     var timeNow = new Date().getTime();
     if (lastTime != 0) 
     {
         var elapsed = timeNow - lastTime;
         Time += elapsed / 1000.0;
-        //rPyramid += (90 * elapsed) / 1000.0;
-        //rCube -= (40 * elapsed) / 1000.0;
+        
+        MainPlayer.Update();
+
     }
     lastTime = timeNow;
 }
 
-var Light0_Enabled = true;
-var Camera_LookAt = [0,0,0];
-var Camera_Position = [
-          0.0,
-          0.0,
-          50.0
-      ];
-var Up = [0,1,0];
 
-
-
+/******************************************************/
+/* Draw
+/*
+/* Draw the world
+/******************************************************/
 function Draw() 
 {
 	gl.useProgram(CurrentShader.Program);
@@ -390,7 +347,7 @@ function Draw()
       );
 
       
-      gl.uniform3fv(CurrentShader.Program.Light0_Position_Uniform, Camera_Position);
+      gl.uniform3fv(CurrentShader.Program.Light0_Position_Uniform, [0, 0, 100]);
 
       gl.uniform3f(
           CurrentShader.Program.DiffuseColor_Uniform,
@@ -420,14 +377,20 @@ function Draw()
 	//mat4.identity(mvMatrix);
 	
 	// Setup the camera
-	$("#CameraPos_X").val(Camera_Position[0]);
-	$("#CameraPos_Y").val(Camera_Position[1]);
-	$("#CameraPos_Z").val(Camera_Position[2]);
-	gl.uniform3fv(CurrentShader.Program.Camera_Position_Uniform, Camera_Position);
+	$("#CameraPos_X").val(MainPlayer.pos[0]);
+	$("#CameraPos_Y").val(MainPlayer.pos[1]);
+	$("#CameraPos_Z").val(MainPlayer.pos[2]);
+	$("#CameraPos_Yaw").val(MainPlayer.yaw);
+	$("#CameraPos_Pitch").val(MainPlayer.pitch);
+	gl.uniform3fv(CurrentShader.Program.Camera_Position_Uniform, MainPlayer.pos);
 	//mat4.translate(mvMatrix, [-Camera_Position[0], -Camera_Position[1], -Camera_Position[2]]);
-	mat4.lookAt(Camera_Position, Camera_LookAt, Up, mvMatrix);
+	mat4.lookAt(MainPlayer.pos, MainPlayer.lookat, Up, mvMatrix);
 	
 	//Debug.Trace(TestLevel.Name);
 	TestLevel.Draw();
 	
+	mvPushMatrix();
+	//mat4.rotate(mvMatrix, degToRad(rCube), [1, 1, 1]);
+	TestModel.Draw();
+	mvPopMatrix();
 }

@@ -1,27 +1,98 @@
- function getMousePosition(e) 
+/******************************************************/
+/* Helper.js
+/*
+/* Helper Functions that make using javascript easier
+/******************************************************/
+
+/******************************************************/
+/* Debug.Trace
+/*
+/* Helpful little global variable that makes printing 
+/* to the console easy.
+/******************************************************/
+var Debug = function() {};
+Debug.Trace = function(i_Message)
+{
+  try
   {
-    var x;
-    var y;
-    if (e.pageX != undefined && e.pageY != undefined) 
-    {
-      x = e.pageX;
-      y = e.pageY;
-    }
-    else 
-    {
-      x = e.clientX + document.body.scrollLeft +
-            document.documentElement.scrollLeft;
-      y = e.clientY + document.body.scrollTop +
-            document.documentElement.scrollTop;
-    }
-    
-    // Make the position in canvas space
-    x -= Canvas.offsetLeft;
-    y -= Canvas.offsetTop;
-    
-    return new Point(x, y);
+    console.log(i_Message);
+  }
+  catch(e)
+  {
+    return;
+  }
+}
+
+/******************************************************/
+/* CanvasSupported
+/*
+/* This function checks if the html canvas elent is 
+/* supported.
+/******************************************************/
+function CanvasSupported()
+{
+  return !document.createElement('TestCanvas').getContext;
+}
+
+/******************************************************/
+/* LoadjsFile
+/*
+/* Load a seperate Javascript file to be used on the 
+/* current page.
+/*
+/* i_FilePath - the location of the file to be loaded
+/******************************************************/
+function LoadjsFile(i_FilePath)
+{
+  var FileRef = document.createElement('script')
+  FileRef.setAttribute("type","text/javascript")
+  FileRef.setAttribute("src", i_FilePath)
+  
+  if (typeof FileRef!= "undefined")
+    document.getElementsByTagName("head")[0].appendChild(FileRef)
+}
+
+/******************************************************/
+/* getMousePosition
+/*
+/* Crossbrowser safe function that returns the current
+/* location of the mouse. It also converts the mouse's 
+/* absolute position in the page to a relative position
+/* to the upper left corner of the canvas
+/*
+/* e - pass in the mouse even to be used to find mouse
+/*     position
+/******************************************************/
+function getMousePosition(e) 
+{
+  var x;
+  var y;
+  if (e.pageX != undefined && e.pageY != undefined) 
+  {
+    x = e.pageX;
+    y = e.pageY;
+  }
+  else 
+  {
+    x = e.clientX + document.body.scrollLeft +
+          document.documentElement.scrollLeft;
+    y = e.clientY + document.body.scrollTop +
+          document.documentElement.scrollTop;
   }
   
+  // Make the position in canvas space
+  x -= Canvas.offsetLeft;
+  y -= Canvas.offsetTop;
+  
+  return new Point(x, y);
+}
+  
+/******************************************************/
+/* GetWindowSize
+/*
+/* Crossbrowser safe function that returns the current
+/* windows size.
+/******************************************************/
 function GetWindowSize()
 {
   var Size = new Point(0,0);
@@ -46,13 +117,23 @@ function GetWindowSize()
   return Size;
 }
 
-
+/******************************************************/
+/* Point
+/*
+/* A simple class that holds an X,Y Position.
+/******************************************************/
 function Point(i_X, i_Y) 
 {
     this.X = i_X;
     this.Y = i_Y;
 }
 
+/******************************************************/
+/* Color
+/*
+/* A simple class that holds a color's Red, Blue, Green
+/* and Alpha values.
+/******************************************************/
 function Color(i_R, i_B, i_G, i_A)
 {
   // Set the Red
@@ -91,6 +172,14 @@ function Color(i_R, i_B, i_G, i_A)
   this.GetRBGA = Color_GetRBGA;
 }
 
+
+/******************************************************/
+/* Color_GetHexString
+/*
+/* A function attached to the Color class that converts 
+/* the color to a Hexidecimal representation of the
+/* color with "#RRGGBB".
+/******************************************************/
 function Color_GetHexString()
 {
   var String_R = parseInt(this.R * 255, 10).toString(16);
@@ -107,6 +196,13 @@ function Color_GetHexString()
   return "#" + String_R + String_B + String_G;
 }
 
+/******************************************************/
+/* Color_GetRBGA
+/*
+/* A function attached to the Color class that converts 
+/* the color to a CSS representation of the
+/* color. "rgba(RR, BB, GG, AA)"
+/******************************************************/
 function Color_GetRBGA()
 {
   var String_R = parseInt(this.R * 255, 10).toString(16);
@@ -123,17 +219,28 @@ function Color_GetRBGA()
   return "rgba(" + String_R + ", " + String_B + ", " + String_G + ", " + this.A + ")";
 }
 
+/******************************************************/
+/* degToRad
+/*
+/* A function that converts an angle from degrees to 
+/* radians.
+/******************************************************/
 function degToRad(degrees) 
 {
-        return degrees * Math.PI / 180;
- }
+  return degrees * Math.PI / 180;
+}
 
+/******************************************************/
+/* checkGLError
+/*
+/* A function that checks for an error in gl
+/******************************************************/
 function checkGLError() 
 {
-    var error = gl.getError();
-    if (error != gl.NO_ERROR && error != gl.CONTEXT_LOST_WEBGL)
-    {
-        var str = "GL Error: " + error;
-        Debug.Trace(str);
-    }
+ var error = gl.getError();
+ if (error != gl.NO_ERROR && error != gl.CONTEXT_LOST_WEBGL)
+ {
+   var str = "GL Error: " + error;
+   Debug.Trace(str);
+ }
 }

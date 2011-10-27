@@ -964,7 +964,7 @@ a: 0
             P: "InheritType", "enum", "", "",1
             P: "ScalingMin", "Vector3D", "Vector", "",1,1,1
             P: "DefaultAttributeIndex", "int", "Integer", "",0
-            P: "Lcl Rotation", "Lcl Rotation", "", "A+",90.0000025044781,-0,0
+            P: "Lcl Rotation", "Lcl Rotation", "", "A+",90.0000025044781,180,0
             P: "Lcl Scaling", "Lcl Scaling", "", "A+",1,1,1
             P: "MaxHandle", "int", "Integer", "U",1
         }
