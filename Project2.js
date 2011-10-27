@@ -8,7 +8,7 @@ LoadjsFile("Events.js");
 LoadjsFile("Shader/GLSL_Shader.js");
 LoadjsFile("Model/Level.js");
 LoadjsFile("Model/Layout.js");
-LoadjsFile("timeExample/Player.js");
+LoadjsFile("Player.js");
 LoadjsFile("glMatrix.js");
 LoadjsFile("Debug.js");
 LoadjsFile("GameState.js");
@@ -167,6 +167,7 @@ function InitializeCanvas()
   window.addEventListener('resize', WindowResized, false);
   document.addEventListener('keydown', KeyDown, false);
   document.addEventListener('keyup', KeyUp, false);
+  document.addEventListener('keypress', KeyPress, false);
   
   Canvas = document.getElementById("CanvasOne");
   Canvas.addEventListener('mousedown', MouseDown, false);
@@ -201,11 +202,11 @@ function GameLoop()
   
   if(DEBUG)
   {
-    Context.fillStyle = "#FFFFFF";
-    var FPS = "FPS = " + Math.round(1000/DeltaMiliSec);
-    Context.fillText(FPS, 20, 20);
-    Context.fillText("DESIRED POS.X = " + Math.round(DesiredPosition), 20, 40);
-    Context.fillText("CURRENT POS.X = " + Math.round(CurrentPosition), 20, 60); 
+    //Context.fillStyle = "#FFFFFF";
+   // var FPS = "FPS = " + Math.round(1000/DeltaMiliSec);
+    //Context.fillText(FPS, 20, 20);
+   // Context.fillText("DESIRED POS.X = " + Math.round(DesiredPosition), 20, 40);
+   // Context.fillText("CURRENT POS.X = " + Math.round(CurrentPosition), 20, 60); 
   }
   
   // Timer = setTimeout("GameLoop()", 1/30 * 1000);

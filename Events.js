@@ -47,6 +47,7 @@
     UpdateWindowSize();
   }
   
+  var KEY_1 = 49;
   
   var KEY_A = 65;
   var KEY_S = 83;
@@ -177,12 +178,32 @@
     }
   }
 
-
-
   ///////////////////////////////////////////////////////////////////
-  // KeyUp
+  // KeyPress
   //
   // Listen for Keyboard events
+  ///////////////////////////////////////////////////////////////////
+  function KeyPress(e)
+  {
+    e = e ? e : ((window.event) ? event : null);
+    if(e) 
+    {
+      var Unicode = e.charCode? e.charCode : e.keyCode;
+      Debug.Trace("Key = " + Unicode);
+      
+      switch(Unicode) 
+      {
+        case KEY_1 :
+              SetDebugState(!DEBUG);             
+              break;    
+       }
+    }
+  }
+
+  ///////////////////////////////////////////////////////////////////
+  // MouseWheel
+  //
+  // Listen for Mouse events
   ///////////////////////////////////////////////////////////////////
   function MouseWheel(e)
   {

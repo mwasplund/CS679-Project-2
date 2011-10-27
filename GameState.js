@@ -14,5 +14,21 @@ var GAME_STATE =
 function SetGameState_Playing()
 {
   GameState = GAME_STATE.PLAYING;
-  $("#Menu_Start").hide("slow")
+  $("#Menu_Start").slideUp("slow")
+}
+
+function SetDebugState(i_Value)
+{
+  if(DEBUG != i_Value)
+  {
+	  DEBUG = i_Value;
+	  if(DEBUG)
+	  {
+		 $("#Menu_Debug").slideDown("slow");
+	  }
+	  else
+	  {
+		$("#Menu_Debug").slideUp("slow");
+	  }
+  }
 }

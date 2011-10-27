@@ -10,12 +10,12 @@ canvas#CanvasOne
 	left:0px;
 }
 
-div#Debug 
+div#Menu_Debug 
 {
 	/*background-color:#FFFFFF;
 	width:200px;
 	height:50px;*/
-	
+	display: none;
   position: absolute;
 	bottom: 0px;
 	left: 0px;
@@ -25,9 +25,9 @@ div#Debug
 
 div#Menu_Start 
 {
-	background-color: rgba(255, 255, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0.3);
   position: absolute;
-	top: 0px;
+  top: 0px;
 	left: 0px;
 	color: #000000;
 	width: 100%;
@@ -37,10 +37,11 @@ div#Menu_Start
 
 div.Center
 {
+  padding:10px;
+  position:Relative;
   margin: 100px auto 0px auto;
-  text-align: center;
-  width:200px;
-
+  width: 500px;
+  text-align:left;
   background-color: rgba(255, 255, 255, 1.0);
 }
 
