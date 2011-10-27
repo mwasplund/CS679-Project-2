@@ -12,6 +12,14 @@
 <body>
    <canvas id='CanvasOne' width='700' height='700'>Your browser does not support HTML5.</canvas>
    
+   <div id="Menu_Start">
+     <div class="Center">
+		 Welcome To Our Game!
+		 <br/>
+		 <input type="Button" onclick="SetGameState_Playing()" value="Start"/>
+	 </div>
+   </div>
+   
    <div id="Debug">
      Select Shader
    	<select id="SelectShader" onchange="SelectShader(this.options[this.selectedIndex].value)">
@@ -27,7 +35,8 @@
    		<option value="TestCube">TestCube</option>
    		<option value="Title">Title</option>
    		<option value="Sword">Sword</option>   
-   		<option value="Human">Human</option>   
+   		<option value="Human">Human</option>  
+        <option value="Pole_Swirly">Pole_Swirly</option>
    	</select>
    	<br/>
    	Clear Color: 

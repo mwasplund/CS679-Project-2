@@ -9,6 +9,7 @@ LoadjsFile("Shader/GLSL_Shader.js");
 LoadjsFile("timeExample/Player.js");
 LoadjsFile("glMatrix.js");
 LoadjsFile("Debug.js");
+LoadjsFile("GameState.js");
 
 /******************************************************/
 /* Global Variables
@@ -33,6 +34,7 @@ var Light0_Enabled = true;
 var MainPlayer;
 var Up = [0,1,0];
 var CurrentShader
+var GameState;
 
 /******************************************************/
 /* InitializeWebGL
@@ -111,6 +113,7 @@ function WindowLoaded()
   PrevTime = CurDate.getTime();
 
   // Start the gameloop
+  GameState = GAME_STATE.START;
   GameLoop();
   checkGLError();
 }
@@ -182,7 +185,10 @@ function GameLoop()
   var DeltaMiliSec = CurTime - PrevTime;
   PrevTime = CurTime;
   
-  Update(DeltaMiliSec);
+  if(GameState == GAME_STATE.PLAYING)
+  {
+	Update(DeltaMiliSec);
+  }
   Draw();
   
   if(DEBUG)
@@ -211,6 +217,7 @@ function InitializeModels()
     Models.push(new Model("Title"));
     Models.push(new Model("Sword"));
     Models.push(new Model("Human"));
+	Models.push(new Model("Pole_Swirly"));
     TestModel = Models[0];
 }
 

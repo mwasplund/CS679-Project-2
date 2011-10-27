@@ -3,7 +3,7 @@
   function MouseClick(e)
   {
     Debug.Trace("Mouse Click");
-	MousePos = getMousePosition(e);
+	//MousePos = getMousePosition(e);
   }
   
   var MousePressed = false;
@@ -12,13 +12,13 @@
   {
     MousePressed = true;
 	  MousePos = getMousePosition(e);
-    Debug.Trace("Mouse Down");
+    //Debug.Trace("Mouse Down");
   }
   
   function MouseUp(e)
   {
     MousePressed = false;
-    Debug.Trace("Mouse Up");
+    //Debug.Trace("Mouse Up");
   }
   
   function MouseMove(e)
@@ -29,7 +29,7 @@
 		var NewMousePos = getMousePosition(e);
 		var Delta = new Point(NewMousePos.X - MousePos.X, NewMousePos.Y - MousePos.Y);
 		
-		
+
 		//Camera_Position[0] -= Delta.X / 500;
 		//Camera_Position[1] += Delta.Y / 500;
 		MousePos = NewMousePos;
@@ -74,7 +74,7 @@
     if(e) 
     {
       var Unicode = e.charCode? e.charCode : e.keyCode;
-      Debug.Trace("Key = " + Unicode);
+      //Debug.Trace("Key = " + Unicode);
       
       switch(Unicode) 
       {
@@ -145,7 +145,7 @@
     if(e) 
     {
       var Unicode = e.charCode? e.charCode : e.keyCode;
-      Debug.Trace("Key = " + Unicode);
+      //Debug.Trace("Key = " + Unicode);
       
       switch(Unicode ) 
       {
