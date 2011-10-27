@@ -15,4 +15,8 @@ function Door(){
 		this.pos = pos;
 		this.dir = dir;
 	}
+
+	this.draw = function(){
+		gl.enable(gl.BLEND);
+	}
 }
