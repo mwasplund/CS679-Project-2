@@ -51,12 +51,16 @@ function Model_ParseFile(i_File)
   for(var i = 0; i < Parser.Models.length; i++)
   {
     var CurrentModel = Parser.Models[i];
+
 	// Ignore Models that failed to load and models that do not have geometry, i.e. Cameras
 	if(CurrentModel != null && CurrentModel.Geometry != null)
+	{
     	this.Meshes.push(new Mesh(CurrentModel));
+		
+	}
   }
-  
-  Debug.Trace("Model Parsed");
+
+ 
   this.Ready = true;
 }
 

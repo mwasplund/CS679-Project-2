@@ -5,9 +5,9 @@
 }
 canvas#CanvasOne 
 {
-  position:absolute;
-  top:0px;
-  left:0px;
+	position:absolute;
+	top:0px;
+	left:0px;
 }
 
 div#Debug 

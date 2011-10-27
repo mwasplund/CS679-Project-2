@@ -6,6 +6,8 @@ window.addEventListener("load", WindowLoaded, false);
 LoadjsFile("Model/Model.js");
 LoadjsFile("Events.js");
 LoadjsFile("Shader/GLSL_Shader.js");
+LoadjsFile("Model/Level.js");
+LoadjsFile("Model/Layout.js");
 LoadjsFile("timeExample/Player.js");
 LoadjsFile("glMatrix.js");
 LoadjsFile("Debug.js");
@@ -35,6 +37,7 @@ var MainPlayer;
 var Up = [0,1,0];
 var CurrentShader
 var GameState;
+var TestLevel;
 
 /******************************************************/
 /* InitializeWebGL
@@ -51,7 +54,7 @@ function InitializeWebGL()
     gl = Canvas.getContext("experimental-webgl"); // Development
   if(!gl)
     gl = Canvas.getContext("moz-webgl"); // Firefox
-  if(!gl)
+  if(!gl)got 
     gl = Canvas.getContext("webkit-3d"); // Safari or Chrome
     
   // Set the viewport to the same size as the Canvas
@@ -61,7 +64,9 @@ function InitializeWebGL()
   gl.clearColor(ClearColor[0], ClearColor[1], ClearColor[2] , 1.0);
   gl.enable(gl.DEPTH_TEST);
   gl.depthFunc(gl.LESS);
-  
+  gl.enable(gl.BLEND);
+  gl.blendFunc(gl.SRC_ALPHA, gl.ONE); 
+
   mvMatrix = mat4.create();
   pMatrix = mat4.create();
   
@@ -107,6 +112,9 @@ function WindowLoaded()
   // Load the models
   MainPlayer = new Player();
   InitializeModels();
+  
+  //Load levels
+  InitializeLevels();
  
   // Set initial time
   var CurDate = new Date();
@@ -221,6 +229,34 @@ function InitializeModels()
     TestModel = Models[0];
 }
 
+//Xixi, enable levels
+var Levels = new Array();
+function InitializeLevels() 
+{
+	Levels.push(new Level("0"));
+    Levels.push(new Level("1"));
+    Levels.push(new Level("2"));
+	TestLevel = Levels[0];
+}
+
+function SelectLevel(i_LevelName)
+{
+	for(var k = 0; k < 2; k++)
+	{
+		if(Levels[k].Name == i_LevelName)
+		{
+			TestLevel = Levels[k];
+			return;
+			Debug.Trace("TestLevel "+ TestLevel);
+			Debug.Trace("k" + k);
+		}
+	}
+	//Debug.Trace("TestLevel "+ TestLevel);
+	//Debug.Trace("k" + k);
+}
+//End of levels
+
+
 /******************************************************/
 /* InitializeShaders
 /*
@@ -232,6 +268,7 @@ function InitializeShaders()
     Shaders.push(LoadShader("PerFragmentLighting"));
     Shaders.push(LoadShader("PerVertexLighting"));
     Shaders.push(LoadShader("TimeTest"));
+    Shaders.push(LoadShader("InvisoShader"));
     CurrentShader = Shaders[0];
 }
 
@@ -295,6 +332,7 @@ function Update()
     lastTime = timeNow;
 }
 
+
 /******************************************************/
 /* Draw
 /*
@@ -357,6 +395,9 @@ function Draw()
 	gl.uniform3fv(CurrentShader.Program.Camera_Position_Uniform, MainPlayer.pos);
 	//mat4.translate(mvMatrix, [-Camera_Position[0], -Camera_Position[1], -Camera_Position[2]]);
 	mat4.lookAt(MainPlayer.pos, MainPlayer.lookat, Up, mvMatrix);
+	
+	//Debug.Trace(TestLevel.Name);
+	TestLevel.Draw();
 	
 	mvPushMatrix();
 	//mat4.rotate(mvMatrix, degToRad(rCube), [1, 1, 1]);

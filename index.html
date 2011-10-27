@@ -3,7 +3,7 @@
 <head>
   <title>CS679 | Project 2</title>
   <meta name="description" content="Home Page" />
-  <meta name="keywords" content="asplund,mwasplund,wisconsin,wausau,madison,matthew,home" />
+  <meta name="keywords" content="asplund,mwasplund,wisconsin,wausau,madison,matthew,home,philisawesome" />
   <link href="Project2.css" rel="stylesheet" type="text/css">
   <script type="text/javascript" src="Helper.js"></script>
   <script type="text/javascript" src="Project2.js"></script>
@@ -26,6 +26,7 @@
    		<option value="PerFragmentLighting">Per Fragment Lighting</option>
    		<option value="PerVertexLighting">Per Vertex Lighting</option>
    		<option value="TimeTest">Time Test</option>
+		<option value="InvisoShader">Inviso-Shader</option>
    	</select>
    	<br/>
    	Select Model
@@ -37,6 +38,13 @@
    		<option value="Sword">Sword</option>   
    		<option value="Human">Human</option>  
         <option value="Pole_Swirly">Pole_Swirly</option>
+   	</select>
+    <br/>
+	Select Levels
+    <select id="SelectLevel" onchange="SelectLevel(this.options[this.selectedIndex].value)">
+    	<option value="0">0</option>
+   		<option value="1">1</option>
+   		<option value="2">2</option>   		
    	</select>
    	<br/>
    	Clear Color: 
