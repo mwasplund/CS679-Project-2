@@ -9,12 +9,15 @@
   // Vertices
   // Convert the Indexed Triangles to array of vertices
   var Vertices = new Array();
+  
   for(var i = 0; i < i_Model.Geometry.TriangleIndices.length; i++)
   {
-    Vertices.push(i_Model.Geometry.Vertices[i_Model.Geometry.TriangleIndices[i] * 3 + 0]);
-    Vertices.push(i_Model.Geometry.Vertices[i_Model.Geometry.TriangleIndices[i] * 3 + 1]);
-    Vertices.push(i_Model.Geometry.Vertices[i_Model.Geometry.TriangleIndices[i] * 3 + 2]);
-  }
+	
+	 	Vertices.push(i_Model.Geometry.Vertices[i_Model.Geometry.TriangleIndices[i] * 3 + 0] );
+    	Vertices.push(i_Model.Geometry.Vertices[i_Model.Geometry.TriangleIndices[i] * 3 + 1] );
+    	Vertices.push(i_Model.Geometry.Vertices[i_Model.Geometry.TriangleIndices[i] * 3 + 2] );
+	  
+ }
   
   this.VertexPositionBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, this.VertexPositionBuffer);

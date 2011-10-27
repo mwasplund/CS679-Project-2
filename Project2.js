@@ -6,6 +6,8 @@ LoadjsFile("Events.js");
 LoadjsFile("Shader/GLSL_Shader.js");
 LoadjsFile("Player.js");
 LoadjsFile("Model/glMatrix-0.9.5.min.js");
+LoadjsFile("Model/Level.js");
+LoadjsFile("Model/Layout.js");
 
 var gl;
 var Height
@@ -34,7 +36,7 @@ function InitializeWebGL()
     gl = Canvas.getContext("experimental-webgl"); // Development
   if(!gl)
     gl = Canvas.getContext("moz-webgl"); // Firefox
-  if(!gl)
+  if(!gl)got 
     gl = Canvas.getContext("webkit-3d"); // Safari or Chrome
     
   gl.viewportWidth  = Canvas.width;
@@ -79,6 +81,9 @@ function WindowLoaded()
   // Load the models
   Debug.Trace("Start");
   InitializeModels();
+  
+  //Load levels
+  InitializeLevels();
  
   // Set initial time
   var CurDate = new Date();
@@ -153,6 +158,8 @@ var PrevTime;
 var DEBUG = false;
 
 var TestModel;
+
+var TestLevel;
 
 function GameLoop()
 {
@@ -256,6 +263,33 @@ function SelectModel(i_ModelName)
 	}
 }
 
+//Xixi, enable levels
+var Levels = new Array();
+function InitializeLevels() 
+{
+	Levels.push(new Level("0"));
+    Levels.push(new Level("1"));
+    Levels.push(new Level("2"));
+	TestLevel = Levels[0];
+}
+
+function SelectLevel(i_LevelName)
+{
+	
+	for(var k = 0; k < 2; k++)
+	{
+		if(Levels[k].Name == i_LevelName)
+		{
+			TestLevel = Levels[k];
+			return;
+			Debug.Trace("TestLevel "+ TestLevel);
+			Debug.Trace("k" + k);
+		}
+	}
+	//Debug.Trace("TestLevel "+ TestLevel);
+	//Debug.Trace("k" + k);
+}
+//End of levels
 
 var Shaders = new Array();
 function InitializeShaders() 
@@ -334,6 +368,9 @@ var Camera_Position = [
           50.0
       ];
 var Up = [0,1,0];
+
+
+
 function Draw() 
 {
 	gl.useProgram(CurrentShader.Program);
@@ -390,8 +427,7 @@ function Draw()
 	//mat4.translate(mvMatrix, [-Camera_Position[0], -Camera_Position[1], -Camera_Position[2]]);
 	mat4.lookAt(Camera_Position, Camera_LookAt, Up, mvMatrix);
 	
-	mvPushMatrix();
-	mat4.rotate(mvMatrix, degToRad(rCube), [1, 1, 1]);
-	TestModel.Draw();
-	mvPopMatrix();
+	//Debug.Trace(TestLevel.Name);
+	TestLevel.Draw();
+	
 }
