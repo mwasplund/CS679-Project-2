@@ -2,25 +2,6 @@
 var Player_MoveSpeed = 0.5;
 var Player_RotateSpeed = 2.5;
 
-function Vector3(a,b,c){
-	this.x;
-	this.y;
-	this.z;
-
-	this.setVect3 = function(a,b,c){
-		this.x = a;
-		this.y = b;
-		this.z = c;
-	}
-	
-	this.duplicate = function(){
-		var dup = new Vector3(this.x, this.y, this.z);
-		return dup;
-	}
-
-	this.setVect3(a,b,c);
-}
-
 function Player(){
 	this.pos = vec3.create([0,0,0]);
 	this.lookat = vec3.create([0,0,1]);
@@ -42,7 +23,17 @@ function Player(){
 
 	this.duplicate = function(){
 		var dup = new Player();
-		dup.pos = this.pos.duplicate();
+		dup.pos = vec3.create([this.pos[0], this.pos[1], this.pos[2]]);
+		dup.lookat = vec3.create([this.lookat[0], this.lookat[1], this.lookat[2]]);
+		dup.dir = vec3.create([this.dir[0], this.dir[1], this.dir[2]]);
+		dup.dir_Up = vec3.create([this.dir_Up[0], this.dir_Up[1], this.dir_Up[2]]);
+		dup.pos_Up =vec3.create([this.pos_Up[0], this.pos_Up[1], this.pos_Up[2]]);
+		dup.yaw = this.yaw;
+		dup.pitch = this.pitch; 
+		dup.rRight = this.rRight;
+		dup.rLeft = this.rLeft;
+		dup.rUp = this.rUp;
+		dup.rDown = this.rDown;
 		dup.mForward = this.mForward;
 		dup.mBackward = this.mBackward;
 		dup.mLeft = this.mLeft;
