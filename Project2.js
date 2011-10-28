@@ -388,13 +388,15 @@ function UpdateClones(){
 	for(var x = 0; x < turn; x++){
 		clones[x].updateStateWith(recordings[x].playNextSlice());	
 		if(!clones[x].dead) clones[x].Update();
-		clones[x].pos[1] = -5;
+		//clones[x].pos[1] = -5;
 	}
 }
 function DrawClones(){
 	for(var x = 0; x < turn; x++){
 		mvPushMatrix();	
+		clones[x].pos[1]-=50;
 		mat4.translate(mvMatrix, clones[x].pos);
+		clones[x].pos[1]+=50;
 		mat4.rotate(mvMatrix, degToRad(clones[x].yaw)*-1, [0,1,0]);
 		Models[6].Draw();	
 		mvPopMatrix();

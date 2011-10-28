@@ -20,7 +20,7 @@ function Player(){
 	this.mRight = false;
 	this.jump = false;
 	this.dead = false;
-  this.boundingSphere = new Sphere(this.pos, 10.0);
+        this.boundingSphere = new Sphere(this.pos, 10.0);
   
 
 	this.duplicate = function(){
