@@ -456,7 +456,7 @@ function Draw()
 	if(GameState == GAME_STATE.PLAYING || GameState == GAME_STATE.PAUSED)
 	{
 		TestLevel.Draw(CurrentShader.Program);
-		DrawClones();
+		DrawClones(CurrentShader.Program);
 	}
 	else if(GameState == GAME_STATE.START)
 	{
