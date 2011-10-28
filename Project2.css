@@ -24,6 +24,22 @@ div#Menu_Debug
 	width: 315px;
 }
 
+div#Menu_Loading
+{
+  background-color: rgba(255, 255, 255, 1.0);
+  position: absolute;
+  width: 300px;
+  margin-left: -150px;
+  height:190px;
+  margin-top: -80px;
+  top: 30%;
+  left: 50%;
+  color: #000000;
+  padding: 10px;
+ border-radius:5px;
+}
+
+
 div#Menu_Start 
 {
   background-color: rgba(255, 255, 255, 1.0);
@@ -37,6 +53,7 @@ div#Menu_Start
   color: #000000;
   padding: 10px;
  border-radius:5px;
+ display:none;
 }
 
 div#Menu_Paused

@@ -5,9 +5,10 @@
 /******************************************************/
 var GAME_STATE = 
 {
-  START : 0,
-  PLAYING : 1,
-  PAUSED : 2
+  LOADING : 0,
+  START   : 1,
+  PLAYING : 2,
+  PAUSED  : 3
 }; 
 
 
@@ -22,6 +23,10 @@ function SetGameState_Playing()
   {
 	$("#Menu_Paused").slideUp("slow");
   }
+  else if(GameState == GAME_STATE.LOADING)
+  {
+	$("#Menu_Loading").hide();
+  }
   
   // Set the current state
   GameState = GAME_STATE.PLAYING;
@@ -34,7 +39,11 @@ function SetGameState_Paused()
   {
 	$("#Menu_Start").hide("slow");
   }
-
+  else if(GameState == GAME_STATE.LOADING)
+  {
+	$("#Menu_Loading").hide();
+  }
+  
   // Set the current state
   GameState = GAME_STATE.PAUSED;
   // Show the Menu
@@ -48,7 +57,11 @@ function SetGameState_Start()
   {
 	$("#Menu_Paused").slideUp("slow");
   }
-
+  else if(GameState == GAME_STATE.LOADING)
+  {
+	$("#Menu_Loading").hide();
+  }
+  
   // Set the current state
   GameState = GAME_STATE.START;
   // Show the Menu

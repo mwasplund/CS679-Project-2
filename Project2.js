@@ -86,6 +86,7 @@ function InitializeWebGL()
 function WindowLoaded()
 {
   // Check if the Canvas is supported
+  GameState = GAME_STATE.LOADING;
   if(!CanvasSupported())
   {
     Debug.Trace("ERROR: Html5 Canvas is not supported.");
@@ -126,7 +127,7 @@ function WindowLoaded()
   PrevTime = CurDate.getTime();
 
   // Start the gameloop
-  GameState = GAME_STATE.START;
+  SetGameState_Start();
   GameLoop();
   checkGLError();
 }
@@ -199,10 +200,7 @@ function GameLoop()
   var DeltaMiliSec = CurTime - PrevTime;
   PrevTime = CurTime;
   
-  if(GameState == GAME_STATE.PLAYING)
-  {
 	Update(DeltaMiliSec);
-  }
   Draw();
   
   if(DEBUG)
@@ -233,6 +231,9 @@ function InitializeModels()
     Models.push(new Model("Human"));
 	Models.push(new Model("Pole_Swirly"));
     TestModel = Models[0];
+	
+	
+	TitleModel = GetModel("Title");
 }
 
 //Xixi, enable levels
@@ -332,8 +333,11 @@ function Update()
         var elapsed = timeNow - lastTime;
         Time += elapsed / 1000.0;
         recordings[turn].addSlice(MainPlayer);
-	UpdateClones();
-        MainPlayer.Update();
+		  if(GameState == GAME_STATE.PLAYING)
+		{
+			UpdateClones();
+			MainPlayer.Update();
+		}
     }
     lastTime = timeNow;
 }
@@ -384,5 +388,17 @@ function Draw()
 	mat4.lookAt(MainPlayer.pos, MainPlayer.lookat, Up, mvMatrix);
 	
 	//Debug.Trace(TestLevel.Name);
-	TestLevel.Draw(CurrentShader.Program);
+	if(GameState == GAME_STATE.PLAYING || GameState == GAME_STATE.PAUSED)
+	{
+		TestLevel.Draw(CurrentShader.Program);
+	}
+	else if(GameState == GAME_STATE.START)
+	{
+		mvPushMatrix();
+		mat4.translate(mvMatrix, [0,-10,100]);
+		mat4.rotate(mvMatrix, degToRad(20), [0, 1, 0]);
+		var TimeTest = GetShader("TimeTest");
+		TitleModel.Draw(CurrentShader.Program);
+		mvPopMatrix();
+	}
 }

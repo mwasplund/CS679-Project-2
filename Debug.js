@@ -10,15 +10,24 @@
 function SelectShader(i_ShaderName)
 {
 	Debug.Trace("Select Shader " + i_ShaderName);
+	var Shader = GetShader(i_ShaderName);
+	if(Shader != null)
+		CurrentShader = Shader;
+
+}
+
+function GetShader(i_ShaderName)
+{
 	for(var i = 0; i < Shaders.length; i++)
 	{
 		if(Shaders[i].Name == i_ShaderName)
-		{
-			CurrentShader = Shaders[i];
-			return;
-		}
+			return Shaders[i];
 	}
+	
+	// Could not find the shader
+	return null;
 }
+
 
 /******************************************************/
 /* SelectModel
@@ -32,14 +41,21 @@ function SelectShader(i_ShaderName)
 function SelectModel(i_ModelName)
 {
 	Debug.Trace("Select Model " + i_ModelName);
+	var Model = GetShader(i_ModelName);
+	if(Model != null)
+		TestModel = Model;
+}
+
+function GetModel(i_ModelName)
+{
 	for(var i = 0; i < Models.length; i++)
 	{
 		if(Models[i].Name == i_ModelName)
-		{
-			TestModel = Models[i];
-			return;
-		}
+			return Models[i];
 	}
+	
+	// Could not find the Model
+	return null;
 }
 
 /******************************************************/
