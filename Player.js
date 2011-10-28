@@ -20,7 +20,7 @@ function Player(){
 	this.mRight = false;
 	this.jump = false;
 	this.dead = false;
-  this.boundingSphere = new Sphere(this.pos, 5.0);
+  this.boundingSphere = new Sphere(this.pos, 10.0);
   
 
 	this.duplicate = function(){
@@ -114,29 +114,38 @@ function Player(){
 		}
 		
 		if(Changed)
-		{
-		
+		{	
+		  // Check if this player has hit a wall
 		  for(var k = 0; k < TestLevel.CollisionPlanes.length; k++)
 		  {
-    		var CollisionDirection = checkSphereCollision(this.boundingSphere, TestLevel.CollisionPlanes[k]);
-    		
-    		if(CollisionDirection != null)
-    		{
-          // recalculate the movement
-          vec3.direction(PreviousPos, this.pos, this.dir)
-          
-          var Parallel = vec3.cross(CollisionDirection, [0,1,0], vec3.create());
-          vec3.normalize(Parallel);
-          var Amount = -vec3.dot(Parallel, this.dir);
-          $("#Collision").val("HIT: " + vec3.str(Parallel));
-          // Move in new direction
-          vec3.scale(Parallel, Amount);
-          vec3.add(PreviousPos, Parallel, this.pos);
-        }		
+		    if(TestLevel.CollisionPlanes[k].enabled)
+		    {
+      		var CollisionDirection = checkSpherePlaneCollision(this.boundingSphere, TestLevel.CollisionPlanes[k]);
+      		
+      		if(CollisionDirection != null)
+      		{
+            // recalculate the movement
+            vec3.direction(PreviousPos, this.pos, this.dir)
+            
+            var Parallel = vec3.cross(CollisionDirection, [0,1,0], vec3.create());
+            vec3.normalize(Parallel);
+            var Amount = -vec3.dot(Parallel, this.dir);
+            $("#Collision").val("HIT: " + vec3.str(Parallel));
+            // Move in new direction
+            vec3.scale(Parallel, Amount);
+            vec3.add(PreviousPos, Parallel, this.pos);
+          }	
+        }	
       }
       
+      
+            
       this.UpdateLookAt();
     }
+    
+    
+    // Check if this player had touched a switch
+      TestLevel.CheckSwitches(this.boundingSphere);
 	}
 	
 	this.UpdateLookAt = function()

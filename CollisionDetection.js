@@ -5,6 +5,7 @@ function Sphere(pos, radius){
 }
 
 function Plane(p1, p2, p3, p4){
+  this.enabled = true;
 	this.p1 = p1;
 	this.p2 = p2;
 	this.p3 = p3;
@@ -23,7 +24,22 @@ function Plane(p1, p2, p3, p4){
 	this.d = -vec3.dot(p1,this.normal);
 }
 
-function checkSphereCollision(i_Sphere, i_Plane){
+function checkSphereSphereCollision(i_Sphere1, i_Sphere2){
+
+  var Diff = vec3.subtract(i_Sphere1.pos, i_Sphere2.pos, vec3.create());
+  var distance = vec3.length(Diff);
+  
+  if(distance < (i_Sphere1.radius + i_Sphere2.radius))
+  {
+    return distance;
+  }
+  else
+  {
+    return null;
+  }
+}
+
+function checkSpherePlaneCollision(i_Sphere, i_Plane){
 	var center = i_Sphere.pos;
 	//$("#Collision").val("Pos: " + vec3.str(center));
 

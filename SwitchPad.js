@@ -1,6 +1,7 @@
-function SwitchPad(){
-	this.pos = vec3.create([0,0,0]);
-	this.door = new Door();
+function SwitchPad(i_Object, i_BoundingSphere, i_Door){
+	this.object = i_Object;
+	this.boundingSphere = i_BoundingSphere;
+	this.door = i_Door;
 	this.pressed = false;
 
 	this.stepOn = function(){
@@ -11,9 +12,11 @@ function SwitchPad(){
 	this.stepOff = function(){
 		this.pressed = false;
 		this.door.close();
-	}
-
-	this.setDoor = function(vec3 pos, vec3 dir){
-		this.door.setPos(pos, dir);	
+	}	
+	
+	this.Draw = function()
+	{
+	  this.object.Draw();
+	  this.door.Draw();
 	}
 }

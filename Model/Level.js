@@ -1,6 +1,9 @@
 // JavaScript Document
 LoadjsFile("Model/Layout.js");
 LoadjsFile("Model/Model.js");
+LoadjsFile("Door.js");
+LoadjsFile("SwitchPad.js");
+
 
 function Object(i_Model,i_Position,i_Orientation)
 {
@@ -15,6 +18,8 @@ function Level(i_num)
 {
 	//Debug.Trace(i_num);
 	this.Draw = Level_Draw;
+	this.CheckSwitches = Level_CheckSwitches;
+	this.ClearSwitches = Level_ClearSwitches;
 	this.Name = i_num;
 	this.Objects = new Array();
 	this.CollisionPlanes = new Array();
@@ -22,7 +27,7 @@ function Level(i_num)
 	if(this.Name == "1")
 	{
 	  // Player start 
-	  this.PlayerStart_Pos = [10, 50, -10];
+	  this.PlayerStart_Pos = [15, 50, -15];
 	  this.PlayerStart_Rotate = 270;
 	
 		this.Objects.push(new Object(new Model("W300_Bricks"), [150, 0, 0],[0,0,0])); //0
@@ -31,9 +36,21 @@ function Level(i_num)
 		this.CollisionPlanes.push(new Plane([300, 0, 0], [300, 0, -300], [300, 100, -300], [300, 100, 0]));
 		this.Objects.push(new Object(new Model("W300_Bricks"), [0, 0, -150],[0,90,0])); //0
 		this.CollisionPlanes.push(new Plane([0, 0, 0], [0, 0, -300], [0, 100, -300], [0, 100, 0]));
-		this.Objects.push(new Object(new Model("W200"), [200, 0, -300],[0,0,0])); //0
+		this.Objects.push(new Object(new Model("W200_Bricks"), [200, 0, -300],[0,0,0])); //0
 	  this.CollisionPlanes.push(new Plane([100, 0, -300], [300, 0, -300], [300, 100, -300], [100, 100, -300]));
 
+    this.Objects.push(new Object(new Model("W300_Bricks"), [0, 0, -350], [0,0,0]));
+
+    this.SwitchPad = new SwitchPad(
+      new Object(new Model("Unit_Radius_Sphere"), [100, 0, -100], [0,0,0]),
+      new Sphere([100, this.PlayerStart_Pos[1], -100], 40.0),
+      new Door(
+        new Object(new Model("W100_Bricks_Exit"), [50, 0, -300], [0,0,0]),
+        new Plane([0, 0, -300], [100, 0, -300], [100, 100, -300], [0, 100, -300])
+      )
+    );
+    
+    this.CollisionPlanes.push(this.SwitchPad.door.collisionPlane);
 	}
 	
 	if(this.Name == "2")
@@ -83,6 +100,22 @@ function Level(i_num)
 	
 }
 
+function Level_ClearSwitches()
+{
+  this.SwitchPad.stepOff();
+}
+
+function Level_CheckSwitches(i_BoundingSphere)
+{
+  var CollisionDirection = checkSphereSphereCollision(i_BoundingSphere, this.SwitchPad.boundingSphere);
+  if(CollisionDirection != null)
+  {
+    $("#Collision").val("HIT: Switch");
+    this.SwitchPad.stepOn();
+  }
+}
+
+
 function Level_Draw(i_ShaderProgram)
 {
 	//Debug.Trace("LevelDraw");
@@ -102,6 +135,8 @@ function Level_Draw(i_ShaderProgram)
 			this.Objects[i].Draw();
 	
 		}
+		
+		this.SwitchPad.Draw();
 	}
 	
 }
@@ -115,7 +150,7 @@ function Obj_Draw()
 		mat4.rotate(mvMatrix, degToRad(this.Orientation[0]), [1, 0, 0]);
 		mat4.rotate(mvMatrix, degToRad(this.Orientation[1]), [0, 1, 0]);
 		mat4.rotate(mvMatrix, degToRad(this.Orientation[2]), [0, 0, 1]);
-		this.Model.Draw();
+		this.Model.Draw(CurrentShader.Program);
 		mvPopMatrix();
 	
 }

@@ -1,22 +1,29 @@
-function Door(){
-	this.pos = vec3.create([0,0,0]);
-	this.dir = vec3.create([0, 0, 1]);
-	this.open = false;
+function Door(i_Object, i_CollisionPlane){
+	this.object = i_Object;
+	this.collisionPlane = i_CollisionPlane;
+	this.isOpen = false;
 
 	this.open = function(){
-		this.open = true;
+		this.isOpen = true;
+		this.collisionPlane.enabled = false;
 	}
 	
 	this.close = function(){
-		this.open = false;
+		this.isOpen = false;
+		this.collisionPlane.enabled = true;
 	}
 
-	this.setPos = function(vec3 pos, vec3 dir){
-		this.pos = pos;
-		this.dir = dir;
-	}
+	this.Draw = function(){
+	  if(this.isOpen)
+	  {
+		  gl.enable(gl.BLEND);
+		  gl.disable(gl.DEPTH_TEST);
+		}
+		  
+		this.object.Draw();
+		
+		gl.disable(gl.BLEND);
+		gl.enable(gl.DEPTH_TEST);
 
-	this.draw = function(){
-		gl.enable(gl.BLEND);
 	}
 }

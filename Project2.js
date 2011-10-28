@@ -115,7 +115,6 @@ function WindowLoaded()
   
   // Instantiate main player
   MainPlayer = new Player();
-  
   recordings[0] = new Record();
 
   // Load the models
@@ -276,7 +275,7 @@ function ResetLevel()
  	for(var x = 0; x < turn; x++)
  	{
 		vec3.set(TestLevel.PlayerStart_Pos, clones[x].pos);
-		clones[x].pos[1] = 0; // place the player on the ground instead of at eye level
+		//clones[x].pos[1] = 0; // place the player on the ground instead of at eye level
 		clones[x].yaw = TestLevel.PlayerStart_Rotate;
 	}
 
@@ -371,7 +370,8 @@ function Update()
         Time += elapsed / 1000.0;
 		if(GameState == GAME_STATE.PLAYING)
 		{
-        		recordings[turn].addSlice(MainPlayer);
+		  TestLevel.ClearSwitches();
+      recordings[turn].addSlice(MainPlayer);
 			UpdateClones();
 			MainPlayer.Update();
 		}
@@ -393,7 +393,7 @@ function UpdateClones(){
 function DrawClones(){
 	for(var x = 0; x < turn; x++){
 		mvPushMatrix();	
-		mat4.translate(mvMatrix, [clones[x].pos[0], clones[x].pos[1], clones[x].pos[2]]);
+		mat4.translate(mvMatrix, clones[x].pos);
 		mat4.rotate(mvMatrix, degToRad(clones[x].yaw)*-1, [0,1,0]);
 		Models[6].Draw();	
 		mvPopMatrix();
