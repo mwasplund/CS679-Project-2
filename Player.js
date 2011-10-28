@@ -48,7 +48,7 @@ function Player(){
 	this.Update = function(){
 	
 		var Changed = false;
-    var PreviousPos = vec3.create(this.pos);
+                var PreviousPos = vec3.create(this.pos);
 		if(this.mLeft)     
 		{
 			// Caluculate Direction forward

@@ -388,6 +388,7 @@ function UpdateClones(){
 	for(var x = 0; x < turn; x++){
 		clones[x].updateStateWith(recordings[x].playNextSlice());	
 		if(!clones[x].dead) clones[x].Update();
+		clones[x].pos[1] = -5;
 	}
 }
 function DrawClones(){
