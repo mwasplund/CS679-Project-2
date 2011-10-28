@@ -65,13 +65,13 @@ function Model_ParseFile(i_File)
 }
 
 
-function Model_Draw(i_ShaderProgram)
+function Model_Draw()
 {
   if(this.Ready)
   {
     for(var i = 0; i < this.Meshes.length; i++)
     {
-      this.Meshes[i].Draw(i_ShaderProgram);
+      this.Meshes[i].Draw();
     }
   }
 }

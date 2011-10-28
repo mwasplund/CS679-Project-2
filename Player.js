@@ -129,6 +129,7 @@ function Player(){
 		this.mLeft = p.mLeft;
 		this.mRight = p.mRight;
 		this.jump = p.jump;
+		this.dead = p.dead;
 	}
 }
 
@@ -160,7 +161,10 @@ function Record(){
 	//Gets next frame to play. If no frames left, returns last available
 	this.playNextSlice = function() {
 		this.p++;
-		if(this.p > this.ts.length) this.p = this.ts.length;
+		if(this.p > this.ts.length){
+			this.p = this.ts.length;
+			this.p.dead = true;
+		}
 		return this.ts[this.p-1];
 	}
 }

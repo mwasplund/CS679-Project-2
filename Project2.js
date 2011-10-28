@@ -272,6 +272,7 @@ function SelectLevel(i_LevelName)
 /******************************************************/
 function InitializeShaders() 
 {
+    Shaders.push(LoadShader("whitey"));
     Shaders.push(LoadShader("PerFragmentLighting"));
     Shaders.push(LoadShader("PerVertexLighting"));
     Shaders.push(LoadShader("TimeTest"));
@@ -344,19 +345,33 @@ function Update()
 function UpdateClones(){
 	for(var x = 0; x < turn; x++){
 		clones[x].updateStateWith(recordings[x].playNextSlice());	
+		if(!clones[x].dead) clones[x].Update();
+	}
+}
+function DrawClones(){
+	for(var x = 0; x < turn; x++){
+		mvPushMatrix();	
+		mat4.translate(mvMatrix, [clones[x].pos[0], clones[x].pos[1], clones[x].pos[2]]);
+		Models[0].Draw();	
+		mvPopMatrix();
+	}
+}
+function ResetClonePos(){
+	for(var x = 0; x < turn; x++){
+		clones[x].pos = vec3.create([0,0,0]);
 	}
 }
 function EndTurn(){
-	Debug.Trace("bananas");
-	ResetRecordings();
 	clones[turn] = new Player();
 	turn++;
+	ResetRecordings();
+	ResetClonePos();
 	recordings[turn] = new Record();
 	MainPlayer = new Player();
 }
 function RestartTurn(){
-	Debug.Trace("alphabet");
 	ResetRecordings();
+	ResetClonePos();
 	recordings[turn] = new Record();
 	MainPlayer = new Player();
 }
@@ -374,9 +389,51 @@ function ResetRecordings(){
 /******************************************************/
 function Draw() 
 {
+	gl.useProgram(CurrentShader.Program);
+
 	gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
 	gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+	gl.uniform1f(CurrentShader.Program.Time_Uniform, Time);
+
+	gl.uniform1i(CurrentShader.Program.Light0_Enabled_Uniform, Light0_Enabled);
+  if (Light0_Enabled) 
+  {
+      gl.uniform3f(
+          CurrentShader.Program.AmbientColor_Uniform,
+          0.1,
+          0.1,
+          0.1
+      );
+
+      
+      gl.uniform3fv(CurrentShader.Program.Light0_Position_Uniform, [0, 0, 100]);
+
+      gl.uniform3f(
+          CurrentShader.Program.DiffuseColor_Uniform,
+          0.8,
+          0.8,
+          0.8
+      );
+      
+      gl.uniform3f(
+          CurrentShader.Program.SpecularColor_Uniform,
+          0.8,
+          0.8,
+          0.8
+      );
+      
+      gl.uniform1f(
+          CurrentShader.Program.Shininess_Uniform,
+          30.0      
+      );
+
+
+  }
+	
+	
 	mat4.perspective(45, gl.viewportWidth / gl.viewportHeight, 1.0, 1000.0, pMatrix);
+	
+	//mat4.identity(mvMatrix);
 	
 	// Setup the camera
 	$("#CameraPos_X").val(MainPlayer.pos[0]);
@@ -384,6 +441,19 @@ function Draw()
 	$("#CameraPos_Z").val(MainPlayer.pos[2]);
 	$("#CameraPos_Yaw").val(MainPlayer.yaw);
 	$("#CameraPos_Pitch").val(MainPlayer.pitch);
+	
+	gl.uniform3fv(CurrentShader.Program.Camera_Position_Uniform, MainPlayer.pos);
+	//mat4.translate(mvMatrix, [-Camera_Position[0], -Camera_Position[1], -Camera_Position[2]]);
+	mat4.lookAt(MainPlayer.pos, MainPlayer.lookat, Up, mvMatrix);
+	
+	//Debug.Trace(TestLevel.Name);
+	TestLevel.Draw();
+	
+	mvPushMatrix();
+	//mat4.rotate(mvMatrix, degToRad(rCube), [1, 1, 1]);
+	TestModel.Draw();
+	mvPopMatrix();
+	DrawClones();
 	
 	mat4.lookAt(MainPlayer.pos, MainPlayer.lookat, Up, mvMatrix);
 	

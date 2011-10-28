@@ -152,26 +152,8 @@ function Mesh_HandleLoadedTexture(i_Texture)
   checkGLError();
 }
 
-function Mesh_Draw(i_ShaderProgram)
+function Mesh_Draw()
 {
-// Bind the Shader and the Uniforms
-gl.useProgram(i_ShaderProgram);
-	gl.uniform1f(i_ShaderProgram.Time_Uniform, Time);
-	gl.uniform3fv(CurrentShader.Program.Camera_Position_Uniform, MainPlayer.pos);
-	gl.uniform1i(i_ShaderProgram.Light0_Enabled_Uniform, Light0_Enabled);
-	  if (Light0_Enabled) 
-	  {
-		  gl.uniform3f(i_ShaderProgram.AmbientColor_Uniform,0.1,0.1,0.1);
-		  gl.uniform3fv(i_ShaderProgram.Light0_Position_Uniform, [0, 0, 100]);
-		  gl.uniform3f(i_ShaderProgram.DiffuseColor_Uniform,0.8,0.8,0.8);
-		  
-		  gl.uniform3f(i_ShaderProgram.SpecularColor_Uniform,0.8,0.8,0.8);
-		  
-		  gl.uniform1f(i_ShaderProgram.Shininess_Uniform,30.0      );
-	  }
-
-
-
 	mvPushMatrix();
 	mat4.translate(mvMatrix, this.Translate);
 	mat4.rotate(mvMatrix, degToRad(this.Rotate[0]), [1, 0, 0]);
@@ -181,31 +163,31 @@ gl.useProgram(i_ShaderProgram);
 	mat4.scale(mvMatrix, this.Scale);
 	
 	// Bind the texture UV
-	gl.uniform1i(i_ShaderProgram.Texture0_Enabled_Uniform, this.Texture != null);
+	gl.uniform1i(CurrentShader.Program.Texture0_Enabled_Uniform, this.Texture != null);
 	
 	if(this.Texture != null)
 	{
 		gl.activeTexture(gl.TEXTURE0);
 	  gl.bindTexture(gl.TEXTURE_2D, this.Texture);
-	  gl.uniform1i(i_ShaderProgram.samplerUniform, 0);
+	  gl.uniform1i(CurrentShader.Program.samplerUniform, 0);
 	}
 	
 	if(this.VertexTextureCoordBuffer != null)
 	{
   		gl.bindBuffer(gl.ARRAY_BUFFER, this.VertexTextureCoordBuffer);
-  		gl.vertexAttribPointer(i_ShaderProgram.textureCoordAttribute, this.VertexTextureCoordBuffer.itemSize, gl.FLOAT, false, 0, 0);
+  		gl.vertexAttribPointer(CurrentShader.Program.textureCoordAttribute, this.VertexTextureCoordBuffer.itemSize, gl.FLOAT, false, 0, 0);
 	}
  	
 		
   //Debug.Trace("Draw Mesh: "+ this.VertexPositionBuffer.numItems + " " +  this.VertexColorBuffer.numItems + " " + this.VertexIndexBuffer.numItems );
   gl.bindBuffer(gl.ARRAY_BUFFER, this.VertexPositionBuffer);
-  gl.vertexAttribPointer(i_ShaderProgram.vertexPositionAttribute, this.VertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
+  gl.vertexAttribPointer(CurrentShader.Program.vertexPositionAttribute, this.VertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
 
   if(this.VertexNormalBuffer != null)
   {
 	// Bind the Normal buffer
  	gl.bindBuffer(gl.ARRAY_BUFFER, this.VertexNormalBuffer);
-  	gl.vertexAttribPointer(i_ShaderProgram.vertexNormalAttribute, this.VertexNormalBuffer.itemSize, gl.FLOAT, false, 0, 0);
+  	gl.vertexAttribPointer(CurrentShader.Program.vertexNormalAttribute, this.VertexNormalBuffer.itemSize, gl.FLOAT, false, 0, 0);
   }
 
   setMatrixUniforms();
