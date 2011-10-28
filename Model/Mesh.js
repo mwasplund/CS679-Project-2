@@ -148,7 +148,7 @@ function Mesh_HandleLoadedTexture(i_Texture)
 	gl.generateMipmap(gl.TEXTURE_2D);
 	
   gl.bindTexture(gl.TEXTURE_2D, null);
-  //Debug.Trace("Image Loaded");
+  Debug.Trace("Image Loaded: " + i_Texture.image.src);
   checkGLError();
 }
 

@@ -58,6 +58,8 @@
   var KEY_UP_ARROW    = 38;
   var KEY_RIGHT_ARROW = 39;
   var KEY_DOWN_ARROW  = 40;
+  var KEY_PAGE_UP     = 33;
+  var KEY_PAGE_DOWN   = 34;
  
   var KEY_LEFT_ARROW_PRESSED  = false;
   var KEY_RIGHT_ARROW_PRESSED = false;
@@ -128,7 +130,17 @@
               break;    
           case KEY_DOWN_ARROW :
               MainPlayer.rDown = true;
-              break;    
+              break; 
+			  
+		 case KEY_PAGE_UP :
+              MainPlayer.pos[1] += 2;
+			  MainPlayer.lookat[1] += 2;
+              break;
+			  
+		 case KEY_PAGE_DOWN :
+              MainPlayer.pos[1] += -2;
+			  MainPlayer.lookat[1] -= 2;
+              break;
        }
     }
   }

@@ -7,7 +7,6 @@ LoadjsFile("Model/Model.js");
 LoadjsFile("Events.js");
 LoadjsFile("Shader/GLSL_Shader.js");
 LoadjsFile("Model/Level.js");
-LoadjsFile("Model/Layout.js");
 LoadjsFile("timeExample/Player.js");
 LoadjsFile("glMatrix.js");
 LoadjsFile("Debug.js");
@@ -227,7 +226,7 @@ function InitializeLevels()
 	Levels.push(new Level("0"));
     Levels.push(new Level("1"));
     Levels.push(new Level("2"));
-	TestLevel = Levels[0];
+	TestLevel = Levels[2];
 }
 
 function SelectLevel(i_LevelName)
@@ -389,8 +388,8 @@ function Draw()
 	//Debug.Trace(TestLevel.Name);
 	TestLevel.Draw();
 	
-	mvPushMatrix();
+	//mvPushMatrix();
 	//mat4.rotate(mvMatrix, degToRad(rCube), [1, 1, 1]);
-	TestModel.Draw();
-	mvPopMatrix();
+	//TestModel.Draw();
+	//mvPopMatrix();
 }
