@@ -74,23 +74,24 @@ function Level(i_num)
 	
 }
 
-function Level_Draw()
+function Level_Draw(i_ShaderProgram)
 {
 	//Debug.Trace("LevelDraw");
 	if (this.Name == "0")
 	{
 		mvPushMatrix();
 		mat4.translate(mvMatrix,  [1, 1, 1]);
-		TestModel.Draw();
+		TestModel.Draw(i_ShaderProgram);
 		mvPopMatrix();
 	}
 	else
 	{
+
 		for(var i = 0; i < this.Objects.length; i++)
 		{
 			
 			this.Objects[i].Draw();
-		
+	
 		}
 	}
 	

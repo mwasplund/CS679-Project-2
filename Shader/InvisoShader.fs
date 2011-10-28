@@ -40,6 +40,7 @@ void main(void)
   if (uTexture0_Enabled) 
   {
     FragmentColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
+    FragmentColor[3] = 0.5;
   } 
   else 
   {
@@ -47,5 +48,5 @@ void main(void)
   }
   
   // Apply the Light Weight to the fragment color
-  gl_FragColor = vec4(FragmentColor.rgb * LightWeighting, FragmentColor.a);
+  gl_FragColor = vec4(FragmentColor.rgb * LightWeighting, 0.5);// FragmentColor.a);
 }

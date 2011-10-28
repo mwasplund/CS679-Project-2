@@ -3,7 +3,7 @@
   function MouseClick(e)
   {
     Debug.Trace("Mouse Click");
-	MousePos = getMousePosition(e);
+	//MousePos = getMousePosition(e);
   }
   
   var MousePressed = false;
@@ -12,13 +12,13 @@
   {
     MousePressed = true;
 	  MousePos = getMousePosition(e);
-    Debug.Trace("Mouse Down");
+    //Debug.Trace("Mouse Down");
   }
   
   function MouseUp(e)
   {
     MousePressed = false;
-    Debug.Trace("Mouse Up");
+    //Debug.Trace("Mouse Up");
   }
   
   function MouseMove(e)
@@ -29,7 +29,7 @@
 		var NewMousePos = getMousePosition(e);
 		var Delta = new Point(NewMousePos.X - MousePos.X, NewMousePos.Y - MousePos.Y);
 		
-		
+
 		//Camera_Position[0] -= Delta.X / 500;
 		//Camera_Position[1] += Delta.Y / 500;
 		MousePos = NewMousePos;
@@ -47,11 +47,17 @@
     UpdateWindowSize();
   }
   
+  var KEY_1 = 49;
   
   var KEY_A = 65;
   var KEY_S = 83;
   var KEY_D = 68;
   var KEY_W = 87;
+  var KEY_R = 82;
+  var KEY_T = 84;
+  
+  var KEY_p = 112;
+  var KEY_P = 80;
   
   var KEY_SPACEBAR    = 32;
   var KEY_LEFT_ARROW  = 37;
@@ -76,7 +82,7 @@
     if(e) 
     {
       var Unicode = e.charCode? e.charCode : e.keyCode;
-      Debug.Trace("Key = " + Unicode);
+      //Debug.Trace("Key = " + Unicode);
       
       switch(Unicode) 
       {
@@ -119,6 +125,12 @@
           case KEY_S :
               MainPlayer.mBackward = true;
               break;    
+          case KEY_T :
+              RestartTurn();
+              break;    
+          case KEY_R :
+              EndTurn();
+              break;    
           case KEY_LEFT_ARROW :
               MainPlayer.rLeft = true;              
               break;    
@@ -157,7 +169,7 @@
     if(e) 
     {
       var Unicode = e.charCode? e.charCode : e.keyCode;
-      Debug.Trace("Key = " + Unicode);
+      //Debug.Trace("Key = " + Unicode);
       
       switch(Unicode ) 
       {
@@ -189,12 +201,39 @@
     }
   }
 
-
-
   ///////////////////////////////////////////////////////////////////
-  // KeyUp
+  // KeyPress
   //
   // Listen for Keyboard events
+  ///////////////////////////////////////////////////////////////////
+  function KeyPress(e)
+  {
+    e = e ? e : ((window.event) ? event : null);
+    if(e) 
+    {
+      var Unicode = e.charCode? e.charCode : e.keyCode;
+      Debug.Trace("Key = " + Unicode);
+      
+      switch(Unicode) 
+      {
+        case KEY_1 :
+              SetDebugState(!DEBUG);             
+              break;    
+		case KEY_p :
+		case KEY_p :
+			if(GameState == GAME_STATE.PLAYING)
+				SetGameState_Paused();
+			else if(GameState == GAME_STATE.PAUSED)
+				SetGameState_Playing();
+		  break;
+       }
+    }
+  }
+
+  ///////////////////////////////////////////////////////////////////
+  // MouseWheel
+  //
+  // Listen for Mouse events
   ///////////////////////////////////////////////////////////////////
   function MouseWheel(e)
   {

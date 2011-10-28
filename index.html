@@ -3,21 +3,47 @@
 <head>
   <title>CS679 | Project 2</title>
   <meta name="description" content="Home Page" />
-  <meta name="keywords" content="asplund,mwasplund,wisconsin,wausau,madison,matthew,home" />
+  <meta name="keywords" content="asplund,mwasplund,wisconsin,wausau,madison,matthew,home,philisawesome" />
   <link href="Project2.css" rel="stylesheet" type="text/css">
   <script type="text/javascript" src="Helper.js"></script>
   <script type="text/javascript" src="Project2.js"></script>
   <script type="text/javascript" src="jquery.js"></script>
 </head>
 <body>
-   <canvas id='CanvasOne' width='700' height='700'>Your browser does not support HTML5.</canvas>
+   <canvas id='CanvasOne'>Your browser does not support HTML5.</canvas>
    
-   <div id="Debug">
+   <div id="Menu_Loading">
+		 <h1>Loading...</h1>
+   </div>
+   
+   <div id="Menu_Start">
+		 Welcome To Our Game!
+		 <br/>
+		 <pre>
+Controls:
+ASWD - LEFT BACKWARD FORWARD RIGHT
+<-  ROTATE LEFT
+->  ROTATE RIGHT
+		 </pre>
+		 <input type="Button" onclick="SetGameState_Playing()" value="Start"/>
+   </div>
+   
+   <div id="Menu_Paused">
+     <div class="Center">
+	 Game Paused!
+	 <br/>
+	 {Press P to <input type="Button" onclick="SetGameState_Playing()" value="Resume"/>}
+	 </div>
+   </div>
+   
+   
+   <div id="Menu_Debug">
      Select Shader
    	<select id="SelectShader" onchange="SelectShader(this.options[this.selectedIndex].value)">
    		<option value="PerFragmentLighting">Per Fragment Lighting</option>
    		<option value="PerVertexLighting">Per Vertex Lighting</option>
    		<option value="TimeTest">Time Test</option>
+		<option value="InvisoShader">Inviso-Shader</option>
    	</select>
    	<br/>
    	Select Model
@@ -27,8 +53,8 @@
    		<option value="TestCube">TestCube</option>
    		<option value="Title">Title</option>
    		<option value="Sword">Sword</option>   
-   		<option value="Human">Human</option> 
-          
+   		<option value="Human">Human</option>  
+        <option value="Pole_Swirly">Pole_Swirly</option>
    	</select>
     <br/>
 	Select Levels
@@ -36,7 +62,6 @@
     	<option value="0">0</option>
    		<option value="1">1</option>
    		<option value="2">2</option>   		
-          
    	</select>
    	<br/>
    	Clear Color: 

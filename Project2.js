@@ -7,9 +7,11 @@ LoadjsFile("Model/Model.js");
 LoadjsFile("Events.js");
 LoadjsFile("Shader/GLSL_Shader.js");
 LoadjsFile("Model/Level.js");
-LoadjsFile("timeExample/Player.js");
+LoadjsFile("Model/Layout.js");
+LoadjsFile("Player.js");
 LoadjsFile("glMatrix.js");
 LoadjsFile("Debug.js");
+LoadjsFile("GameState.js");
 
 /******************************************************/
 /* Global Variables
@@ -32,8 +34,12 @@ var lastTime = 0;
 var Time = 0;
 var Light0_Enabled = true;
 var MainPlayer;
+var turn = 0;
+var clones = new Array();
+var recordings = new Array();
 var Up = [0,1,0];
 var CurrentShader
+var GameState;
 var TestLevel;
 
 /******************************************************/
@@ -61,7 +67,8 @@ function InitializeWebGL()
   gl.clearColor(ClearColor[0], ClearColor[1], ClearColor[2] , 1.0);
   gl.enable(gl.DEPTH_TEST);
   gl.depthFunc(gl.LESS);
-  
+  gl.blendFunc(gl.SRC_ALPHA, gl.ONE); 
+
   mvMatrix = mat4.create();
   pMatrix = mat4.create();
   
@@ -79,6 +86,7 @@ function InitializeWebGL()
 function WindowLoaded()
 {
   // Check if the Canvas is supported
+  GameState = GAME_STATE.LOADING;
   if(!CanvasSupported())
   {
     Debug.Trace("ERROR: Html5 Canvas is not supported.");
@@ -104,8 +112,11 @@ function WindowLoaded()
   // Check window size initially
   UpdateWindowSize();
   
-  // Load the models
+  // Instantiate main player
   MainPlayer = new Player();
+  recordings[0] = new Record();
+
+  // Load the models
   InitializeModels();
   
   //Load levels
@@ -161,6 +172,7 @@ function InitializeCanvas()
   window.addEventListener('resize', WindowResized, false);
   document.addEventListener('keydown', KeyDown, false);
   document.addEventListener('keyup', KeyUp, false);
+  document.addEventListener('keypress', KeyPress, false);
   
   Canvas = document.getElementById("CanvasOne");
   Canvas.addEventListener('mousedown', MouseDown, false);
@@ -187,16 +199,16 @@ function GameLoop()
   var DeltaMiliSec = CurTime - PrevTime;
   PrevTime = CurTime;
   
-  Update(DeltaMiliSec);
+	Update(DeltaMiliSec);
   Draw();
   
   if(DEBUG)
   {
-    Context.fillStyle = "#FFFFFF";
-    var FPS = "FPS = " + Math.round(1000/DeltaMiliSec);
-    Context.fillText(FPS, 20, 20);
-    Context.fillText("DESIRED POS.X = " + Math.round(DesiredPosition), 20, 40);
-    Context.fillText("CURRENT POS.X = " + Math.round(CurrentPosition), 20, 60); 
+    //Context.fillStyle = "#FFFFFF";
+   // var FPS = "FPS = " + Math.round(1000/DeltaMiliSec);
+    //Context.fillText(FPS, 20, 20);
+   // Context.fillText("DESIRED POS.X = " + Math.round(DesiredPosition), 20, 40);
+   // Context.fillText("CURRENT POS.X = " + Math.round(CurrentPosition), 20, 60); 
   }
   
   // Timer = setTimeout("GameLoop()", 1/30 * 1000);
@@ -216,7 +228,27 @@ function InitializeModels()
     Models.push(new Model("Title"));
     Models.push(new Model("Sword"));
     Models.push(new Model("Human"));
+	Models.push(new Model("Pole_Swirly"));
     TestModel = Models[0];
+	
+	TitleModel = GetModel("Title");
+}
+
+/******************************************************/
+/* AreModelsLoaded
+/*
+/* This function checks if all the models are loaded
+/******************************************************/
+function AreModelsLoaded() 
+{
+	for(var i = 0; i < Models.length; i++)
+	{
+		// If we find a single model not ready then leave
+		if(!Models[i].Ready)
+			return false;
+	}
+
+	return true;
 }
 
 //Xixi, enable levels
@@ -258,6 +290,8 @@ function InitializeShaders()
     Shaders.push(LoadShader("PerFragmentLighting"));
     Shaders.push(LoadShader("PerVertexLighting"));
     Shaders.push(LoadShader("TimeTest"));
+    Shaders.push(LoadShader("InvisoShader"));
+    Shaders.push(LoadShader("whitey"));
     CurrentShader = Shaders[0];
 }
 
@@ -303,9 +337,9 @@ function mvPopMatrix()
 }
     
 /******************************************************/
-/* animate
+/* Update
 /*
-/* Animate the test model... This should be removed...
+/* Update movement of Player/Clones
 /******************************************************/
 function Update() 
 {
@@ -314,11 +348,59 @@ function Update()
     {
         var elapsed = timeNow - lastTime;
         Time += elapsed / 1000.0;
-        
-        MainPlayer.Update();
-
+		if(GameState == GAME_STATE.PLAYING)
+		{
+        		recordings[turn].addSlice(MainPlayer);
+			UpdateClones();
+			MainPlayer.Update();
+		}
+		else if(GameState == GAME_STATE.LOADING)
+		{
+			// Stay in loading stat untill all the models are loaded
+			if(AreModelsLoaded())
+				  SetGameState_Start();
+		}
     }
     lastTime = timeNow;
+}
+function UpdateClones(){
+	for(var x = 0; x < turn; x++){
+		clones[x].updateStateWith(recordings[x].playNextSlice());	
+		if(!clones[x].dead) clones[x].Update();
+	}
+}
+function DrawClones(){
+	for(var x = 0; x < turn; x++){
+		mvPushMatrix();	
+		mat4.translate(mvMatrix, [clones[x].pos[0], clones[x].pos[1], clones[x].pos[2]]);
+		mat4.rotate(mvMatrix, degToRad(clones[x].yaw)*-1, [0,1,0]);
+		Models[6].Draw();	
+		mvPopMatrix();
+	}
+}
+function ResetClonePos(){
+	for(var x = 0; x < turn; x++){
+		clones[x].pos = vec3.create([0,0,0]);
+	}
+}
+function EndTurn(){
+	clones[turn] = new Player();
+	turn++;
+	ResetRecordings();
+	ResetClonePos();
+	recordings[turn] = new Record();
+	MainPlayer = new Player();
+}
+function RestartTurn(){
+	ResetRecordings();
+	ResetClonePos();
+	recordings[turn] = new Record();
+	MainPlayer = new Player();
+}
+function ResetRecordings(){
+	for(var x = 0; x < turn; x++){
+		recordings[x].resetP();
+	}
 }
 
 
@@ -381,15 +463,27 @@ function Draw()
 	$("#CameraPos_Z").val(MainPlayer.pos[2]);
 	$("#CameraPos_Yaw").val(MainPlayer.yaw);
 	$("#CameraPos_Pitch").val(MainPlayer.pitch);
+	
 	gl.uniform3fv(CurrentShader.Program.Camera_Position_Uniform, MainPlayer.pos);
 	//mat4.translate(mvMatrix, [-Camera_Position[0], -Camera_Position[1], -Camera_Position[2]]);
 	mat4.lookAt(MainPlayer.pos, MainPlayer.lookat, Up, mvMatrix);
 	
-	//Debug.Trace(TestLevel.Name);
-	TestLevel.Draw();
+	mat4.lookAt(MainPlayer.pos, MainPlayer.lookat, Up, mvMatrix);
 	
-	//mvPushMatrix();
-	//mat4.rotate(mvMatrix, degToRad(rCube), [1, 1, 1]);
-	//TestModel.Draw();
-	//mvPopMatrix();
+
+	if(GameState == GAME_STATE.PLAYING || GameState == GAME_STATE.PAUSED)
+	{
+		TestLevel.Draw(CurrentShader.Program);
+		DrawClones(CurrentShader.Program);
+	}
+	else if(GameState == GAME_STATE.START)
+	{
+		mvPushMatrix();
+		mat4.translate(mvMatrix, [0,-10,100]);
+		mat4.rotate(mvMatrix, degToRad(20), [0, 1, 0]);
+		var TimeTest = GetShader("TimeTest");
+		TitleModel.Draw(CurrentShader.Program);
+		mvPopMatrix();
+	}
+
 }
