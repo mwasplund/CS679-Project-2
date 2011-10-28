@@ -20,6 +20,8 @@ function Player(){
 	this.mRight = false;
 	this.jump = false;
 	this.dead = false;
+  this.boundingSphere = new Sphere(this.pos, 5.0);
+  
 
 	this.duplicate = function(){
 		var dup = new Player();
@@ -41,18 +43,20 @@ function Player(){
 		dup.jump = this.jump;
 		dup.dead = this.dead;
 		return dup;
-	}
-	
+  }
+  
 	this.Update = function(){
+	
 		var Changed = false;
+    var PreviousPos = vec3.create(this.pos);
 		if(this.mLeft)     
 		{
 			// Caluculate Direction forward
-			vec3.direction(this.pos, this.lookat, this.dir);
+			vec3.direction(PreviousPos, this.lookat, this.dir);
 	    
 			// Calculate the Direction Up
-			vec3.add(this.pos, [0,1,0], this.pos_Up);
-			vec3.direction(this.pos_Up, this.pos, this.dir_Up)
+			vec3.add(PreviousPos, [0,1,0], this.pos_Up);
+			vec3.direction(this.pos_Up, PreviousPos, this.dir_Up)
 	    
 			// Calculate direction right
 			vec3.cross(this.dir_Up, this.dir, this.dir);
@@ -65,11 +69,11 @@ function Player(){
 		if(this.mRight)     
 		{
 			// Caluculate Direction forward
-			vec3.direction(this.pos, this.lookat, this.dir);
+			vec3.direction(PreviousPos, this.lookat, this.dir);
 		    
 			// Calculate the Direction Up
-			vec3.add(this.pos, [0,1,0], this.pos_Up);
-			vec3.direction(this.pos_Up, this.pos, this.dir_Up)
+			vec3.add(PreviousPos, [0,1,0], this.pos_Up);
+			vec3.direction(this.pos_Up, PreviousPos, this.dir_Up)
 	    
 			// Calculate direction right
 			vec3.cross(this.dir_Up, this.dir, this.dir);
@@ -81,14 +85,14 @@ function Player(){
 		}
 		if(this.mForward)     
 		{
-			vec3.direction(this.lookat, this.pos, this.dir);
+			vec3.direction(this.lookat, PreviousPos, this.dir);
 			vec3.scale(this.dir, Player_MoveSpeed);
 			vec3.add(this.pos, this.dir)
 			Changed = true;
 		}
 		if(this.mBackward)     
 		{
-			vec3.direction(this.lookat, this.pos, this.dir);
+			vec3.direction(this.lookat, PreviousPos, this.dir);
 			vec3.scale(this.dir, Player_MoveSpeed);
 			vec3.subtract(this.pos, this.dir)
 			Changed = true;
@@ -108,13 +112,38 @@ function Player(){
 			if(this.yaw < 0.0)
 				this.yaw += 360.0;
 		}
- 		
-		// Set the Lookat to right in front of the player's eyes
+		
 		if(Changed)
 		{
-			var Percent_Yaw =  -degToRad(this.yaw);
-			vec3.add(this.pos, [Math.sin(Percent_Yaw), 0, Math.cos(Percent_Yaw)], this.lookat);
-		}
+		
+		  for(var k = 0; k < TestLevel.CollisionPlanes.length; k++)
+		  {
+    		var CollisionDirection = checkSphereCollision(this.boundingSphere, TestLevel.CollisionPlanes[k]);
+    		
+    		if(CollisionDirection != null)
+    		{
+          // recalculate the movement
+          vec3.direction(PreviousPos, this.pos, this.dir)
+          
+          var Parallel = vec3.cross(CollisionDirection, [0,1,0], vec3.create());
+          vec3.normalize(Parallel);
+          var Amount = -vec3.dot(Parallel, this.dir);
+          $("#Collision").val("HIT: " + vec3.str(Parallel));
+          // Move in new direction
+          vec3.scale(Parallel, Amount);
+          vec3.add(PreviousPos, Parallel, this.pos);
+        }		
+      }
+      
+      this.UpdateLookAt();
+    }
+	}
+	
+	this.UpdateLookAt = function()
+	{
+	// Set the Lookat to right in front of the player's eyes
+ 		  var Rad_Yaw =  -degToRad(this.yaw);
+ 			vec3.add(this.pos, [Math.sin(Rad_Yaw), 0, Math.cos(Rad_Yaw)], this.lookat);
 	}
 
 	this.updateStateWith = function(p)

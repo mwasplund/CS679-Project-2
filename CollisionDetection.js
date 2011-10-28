@@ -1,13 +1,10 @@
-var Spheres = new Array();
-var Planes = new Array();
 
-function CreateSphere(pos, radius){
+function Sphere(pos, radius){
 	this.pos = pos;
 	this.radius = radius;
-	return Spheres.push(this) - 1;
 }
 
-function CreatePlane(p1, p2, p3, p4){
+function Plane(p1, p2, p3, p4){
 	this.p1 = p1;
 	this.p2 = p2;
 	this.p3 = p3;
@@ -24,24 +21,24 @@ function CreatePlane(p1, p2, p3, p4){
 	vec3.normalize(this.normal);
 	this.d;
 	this.d = -vec3.dot(p1,this.normal);
-	return Planes.push(this) - 1;
 }
 
-function checkSphereCollision(index){
-	var center = Spheres[index].pos;
+function checkSphereCollision(i_Sphere, i_Plane){
+	var center = i_Sphere.pos;
+	//$("#Collision").val("Pos: " + vec3.str(center));
+
 	var point = vec3.create();
 	var point2 = vec3.create();
 	var centerLoc;
 	var pointLoc;
 	var ray = vec3.create();
 	
-	for(i=0;i<Planes.length;i++){
-		vec3.scale(Planes[i].normal,Spheres[index].radius,point); 
+		vec3.scale(i_Plane.normal,i_Sphere.radius,point); 
 		vec3.subtract(center,point,point2); //point2 set
 		vec3.add(point,center,point); //point set
-		centerLoc = vec3.dot(center, Planes[i].normal) + Planes[i].d;
-		pointLoc = vec3.dot(point, Planes[i].normal) + Planes[i].d;
-		point2Loc = vec3.dot(point2, Planes[i].normal) + Planes[i].d;
+		centerLoc = vec3.dot(center, i_Plane.normal) + i_Plane.d;
+		pointLoc = vec3.dot(point, i_Plane.normal) + i_Plane.d;
+		point2Loc = vec3.dot(point2, i_Plane.normal) + i_Plane.d;
 		centerPos = fbc(centerLoc);
 		pointPos = fbc(pointLoc);
 		point2Pos = fbc(point2Loc);
@@ -51,8 +48,8 @@ function checkSphereCollision(index){
 		if (pointPos != centerPos){
 			//For a hyperplane, return true;
 
-			vec3.set(Planes[i].normal, ray); //this part may be completely ass backward
-			var t = - (Planes[i].d + vec3.dot(Planes[i].normal, center)) / vec3.dot(Planes[i].normal, ray);
+			vec3.set(i_Plane.normal, ray); //this part may be completely ass backward
+			var t = - (i_Plane.d + vec3.dot(i_Plane.normal, center)) / vec3.dot(i_Plane.normal, ray);
 			var intersect = vec3.create();
 			vec3.add(center,vec3.scale(ray, t), intersect);
 			
@@ -61,10 +58,10 @@ function checkSphereCollision(index){
 			var v3 = vec3.create();
 			var v4 = vec3.create();
 			
-			vec3.subtract(intersect, Planes[i].p1, v1);
-			vec3.subtract(intersect, Planes[i].p2, v2);
-			vec3.subtract(intersect, Planes[i].p3, v3);
-			vec3.subtract(intersect, Planes[i].p4, v4);
+			vec3.subtract(intersect, i_Plane.p1, v1);
+			vec3.subtract(intersect, i_Plane.p2, v2);
+			vec3.subtract(intersect, i_Plane.p3, v3);
+			vec3.subtract(intersect, i_Plane.p4, v4);
 			
 			vec3.normalize(v1);
 			vec3.normalize(v2);
@@ -77,14 +74,14 @@ function checkSphereCollision(index){
 					+ Math.acos(vec3.dot(v4,v1));
 			var Val = Math.abs(theta - (2 * Math.PI));
 			if (Val < .001){
-				return Planes[i].normal;
+				return i_Plane.normal;
 			}
 			
 		}
 		else if (point2Pos != centerPos){
 
-			vec3.negate(Planes[i].normal, ray); //Might be fucked
-			var t = - (Planes[i].d + vec3.dot(Planes[i].normal, center)) / vec3.dot(Planes[i].normal, ray);
+			vec3.negate(i_Plane.normal, ray); //Might be fucked
+			var t = - (i_Plane.d + vec3.dot(i_Plane.normal, center)) / vec3.dot(i_Plane.normal, ray);
 			var intersect = vec3.create();
 			vec3.add(center, vec3.scale(ray, t), intersect);
 			
@@ -94,10 +91,10 @@ function checkSphereCollision(index){
 			var v3 = vec3.create();
 			var v4 = vec3.create();
 			
-			vec3.subtract(intersect, Planes[i].p1, v1);
-			vec3.subtract(intersect, Planes[i].p2, v2);
-			vec3.subtract(intersect, Planes[i].p3, v3);
-			vec3.subtract(intersect, Planes[i].p4, v4);
+			vec3.subtract(intersect, i_Plane.p1, v1);
+			vec3.subtract(intersect, i_Plane.p2, v2);
+			vec3.subtract(intersect, i_Plane.p3, v3);
+			vec3.subtract(intersect, i_Plane.p4, v4);
 			
 			vec3.normalize(v1);
 			vec3.normalize(v2);
@@ -110,11 +107,10 @@ function checkSphereCollision(index){
 					+ Math.acos(vec3.dot(v4,v1));
 					
 			var Val = Math.abs(theta - (2 * Math.PI));
-			if (Val < .001){
-				return Planes[i].normal;
+			if (Val < .001){		  
+				return vec3.negate(i_Plane.normal, vec3.create());
 			}
 		}
-	}
 	return null;
 }
 

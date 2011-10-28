@@ -12,6 +12,7 @@ LoadjsFile("Player.js");
 LoadjsFile("glMatrix.js");
 LoadjsFile("Debug.js");
 LoadjsFile("GameState.js");
+LoadjsFile("CollisionDetection.js");
 
 /******************************************************/
 /* Global Variables
@@ -114,6 +115,7 @@ function WindowLoaded()
   
   // Instantiate main player
   MainPlayer = new Player();
+  
   recordings[0] = new Record();
 
   // Load the models
@@ -258,7 +260,26 @@ function InitializeLevels()
 	Levels.push(new Level("0"));
     Levels.push(new Level("1"));
     Levels.push(new Level("2"));
-	TestLevel = Levels[2];
+	TestLevel = Levels[1];
+	
+	
+}
+
+function ResetLevel()
+{
+  // Reset the players position
+  vec3.set(TestLevel.PlayerStart_Pos, MainPlayer.pos);
+  MainPlayer.yaw = TestLevel.PlayerStart_Rotate;
+  MainPlayer.UpdateLookAt();
+  
+  // Reset the clones positions
+ 	for(var x = 0; x < turn; x++)
+ 	{
+		vec3.set(TestLevel.PlayerStart_Pos, clones[x].pos);
+		clones[x].pos[1] = 0; // place the player on the ground instead of at eye level
+		clones[x].yaw = TestLevel.PlayerStart_Rotate;
+	}
+
 }
 
 function SelectLevel(i_LevelName)
@@ -378,25 +399,17 @@ function DrawClones(){
 		mvPopMatrix();
 	}
 }
-function ResetClonePos(){
-	for(var x = 0; x < turn; x++){
-		clones[x].pos = vec3.create([0,0,0]);
-		clones[x].yaw = 0;
-	}
-}
 function EndTurn(){
 	clones[turn] = new Player();
 	turn++;
 	ResetRecordings();
-	ResetClonePos();
 	recordings[turn] = new Record();
-	MainPlayer = new Player();
+  ResetLevel();
 }
 function RestartTurn(){
 	ResetRecordings();
-	ResetClonePos();
 	recordings[turn] = new Record();
-	MainPlayer = new Player();
+	ResetLevel();
 }
 function ResetRecordings(){
 	for(var x = 0; x < turn; x++){
@@ -449,8 +462,6 @@ function Draw()
           CurrentShader.Program.Shininess_Uniform,
           30.0      
       );
-
-
   }
 	
 	
@@ -465,12 +476,10 @@ function Draw()
 	$("#CameraPos_Yaw").val(MainPlayer.yaw);
 	$("#CameraPos_Pitch").val(MainPlayer.pitch);
 	
+	
 	gl.uniform3fv(CurrentShader.Program.Camera_Position_Uniform, MainPlayer.pos);
 	//mat4.translate(mvMatrix, [-Camera_Position[0], -Camera_Position[1], -Camera_Position[2]]);
-	mat4.lookAt(MainPlayer.pos, MainPlayer.lookat, Up, mvMatrix);
-	
-	mat4.lookAt(MainPlayer.pos, MainPlayer.lookat, Up, mvMatrix);
-	
+	mat4.lookAt(MainPlayer.pos, MainPlayer.lookat, Up, mvMatrix);	
 
 	if(GameState == GAME_STATE.PLAYING || GameState == GAME_STATE.PAUSED)
 	{

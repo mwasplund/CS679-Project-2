@@ -18,15 +18,16 @@ function SetGameState_Playing()
   Debug.Trace("Play Game");
   if(GameState == GAME_STATE.START)
   {
-	$("#Menu_Start").hide("slow");
+	  $("#Menu_Start").hide("slow");
+	  ResetLevel();
   }
   else if(GameState == GAME_STATE.PAUSED)
   {
-	$("#Menu_Paused").slideUp("slow");
+	  $("#Menu_Paused").slideUp("slow");
   }
   else if(GameState == GAME_STATE.LOADING)
   {
-	$("#Menu_Loading").hide();
+  	$("#Menu_Loading").hide();
   }
   
   // Set the current state

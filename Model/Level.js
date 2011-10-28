@@ -17,14 +17,23 @@ function Level(i_num)
 	this.Draw = Level_Draw;
 	this.Name = i_num;
 	this.Objects = new Array();
+	this.CollisionPlanes = new Array();
 	
 	if(this.Name == "1")
 	{
-		this.Objects.push(new Object(new Model("W300"), [150, 0, 0],[0,0,0])); //0
-		this.Objects.push(new Object(new Model("W300"), [300, 0, -150],[0,90,0])); //0
-		this.Objects.push(new Object(new Model("W300"), [0, 0, -150],[0,90,0])); //0
-		this.Objects.push(new Object(new Model("W200"), [200, 0, -300],[0,0,0])); //0
+	  // Player start 
+	  this.PlayerStart_Pos = [10, 50, -10];
+	  this.PlayerStart_Rotate = 270;
 	
+		this.Objects.push(new Object(new Model("W300_Bricks"), [150, 0, 0],[0,0,0])); //0
+		this.CollisionPlanes.push(new Plane([0, 0, 0], [300, 0, 0], [300, 100, 0], [0, 100, 0]));
+		this.Objects.push(new Object(new Model("W300_Bricks"), [300, 0, -150],[0,90,0])); //0
+		this.CollisionPlanes.push(new Plane([300, 0, 0], [300, 0, -300], [300, 100, -300], [300, 100, 0]));
+		this.Objects.push(new Object(new Model("W300_Bricks"), [0, 0, -150],[0,90,0])); //0
+		this.CollisionPlanes.push(new Plane([0, 0, 0], [0, 0, -300], [0, 100, -300], [0, 100, 0]));
+		this.Objects.push(new Object(new Model("W200"), [200, 0, -300],[0,0,0])); //0
+	  this.CollisionPlanes.push(new Plane([100, 0, -300], [300, 0, -300], [300, 100, -300], [100, 100, -300]));
+
 	}
 	
 	if(this.Name == "2")
