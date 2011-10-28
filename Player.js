@@ -1,7 +1,6 @@
 // Constants
-
 var Player_MoveSpeed = 5;
-var Player_RotateSpeed = 4.5;
+var Player_RotateSpeed = 5;
 
 function Player(){
 	this.pos = vec3.create([0,0,0]);
