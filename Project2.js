@@ -127,7 +127,6 @@ function WindowLoaded()
   PrevTime = CurDate.getTime();
 
   // Start the gameloop
-  SetGameState_Start();
   GameLoop();
   checkGLError();
 }
@@ -232,8 +231,24 @@ function InitializeModels()
 	Models.push(new Model("Pole_Swirly"));
     TestModel = Models[0];
 	
-	
 	TitleModel = GetModel("Title");
+}
+
+/******************************************************/
+/* AreModelsLoaded
+/*
+/* This function checks if all the models are loaded
+/******************************************************/
+function AreModelsLoaded() 
+{
+	for(var i = 0; i < Models.length; i++)
+	{
+		// If we find a single model not ready then leave
+		if(!Models[i].Ready)
+			return false;
+	}
+
+	return true;
 }
 
 //Xixi, enable levels
@@ -333,11 +348,17 @@ function Update()
     {
         var elapsed = timeNow - lastTime;
         Time += elapsed / 1000.0;
-	if(GameState == GAME_STATE.PLAYING)
+		if(GameState == GAME_STATE.PLAYING)
 		{
         		recordings[turn].addSlice(MainPlayer);
 			UpdateClones();
 			MainPlayer.Update();
+		}
+		else if(GameState == GAME_STATE.LOADING)
+		{
+			// Stay in loading stat untill all the models are loaded
+			if(AreModelsLoaded())
+				  SetGameState_Start();
 		}
     }
     lastTime = timeNow;

@@ -17,7 +17,6 @@
    </div>
    
    <div id="Menu_Start">
-     <div class="Center">
 		 Welcome To Our Game!
 		 <br/>
 		 <pre>
@@ -27,8 +26,16 @@ ASWD - LEFT BACKWARD FORWARD RIGHT
 ->  ROTATE RIGHT
 		 </pre>
 		 <input type="Button" onclick="SetGameState_Playing()" value="Start"/>
+   </div>
+   
+   <div id="Menu_Paused">
+     <div class="Center">
+	 Game Paused!
+	 <br/>
+	 {Press P to <input type="Button" onclick="SetGameState_Playing()" value="Resume"/>}
 	 </div>
    </div>
+   
    
    <div id="Menu_Debug">
      Select Shader

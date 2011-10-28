@@ -15,6 +15,7 @@ var GAME_STATE =
 function SetGameState_Playing()
 {
   // Hide any menues that were in use
+  Debug.Trace("Play Game");
   if(GameState == GAME_STATE.START)
   {
 	$("#Menu_Start").hide("slow");
@@ -35,6 +36,7 @@ function SetGameState_Playing()
 function SetGameState_Paused()
 {
   // Hide any menues that were in use
+  Debug.Trace("Pause Game");
   if(GameState == GAME_STATE.START)
   {
 	$("#Menu_Start").hide("slow");
@@ -53,6 +55,7 @@ function SetGameState_Paused()
 function SetGameState_Start()
 {
   // Hide any menues that were in use
+  Debug.Trace("Start Game");
   if(GameState == GAME_STATE.PAUSED)
   {
 	$("#Menu_Paused").slideUp("slow");

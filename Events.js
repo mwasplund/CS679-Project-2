@@ -56,6 +56,9 @@
   var KEY_R = 82;
   var KEY_T = 84;
   
+  var KEY_p = 112;
+  var KEY_P = 80;
+  
   var KEY_SPACEBAR    = 32;
   var KEY_LEFT_ARROW  = 37;
   var KEY_UP_ARROW    = 38;
@@ -204,6 +207,13 @@
         case KEY_1 :
               SetDebugState(!DEBUG);             
               break;    
+		case KEY_p :
+		case KEY_p :
+			if(GameState == GAME_STATE.PLAYING)
+				SetGameState_Paused();
+			else if(GameState == GAME_STATE.PAUSED)
+				SetGameState_Playing();
+		  break;
        }
     }
   }
