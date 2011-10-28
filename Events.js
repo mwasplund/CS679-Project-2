@@ -236,6 +236,14 @@
 			else if(GameState == GAME_STATE.PAUSED)
 				SetGameState_Playing();
 		  break;
+		  
+		case KEY_SPACEBAR :
+			if(GameState == GAME_STATE.BEAT_LEVEL || 
+				GameState == GAME_STATE.START)
+			{
+				SetGameState_Playing();
+			}
+			break;
 		  case KEY_2:
 			SpherePos[2] -= step;
 		  break;

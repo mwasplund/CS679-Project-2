@@ -41,7 +41,7 @@ var recordings = new Array();
 var Up = [0,1,0];
 var CurrentShader
 var GameState;
-var TestLevel;
+var CurrentLevel;
 
 /******************************************************/
 /* InitializeWebGL

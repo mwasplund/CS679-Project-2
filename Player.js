@@ -116,11 +116,11 @@ function Player(){
 		if(Changed)
 		{	
 		  // Check if this player has hit a wall
-		  for(var k = 0; k < TestLevel.CollisionPlanes.length; k++)
+		  for(var k = 0; k < CurrentLevel.CollisionPlanes.length; k++)
 		  {
-		    if(TestLevel.CollisionPlanes[k].enabled)
+		    if(CurrentLevel.CollisionPlanes[k].enabled)
 		    {
-      		var CollisionDirection = checkSpherePlaneCollision(this.boundingSphere, TestLevel.CollisionPlanes[k]);
+      		var CollisionDirection = checkSpherePlaneCollision(this.boundingSphere, CurrentLevel.CollisionPlanes[k]);
       		
       		if(CollisionDirection != null)
       		{
@@ -130,7 +130,7 @@ function Player(){
             var Parallel = vec3.cross(CollisionDirection, [0,1,0], vec3.create());
             vec3.normalize(Parallel);
             var Amount = -vec3.dot(Parallel, this.dir);
-            $("#Collision").val("HIT: " + vec3.str(Parallel));
+            $("#Collision").val("HIT: Wall - " + k);
             // Move in new direction
             vec3.scale(Parallel, Amount);
             vec3.add(PreviousPos, Parallel, this.pos);
@@ -145,7 +145,7 @@ function Player(){
     
     
     // Check if this player had touched a switch
-      TestLevel.CheckSwitches(this.boundingSphere);
+      CurrentLevel.CheckSwitches(this.boundingSphere);
 	}
 	
 	this.UpdateLookAt = function()

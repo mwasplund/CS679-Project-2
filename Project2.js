@@ -24,7 +24,6 @@ var Canvas;
 var Timer;
 var PrevTime;
 var DEBUG = false;
-var TestModel;
 var ClearColor = [0.0, 0.0, 0.0];
 var Models = new Array();
 var Shaders = new Array();
@@ -41,7 +40,8 @@ var recordings = new Array();
 var Up = [0,1,0];
 var CurrentShader
 var GameState;
-var TestLevel;
+var CurrentLevel;
+var CloneModel;
 
 /******************************************************/
 /* InitializeWebGL
@@ -224,15 +224,30 @@ function GameLoop()
 function InitializeModels() 
 {
     Models.push(new Model("Brick_Block"));
-    Models.push(new Model("Test"));
-    Models.push(new Model("TestCube"));
-    Models.push(new Model("Title"));
-    Models.push(new Model("Sword"));
     Models.push(new Model("Human"));
-	Models.push(new Model("Pole_Swirly"));
-    TestModel = Models[0];
-	
+    Models.push(new Model("Plane"));
+    Models.push(new Model("Pole_Swirly"));
+    Models.push(new Model("Sphere"));
+    Models.push(new Model("Sword"));
+    Models.push(new Model("Test"));
+	Models.push(new Model("TestCube"));
+	Models.push(new Model("Title"));
+	Models.push(new Model("Unit_Radius_Sphere"));
+	Models.push(new Model("W100"));
+	Models.push(new Model("W1000_Black"));
+	Models.push(new Model("W100_Bricks_Exit"));
+	Models.push(new Model("W150"));
+	Models.push(new Model("W200"));
+	Models.push(new Model("W200_Bricks"));
+	Models.push(new Model("W300"));
+	Models.push(new Model("W300_Bricks"));
+	Models.push(new Model("W50"));
+	Models.push(new Model("W600"));
+	Models.push(new Model("W70"));
+	Models.push(new Model("W700"));
+
 	TitleModel = GetModel("Title");
+	CloneModel = GetModel("Pole_Swirly");
 }
 
 /******************************************************/
@@ -246,37 +261,33 @@ function AreModelsLoaded()
 	{
 		// If we find a single model not ready then leave
 		if(!Models[i].Ready)
+		{
+			$("#Collision").val(Models[i].Name);
 			return false;
+		}
 	}
 
 	return true;
 }
 
-//Xixi, enable levels
-var Levels = new Array();
 function InitializeLevels() 
 {
-	Levels.push(new Level("0"));
-    Levels.push(new Level("1"));
-    Levels.push(new Level("2"));
-	TestLevel = Levels[1];
-	
-	
+	CurrentLevel = new Level(1);
 }
 
 function ResetLevel()
 {
   // Reset the players position
-  vec3.set(TestLevel.PlayerStart_Pos, MainPlayer.pos);
-  MainPlayer.yaw = TestLevel.PlayerStart_Rotate;
+  vec3.set(CurrentLevel.PlayerStart_Pos, MainPlayer.pos);
+  MainPlayer.yaw = CurrentLevel.PlayerStart_Rotate;
   MainPlayer.UpdateLookAt();
   
   // Reset the clones positions
  	for(var x = 0; x < turn; x++)
  	{
-		vec3.set(TestLevel.PlayerStart_Pos, clones[x].pos);
+		vec3.set(CurrentLevel.PlayerStart_Pos, clones[x].pos);
 		//clones[x].pos[1] = 0; // place the player on the ground instead of at eye level
-		clones[x].yaw = TestLevel.PlayerStart_Rotate;
+		clones[x].yaw = CurrentLevel.PlayerStart_Rotate;
 	}
 
 }
@@ -287,13 +298,13 @@ function SelectLevel(i_LevelName)
 	{
 		if(Levels[k].Name == i_LevelName)
 		{
-			TestLevel = Levels[k];
+			CurrentLevel = Levels[k];
 			return;
-			Debug.Trace("TestLevel "+ TestLevel);
+			Debug.Trace("CurrentLevel "+ CurrentLevel);
 			Debug.Trace("k" + k);
 		}
 	}
-	//Debug.Trace("TestLevel "+ TestLevel);
+	//Debug.Trace("CurrentLevel "+ CurrentLevel);
 	//Debug.Trace("k" + k);
 }
 //End of levels
@@ -370,10 +381,16 @@ function Update()
         Time += elapsed / 1000.0;
 		if(GameState == GAME_STATE.PLAYING)
 		{
-		  TestLevel.ClearSwitches();
-      recordings[turn].addSlice(MainPlayer);
+		  CurrentLevel.ClearSwitches();
+           recordings[turn].addSlice(MainPlayer);
 			UpdateClones();
 			MainPlayer.Update();
+			
+			// Check if the player has hit the exit
+			if(checkSpherePlaneCollision(MainPlayer.boundingSphere, CurrentLevel.ExitPlane) != null)
+			{
+				SetGameState_Beat_Level();	
+			}
 		}
 		else if(GameState == GAME_STATE.LOADING)
 		{
@@ -398,7 +415,7 @@ function DrawClones(){
 		mat4.translate(mvMatrix, clones[x].pos);
 		clones[x].pos[1]+=50;
 		mat4.rotate(mvMatrix, degToRad(clones[x].yaw)*-1, [0,1,0]);
-		Models[6].Draw();	
+		CloneModel.Draw();	
 		mvPopMatrix();
 	}
 }
@@ -484,12 +501,8 @@ function Draw()
 	//mat4.translate(mvMatrix, [-Camera_Position[0], -Camera_Position[1], -Camera_Position[2]]);
 	mat4.lookAt(MainPlayer.pos, MainPlayer.lookat, Up, mvMatrix);	
 
-	if(GameState == GAME_STATE.PLAYING || GameState == GAME_STATE.PAUSED)
-	{
-		TestLevel.Draw(CurrentShader.Program);
-		DrawClones(CurrentShader.Program);
-	}
-	else if(GameState == GAME_STATE.START)
+	
+	if(GameState == GAME_STATE.START)
 	{
 		mvPushMatrix();
 		mat4.translate(mvMatrix, [0,-10,100]);
@@ -497,6 +510,11 @@ function Draw()
 		var TimeTest = GetShader("TimeTest");
 		TitleModel.Draw(CurrentShader.Program);
 		mvPopMatrix();
+	}
+	else if(GameState == GAME_STATE.PLAYING || GameState == GAME_STATE.PAUSED || GameState == GAME_STATE.BEAT_LEVEL)
+	{
+		CurrentLevel.Draw(CurrentShader.Program);
+		DrawClones(CurrentShader.Program);
 	}
 
 }
