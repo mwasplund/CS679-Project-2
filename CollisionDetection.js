@@ -1,13 +1,13 @@
 var Spheres = new Array();
 var Planes = new Array();
 
-function Sphere(pos, radius){
+function CreateSphere(pos, radius){
 	this.pos = pos;
 	this.radius = radius;
-	return Spheres.push(this)
+	return Spheres.push(this) - 1;
 }
 
-function Plane(p1, p2, p3, p4){
+function CreatePlane(p1, p2, p3, p4){
 	this.p1 = p1;
 	this.p2 = p2;
 	this.p3 = p3;
@@ -20,16 +20,17 @@ function Plane(p1, p2, p3, p4){
 	vec3.subtract(p2, p1, pv1);
 	vec3.subtract(p3, p2, pv2);
 	
-	vec3.cross(pv1, pv2, normal);
-	vec3.normalize(normal);
-	this.d = -vec3.dot(p1,normal);
-	
-{
+	vec3.cross(pv1, pv2, this.normal);
+	vec3.normalize(this.normal);
+	this.d;
+	this.d = -vec3.dot(p1,this.normal);
+	return Planes.push(this) - 1;
+}
 
 function checkSphereCollision(index){
 	var center = Spheres[index].pos;
 	var point = vec3.create();
-	var point2;
+	var point2 = vec3.create();
 	var centerLoc;
 	var pointLoc;
 	var ray = vec3.create();
@@ -44,11 +45,16 @@ function checkSphereCollision(index){
 		centerPos = fbc(centerLoc);
 		pointPos = fbc(pointLoc);
 		point2Pos = fbc(point2Loc);
+		/*if(pointPos != centerPos || point2Pos != centerPos){
+			return true;
+		}*/
 		if (pointPos != centerPos){
 			//For a hyperplane, return true;
-			ray = Planes[i].normal; //this part may be completely ass backward
+
+			vec3.set(Planes[i].normal, ray); //this part may be completely ass backward
 			var t = - (Planes[i].d + vec3.dot(Planes[i].normal, center)) / vec3.dot(Planes[i].normal, ray);
-			var intersect = vec3.add(center,vec3.scale(ray, t));
+			var intersect = vec3.create();
+			vec3.add(center,vec3.scale(ray, t), intersect);
 			
 			var v1 = vec3.create();
 			var v2 = vec3.create();
@@ -69,16 +75,18 @@ function checkSphereCollision(index){
 					+ Math.acos(vec3.dot(v2,v3))
 					+ Math.acos(vec3.dot(v3,v4))
 					+ Math.acos(vec3.dot(v4,v1));
-					
-			if (Math.abs(theta - (2 * Math.PI) < .1){
-				return true;
+			var Val = Math.abs(theta - (2 * Math.PI));
+			if (Val < .001){
+				return Planes[i].normal;
 			}
 			
 		}
-		if (point2Pos != centerPos){
+		else if (point2Pos != centerPos){
+
 			vec3.negate(Planes[i].normal, ray); //Might be fucked
 			var t = - (Planes[i].d + vec3.dot(Planes[i].normal, center)) / vec3.dot(Planes[i].normal, ray);
-			var intersect = center + (vec3.scale(ray, t));
+			var intersect = vec3.create();
+			vec3.add(center, vec3.scale(ray, t), intersect);
 			
 						
 			var v1 = vec3.create();
@@ -101,13 +109,13 @@ function checkSphereCollision(index){
 					+ Math.acos(vec3.dot(v3,v4))
 					+ Math.acos(vec3.dot(v4,v1));
 					
-			if (Math.abs(theta - (2 * Math.PI) < .1){
-				return true;
+			var Val = Math.abs(theta - (2 * Math.PI));
+			if (Val < .001){
+				return Planes[i].normal;
 			}
 		}
-		
 	}
-	return false;
+	return null;
 }
 
 function fbc(val){
@@ -117,4 +125,5 @@ function fbc(val){
 	if (val < 0){
 		val = -1;
 	}
+	return val;
 }

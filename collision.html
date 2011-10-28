@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>CS679 | Project 2</title>
+  <meta name="description" content="Home Page" />
+  <meta name="keywords" content="asplund,mwasplund,wisconsin,wausau,madison,matthew,home,philisawesome" />
+  <link href="Project2.css" rel="stylesheet" type="text/css">
+  <script type="text/javascript" src="Helper.js"></script>
+  <script type="text/javascript" src="CollisionTest.js"></script>
+  <script type="text/javascript" src="jquery.js"></script>
+  <script type="text/javascript" src="CollisionDetection.js"></script>
+</head>
+<body>
+   <canvas id='CanvasOne'>Your browser does not support HTML5.</canvas>
+   
+   
+      <div id="Menu_Debug">
+	  COLLISION <input type="text"  id="CollisionText"/><br/>
+     Select Shader
+   	<select id="SelectShader" onchange="SelectShader(this.options[this.selectedIndex].value)">
+   		<option value="PerFragmentLighting">Per Fragment Lighting</option>
+   		<option value="PerVertexLighting">Per Vertex Lighting</option>
+   		<option value="TimeTest">Time Test</option>
+		<option value="InvisoShader">Inviso-Shader</option>
+   	</select>
+   	<br/>
+   	Select Model
+   	   <select id="SelectModel" onchange="SelectModel(this.options[this.selectedIndex].value)">
+   		<option value="Brick_Block">Brick_Block</option>
+   		<option value="Test">Test</option>   		
+   		<option value="TestCube">TestCube</option>
+   		<option value="Title">Title</option>
+   		<option value="Sword">Sword</option>   
+   		<option value="Human">Human</option>  
+        <option value="Pole_Swirly">Pole_Swirly</option>
+   	</select>
+    <br/>
+	Select Levels
+    <select id="SelectLevel" onchange="SelectLevel(this.options[this.selectedIndex].value)">
+    	<option value="0">0</option>
+   		<option value="1">1</option>
+   		<option value="2">2</option>   		
+   	</select>
+   	<br/>
+   	Clear Color: 
+   	R<input type="text" class="Color" onchange="SetClearColor_Red(parseFloat(this.value))" value="0.0"/>
+   	G<input type="text" class="Color" onchange="SetClearColor_Blue(parseFloat(this.value))" value="0.0"/>
+   	B<input type="text" class="Color" onchange="SetClearColor_Green(parseFloat(this.value))" value="0.0"/>
+    <br/>
+    Player <br/>
+    Pos: 
+    X<input type="text" class="Color" id="CameraPos_X" disabled="disabled" onchange="SetCameraPosition_X(parseFloat(this.value))" value="0.0"/>
+   	Y<input type="text" class="Color" id="CameraPos_Y" disabled="disabled" onchange="SetCameraPosition_Y(parseFloat(this.value))" value="0.0"/>
+   	Z<input type="text" class="Color" id="CameraPos_Z" disabled="disabled" onchange="SetCameraPosition_Z(parseFloat(this.value))" value="0.0"/>
+    <br/>
+    yaw: <input type="text" class="Color" id="CameraPos_Yaw" disabled="disabled" />
+    pitch: <input type="text" class="Color" id="CameraPos_Pitch" disabled="disabled" />
+  </div>
+</body>
+</html>

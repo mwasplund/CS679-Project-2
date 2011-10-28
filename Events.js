@@ -48,6 +48,15 @@
   }
   
   var KEY_1 = 49;
+  var KEY_2 = 50;
+  var KEY_3 = 51;
+  var KEY_4 = 52;
+  var KEY_5 = 53;
+  var KEY_6 = 54;
+  var KEY_7 = 55;
+  var KEY_8 = 56;
+  var KEY_9 = 57;
+  
   
   var KEY_A = 65;
   var KEY_S = 83;
@@ -206,6 +215,7 @@
   //
   // Listen for Keyboard events
   ///////////////////////////////////////////////////////////////////
+  var step = 0.1;
   function KeyPress(e)
   {
     e = e ? e : ((window.event) ? event : null);
@@ -225,6 +235,24 @@
 				SetGameState_Paused();
 			else if(GameState == GAME_STATE.PAUSED)
 				SetGameState_Playing();
+		  break;
+		  case KEY_2:
+			SpherePos[2] -= step;
+		  break;
+		 case KEY_4:
+			SpherePos[0] -= step;
+		  break;
+		  case KEY_6:
+			SpherePos[0] += step;
+		  break;
+		  case KEY_8:
+			SpherePos[2] += step;
+		  break;
+		  case KEY_7:
+			SpherePos[1] -= step;
+		  break;
+		  case KEY_9:
+			SpherePos[1] += step;
 		  break;
        }
     }
