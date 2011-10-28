@@ -271,6 +271,7 @@ function SelectLevel(i_LevelName)
 /******************************************************/
 function InitializeShaders() 
 {
+    Shaders.push(LoadShader("whitey"));
     Shaders.push(LoadShader("PerFragmentLighting"));
     Shaders.push(LoadShader("PerVertexLighting"));
     Shaders.push(LoadShader("TimeTest"));
@@ -340,19 +341,33 @@ function Update()
 function UpdateClones(){
 	for(var x = 0; x < turn; x++){
 		clones[x].updateStateWith(recordings[x].playNextSlice());	
+		if(!clones[x].dead) clones[x].Update();
+	}
+}
+function DrawClones(){
+	for(var x = 0; x < turn; x++){
+		mvPushMatrix();	
+		mat4.translate(mvMatrix, [clones[x].pos[0], clones[x].pos[1], clones[x].pos[2]]);
+		Models[0].Draw();	
+		mvPopMatrix();
+	}
+}
+function ResetClonePos(){
+	for(var x = 0; x < turn; x++){
+		clones[x].pos = vec3.create([0,0,0]);
 	}
 }
 function EndTurn(){
-	Debug.Trace("bananas");
-	ResetRecordings();
 	clones[turn] = new Player();
 	turn++;
+	ResetRecordings();
+	ResetClonePos();
 	recordings[turn] = new Record();
 	MainPlayer = new Player();
 }
 function RestartTurn(){
-	Debug.Trace("alphabet");
 	ResetRecordings();
+	ResetClonePos();
 	recordings[turn] = new Record();
 	MainPlayer = new Player();
 }
@@ -433,4 +448,5 @@ function Draw()
 	//mat4.rotate(mvMatrix, degToRad(rCube), [1, 1, 1]);
 	TestModel.Draw();
 	mvPopMatrix();
+	DrawClones();
 }
