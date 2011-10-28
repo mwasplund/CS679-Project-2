@@ -381,6 +381,7 @@ function DrawClones(){
 function ResetClonePos(){
 	for(var x = 0; x < turn; x++){
 		clones[x].pos = vec3.create([0,0,0]);
+		clones[x].yaw = 0;
 	}
 }
 function EndTurn(){
