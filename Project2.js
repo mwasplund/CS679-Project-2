@@ -34,6 +34,9 @@ var lastTime = 0;
 var Time = 0;
 var Light0_Enabled = true;
 var MainPlayer;
+var turn = 0;
+var clones = new Array();
+var recordings = new Array();
 var Up = [0,1,0];
 var CurrentShader
 var GameState;
@@ -108,8 +111,11 @@ function WindowLoaded()
   // Check window size initially
   UpdateWindowSize();
   
-  // Load the models
+  // Instantiate main player
   MainPlayer = new Player();
+  recordings[0] = new Record();
+
+  // Load the models
   InitializeModels();
   
   //Load levels
@@ -314,9 +320,9 @@ function mvPopMatrix()
 }
     
 /******************************************************/
-/* animate
+/* Update
 /*
-/* Animate the test model... This should be removed...
+/* Update movement of Player/Clones
 /******************************************************/
 function Update() 
 {
@@ -325,11 +331,35 @@ function Update()
     {
         var elapsed = timeNow - lastTime;
         Time += elapsed / 1000.0;
-        
+        recordings[turn].addSlice(MainPlayer);
+	UpdateClones();
         MainPlayer.Update();
-
     }
     lastTime = timeNow;
+}
+function UpdateClones(){
+	for(var x = 0; x < turn; x++){
+		clones[x].updateStateWith(recordings[x].playNextSlice());	
+	}
+}
+function EndTurn(){
+	Debug.Trace("bananas");
+	ResetRecordings();
+	clones[turn] = new Player();
+	turn++;
+	recordings[turn] = new Record();
+	MainPlayer = new Player();
+}
+function RestartTurn(){
+	Debug.Trace("alphabet");
+	ResetRecordings();
+	recordings[turn] = new Record();
+	MainPlayer = new Player();
+}
+function ResetRecordings(){
+	for(var x = 0; x < turn; x++){
+		recordings[x].resetP();
+	}
 }
 
 

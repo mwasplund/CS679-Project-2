@@ -54,8 +54,9 @@
   var KEY_D = 68;
   var KEY_W = 87;
   var KEY_P = 80;
-  
   var KEY_p = 112;
+  var KEY_R = 82;
+  var KEY_T = 84;
   
   var KEY_SPACEBAR    = 32;
   var KEY_LEFT_ARROW  = 37;
@@ -120,6 +121,12 @@
               break;    
           case KEY_S :
               MainPlayer.mBackward = true;
+              break;    
+          case KEY_T :
+              RestartTurn();
+              break;    
+          case KEY_R :
+              EndTurn();
               break;    
           case KEY_LEFT_ARROW :
               MainPlayer.rLeft = true;              

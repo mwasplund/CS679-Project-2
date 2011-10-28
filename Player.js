@@ -117,6 +117,19 @@ function Player(){
  		  vec3.add(this.pos, [Math.sin(Percent_Yaw), 0, Math.cos(Percent_Yaw)], this.lookat);
  		}
 	}
+
+	this.updateStateWith = function(p)
+	{
+		this.rRight = p.rRight;
+		this.rLeft = p.rLeft;
+		this.rUp = p.rUp;
+		this.rDown = p.rDown;
+		this.mForward = p.mForward;
+		this.mBackward = p.mBackward;
+		this.mLeft = p.mLeft;
+		this.mRight = p.mRight;
+		this.jump = p.jump;
+	}
 }
 
 //Pass in position, velocity, and time shot
