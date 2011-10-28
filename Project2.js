@@ -437,13 +437,9 @@ function Draw()
 	$("#CameraPos_Z").val(MainPlayer.pos[2]);
 	$("#CameraPos_Yaw").val(MainPlayer.yaw);
 	$("#CameraPos_Pitch").val(MainPlayer.pitch);
-<<<<<<< HEAD
-<<<<<<< HEAD
 	
-=======
 	gl.uniform3fv(CurrentShader.Program.Camera_Position_Uniform, MainPlayer.pos);
 	//mat4.translate(mvMatrix, [-Camera_Position[0], -Camera_Position[1], -Camera_Position[2]]);
->>>>>>> parent of 082ae28... whatthefuck
 	mat4.lookAt(MainPlayer.pos, MainPlayer.lookat, Up, mvMatrix);
 	
 	//Debug.Trace(TestLevel.Name);
@@ -454,14 +450,9 @@ function Draw()
 	TestModel.Draw();
 	mvPopMatrix();
 	DrawClones();
-<<<<<<< HEAD
-=======
 	
 	mat4.lookAt(MainPlayer.pos, MainPlayer.lookat, Up, mvMatrix);
 	
 	//Debug.Trace(TestLevel.Name);
->>>>>>> 80e69856daaaaa8fc8847d40816052a9081b1d85
 	TestLevel.Draw(CurrentShader.Program);
-=======
->>>>>>> parent of 082ae28... whatthefuck
 }
