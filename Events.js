@@ -47,17 +47,25 @@
     UpdateWindowSize();
   }
   
+  var KEY_1 = 49;
   
   var KEY_A = 65;
   var KEY_S = 83;
   var KEY_D = 68;
   var KEY_W = 87;
+  var KEY_R = 82;
+  var KEY_T = 84;
+  
+  var KEY_p = 112;
+  var KEY_P = 80;
   
   var KEY_SPACEBAR    = 32;
   var KEY_LEFT_ARROW  = 37;
   var KEY_UP_ARROW    = 38;
   var KEY_RIGHT_ARROW = 39;
   var KEY_DOWN_ARROW  = 40;
+  var KEY_PAGE_UP     = 33;
+  var KEY_PAGE_DOWN   = 34;
  
   var KEY_LEFT_ARROW_PRESSED  = false;
   var KEY_RIGHT_ARROW_PRESSED = false;
@@ -117,6 +125,12 @@
           case KEY_S :
               MainPlayer.mBackward = true;
               break;    
+          case KEY_T :
+              RestartTurn();
+              break;    
+          case KEY_R :
+              EndTurn();
+              break;    
           case KEY_LEFT_ARROW :
               MainPlayer.rLeft = true;              
               break;    
@@ -128,7 +142,17 @@
               break;    
           case KEY_DOWN_ARROW :
               MainPlayer.rDown = true;
-              break;    
+              break; 
+			  
+		 case KEY_PAGE_UP :
+              MainPlayer.pos[1] += 2;
+			  MainPlayer.lookat[1] += 2;
+              break;
+			  
+		 case KEY_PAGE_DOWN :
+              MainPlayer.pos[1] += -2;
+			  MainPlayer.lookat[1] -= 2;
+              break;
        }
     }
   }
@@ -177,12 +201,39 @@
     }
   }
 
-
-
   ///////////////////////////////////////////////////////////////////
-  // KeyUp
+  // KeyPress
   //
   // Listen for Keyboard events
+  ///////////////////////////////////////////////////////////////////
+  function KeyPress(e)
+  {
+    e = e ? e : ((window.event) ? event : null);
+    if(e) 
+    {
+      var Unicode = e.charCode? e.charCode : e.keyCode;
+      Debug.Trace("Key = " + Unicode);
+      
+      switch(Unicode) 
+      {
+        case KEY_1 :
+              SetDebugState(!DEBUG);             
+              break;    
+		case KEY_p :
+		case KEY_p :
+			if(GameState == GAME_STATE.PLAYING)
+				SetGameState_Paused();
+			else if(GameState == GAME_STATE.PAUSED)
+				SetGameState_Playing();
+		  break;
+       }
+    }
+  }
+
+  ///////////////////////////////////////////////////////////////////
+  // MouseWheel
+  //
+  // Listen for Mouse events
   ///////////////////////////////////////////////////////////////////
   function MouseWheel(e)
   {
