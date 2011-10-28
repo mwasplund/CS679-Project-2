@@ -272,11 +272,11 @@ function SelectLevel(i_LevelName)
 /******************************************************/
 function InitializeShaders() 
 {
-    Shaders.push(LoadShader("whitey"));
     Shaders.push(LoadShader("PerFragmentLighting"));
     Shaders.push(LoadShader("PerVertexLighting"));
     Shaders.push(LoadShader("TimeTest"));
     Shaders.push(LoadShader("InvisoShader"));
+    Shaders.push(LoadShader("whitey"));
     CurrentShader = Shaders[0];
 }
 
@@ -333,9 +333,9 @@ function Update()
     {
         var elapsed = timeNow - lastTime;
         Time += elapsed / 1000.0;
-        recordings[turn].addSlice(MainPlayer);
-		  if(GameState == GAME_STATE.PLAYING)
+	if(GameState == GAME_STATE.PLAYING)
 		{
+        		recordings[turn].addSlice(MainPlayer);
 			UpdateClones();
 			MainPlayer.Update();
 		}
@@ -449,11 +449,6 @@ function Draw()
 	//Debug.Trace(TestLevel.Name);
 	TestLevel.Draw();
 	
-	mvPushMatrix();
-	//mat4.rotate(mvMatrix, degToRad(rCube), [1, 1, 1]);
-	TestModel.Draw();
-	mvPopMatrix();
-	DrawClones();
 	
 	mat4.lookAt(MainPlayer.pos, MainPlayer.lookat, Up, mvMatrix);
 	
@@ -461,6 +456,7 @@ function Draw()
 	if(GameState == GAME_STATE.PLAYING || GameState == GAME_STATE.PAUSED)
 	{
 		TestLevel.Draw(CurrentShader.Program);
+		DrawClones();
 	}
 	else if(GameState == GAME_STATE.START)
 	{
