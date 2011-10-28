@@ -53,8 +53,6 @@
   var KEY_S = 83;
   var KEY_D = 68;
   var KEY_W = 87;
-  var KEY_P = 80;
-  var KEY_p = 112;
   var KEY_R = 82;
   var KEY_T = 84;
   
@@ -205,19 +203,7 @@
       {
         case KEY_1 :
               SetDebugState(!DEBUG);             
-              break; 
-		case KEY_p :
-			if(GameState == GAME_STATE.PLAYING)
-				SetGameState_Paused();
-			else if(GameState == GAME_STATE.PAUSED) 
-				SetGameState_Playing();
-            break;	
-		case KEY_P :
-            if(GameState == GAME_STATE.PLAYING)
-				SetGameState_Paused();    
-			else if(GameState == GAME_STATE.PAUSED) 
-				SetGameState_Playing();
-            break;				  
+              break;    
        }
     }
   }

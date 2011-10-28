@@ -13,27 +13,19 @@
    <canvas id='CanvasOne' width='700' height='700'>Your browser does not support HTML5.</canvas>
    
    <div id="Menu_Start">
+     <div class="Center">
 		 Welcome To Our Game!
 		 <br/>
 		 <pre>
 Controls:
 ASWD - LEFT BACKWARD FORWARD RIGHT
-<-  Rotate Left
-->  Rotate Right
-R - Record
-T - Try Again
+<-  ROTATE LEFT
+->  ROTATE RIGHT
 		 </pre>
 		 <input type="Button" onclick="SetGameState_Playing()" value="Start"/>
-   </div>
-  
-   <div id="Menu_Paused">
-     <div class="Center">
-		 Game Paused!
-		 <br/>
-		 [Press P to <input type="Button" onclick="SetGameState_Playing()" value="Resume"/>]
 	 </div>
    </div>
-  
+   
    <div id="Menu_Debug">
      Select Shader
    	<select id="SelectShader" onchange="SelectShader(this.options[this.selectedIndex].value)">

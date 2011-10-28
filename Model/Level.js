@@ -9,14 +9,14 @@ function Level(i_num)
 	this.Name = i_num;
 }
 
-function Level_Draw(i_ShaderProgram)
+function Level_Draw()
 {
 	//Debug.Trace("LevelDraw");
 	if (this.Name == "0")
 	{
 		mvPushMatrix();
 		mat4.translate(mvMatrix,  [1, 1, 1]);
-		TestModel.Draw(i_ShaderProgram);
+		TestModel.Draw();
 		mvPopMatrix();
 	}
 	
@@ -25,7 +25,7 @@ function Level_Draw(i_ShaderProgram)
 		var WallModel = new Model("Wall");
 		mvPushMatrix();
 		mat4.translate(mvMatrix,  [1, 1, 1]);
-		WallModel.Draw(i_ShaderProgram);
+		WallModel.Draw();
 		mvPopMatrix();
 		
 	}
