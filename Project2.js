@@ -352,7 +352,8 @@ function DrawClones(){
 	for(var x = 0; x < turn; x++){
 		mvPushMatrix();	
 		mat4.translate(mvMatrix, [clones[x].pos[0], clones[x].pos[1], clones[x].pos[2]]);
-		Models[0].Draw();	
+		mat4.rotate(mvMatrix, degToRad(clones[x].yaw)*-1, [0,1,0]);
+		Models[6].Draw();	
 		mvPopMatrix();
 	}
 }
@@ -445,10 +446,6 @@ function Draw()
 	gl.uniform3fv(CurrentShader.Program.Camera_Position_Uniform, MainPlayer.pos);
 	//mat4.translate(mvMatrix, [-Camera_Position[0], -Camera_Position[1], -Camera_Position[2]]);
 	mat4.lookAt(MainPlayer.pos, MainPlayer.lookat, Up, mvMatrix);
-	
-	//Debug.Trace(TestLevel.Name);
-	TestLevel.Draw();
-	
 	
 	mat4.lookAt(MainPlayer.pos, MainPlayer.lookat, Up, mvMatrix);
 	
