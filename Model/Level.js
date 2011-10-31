@@ -42,8 +42,18 @@ function Level(i_num)
 		this.CollisionPlanes.push(new Plane([0, 0, 0], [0, 0, -300], [0, 100, -300], [0, 100, 0]));
 		this.Objects.push(new Object(GetModel("W200_Bricks"), [200, 0, -300],[0,0,0])); //0
 	  this.CollisionPlanes.push(new Plane([100, 0, -300], [300, 0, -300], [300, 100, -300], [100, 100, -300]));
+   
+    // Add the floor and roof
+    this.Objects.push(new Object(GetModel("F300_300_Bricks"), [150,0,-150], [0,0,0]));
+    this.Objects.push(new Object(GetModel("F300_300_Bricks"), [150,100,-150], [0,0,0]));
 
-    
+
+    // Add some pretty lamps
+    this.Objects.push(new Object(GetModel("Lamp"), [5,50,-5], [0,0,0]));
+    this.Objects.push(new Object(GetModel("Lamp"), [300-5,50,-5], [0,0,0]));
+    this.Objects.push(new Object(GetModel("Lamp"), [5,50,-300+5], [0,0,0]));
+    this.Objects.push(new Object(GetModel("Lamp"), [300-5,50,-300+5], [0,0,0]));
+
 
     this.Switches.push(new SwitchPad(
       new Object(GetModel("Brick_Block"), [200, 0, -200], [0,0,0]),

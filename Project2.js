@@ -223,13 +223,15 @@ function GameLoop()
 /******************************************************/
 function InitializeModels() 
 {
-    Models.push(new Model("Brick_Block"));
-    Models.push(new Model("Human"));
-    Models.push(new Model("Plane"));
-    Models.push(new Model("Pole_Swirly"));
-    Models.push(new Model("Sphere"));
-    Models.push(new Model("Sword"));
-    Models.push(new Model("Test"));
+  Models.push(new Model("Brick_Block"));
+  Models.push(new Model("F300_300_Bricks"));
+  Models.push(new Model("Human"));
+  Models.push(new Model("Lamp"));
+  Models.push(new Model("Plane"));
+  Models.push(new Model("Pole_Swirly"));
+  Models.push(new Model("Sphere"));
+  Models.push(new Model("Sword"));
+  Models.push(new Model("Test"));
 	Models.push(new Model("TestCube"));
 	Models.push(new Model("Title"));
 	Models.push(new Model("Unit_Radius_Sphere"));
@@ -245,7 +247,8 @@ function InitializeModels()
 	Models.push(new Model("W600"));
 	Models.push(new Model("W70"));
 	Models.push(new Model("W700"));
-
+  
+  
 	TitleModel = GetModel("Title");
 	CloneModel = GetModel("Pole_Swirly");
 }

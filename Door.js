@@ -17,13 +17,13 @@ function Door(i_Object, i_CollisionPlane){
 	  if(this.isOpen)
 	  {
 		  gl.enable(gl.BLEND);
-		  gl.disable(gl.DEPTH_TEST);
+		  //gl.disable(gl.DEPTH_TEST);
 		}
 		  
 		this.object.Draw();
 		
 		gl.disable(gl.BLEND);
-		gl.enable(gl.DEPTH_TEST);
+		//gl.enable(gl.DEPTH_TEST);
 
 	}
 }

@@ -222,7 +222,7 @@
     if(e) 
     {
       var Unicode = e.charCode? e.charCode : e.keyCode;
-      Debug.Trace("Key = " + Unicode);
+      //Debug.Trace("Key = " + Unicode);
       
       switch(Unicode) 
       {

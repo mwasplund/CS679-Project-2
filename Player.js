@@ -25,11 +25,11 @@ function Player(){
 
 	this.duplicate = function(){
 		var dup = new Player();
-		dup.pos = vec3.create([this.pos[0], this.pos[1], this.pos[2]]);
-		dup.lookat = vec3.create([this.lookat[0], this.lookat[1], this.lookat[2]]);
-		dup.dir = vec3.create([this.dir[0], this.dir[1], this.dir[2]]);
-		dup.dir_Up = vec3.create([this.dir_Up[0], this.dir_Up[1], this.dir_Up[2]]);
-		dup.pos_Up =vec3.create([this.pos_Up[0], this.pos_Up[1], this.pos_Up[2]]);
+		vec3.set(this.pos, dup.pos);
+		vec3.set(this.lookat, dup.lookat);
+		vec3.set(this.dir, dup.dir);
+		vec3.set(this.dir_Up, dup.dir_Up);
+		vec3.set(this.pos_Up, dup.pos_Up);
 		dup.yaw = this.yaw;
 		dup.pitch = this.pitch; 
 		dup.rRight = this.rRight;
