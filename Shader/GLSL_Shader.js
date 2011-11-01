@@ -86,8 +86,15 @@ function GLSL_AttachShaderProgram(i_Shader)
     i_Shader.Program.Time_Uniform             = gl.getUniformLocation(i_Shader.Program, "uTime");
     i_Shader.Program.Texture0_Enabled_Uniform = gl.getUniformLocation(i_Shader.Program, "uTexture0_Enabled");
     
+    // Lighting Variables
     i_Shader.Program.Light0_Enabled_Uniform   = gl.getUniformLocation(i_Shader.Program, "uLight0_Enabled");  
     i_Shader.Program.Light0_Position_Uniform  = gl.getUniformLocation(i_Shader.Program, "uLight0_Position");
+    i_Shader.Program.Light0_Color_Uniform     = gl.getUniformLocation(i_Shader.Program, "uLight0_Color");
+    
+    i_Shader.Program.Light1_Enabled_Uniform   = gl.getUniformLocation(i_Shader.Program, "uLight1_Enabled");  
+    i_Shader.Program.Light1_Position_Uniform  = gl.getUniformLocation(i_Shader.Program, "uLight1_Position");
+    i_Shader.Program.Light1_Color_Uniform     = gl.getUniformLocation(i_Shader.Program, "uLight1_Color");
+
     i_Shader.Program.Camera_Position_Uniform  = gl.getUniformLocation(i_Shader.Program, "uCameraPosition");
     i_Shader.Program.AmbientColor_Uniform     = gl.getUniformLocation(i_Shader.Program, "uAmbientColor");
     i_Shader.Program.DiffuseColor_Uniform     = gl.getUniformLocation(i_Shader.Program, "uDiffuseColor");

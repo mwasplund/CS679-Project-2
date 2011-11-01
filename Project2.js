@@ -33,6 +33,8 @@ var mvMatrixStack = [];
 var lastTime = 0;
 var Time = 0;
 var Light0_Enabled = true;
+var Light1_Enabled = false;
+var Light1_Position = null;
 var MainPlayer;
 var turn = 0;
 var clones = new Array();
@@ -229,6 +231,7 @@ function InitializeModels()
   Models.push(new Model("Lamp"));
   Models.push(new Model("Plane"));
   Models.push(new Model("Pole_Swirly"));
+  Models.push(new Model("SwitchPad"));
   Models.push(new Model("Sphere"));
   Models.push(new Model("Sword"));
   Models.push(new Model("Test"));
@@ -385,15 +388,37 @@ function Update()
 		if(GameState == GAME_STATE.PLAYING)
 		{
 		  CurrentLevel.ClearSwitches();
-           recordings[turn].addSlice(MainPlayer);
-			UpdateClones();
+		  // Check if this player had touched a switch
+      CurrentLevel.CheckSwitches(MainPlayer.boundingSphere);
+		  for(var x = 0; x < turn; x++)
+		    CurrentLevel.CheckSwitches(clones[x].boundingSphere);
+		  
+      recordings[turn].addSlice(MainPlayer);
+      
+			//Update Clones
+			for(var x = 0; x < turn; x++)
+			{
+		    clones[x].updateStateWith(recordings[x].playNextSlice());
+		    clones[x].Update();
+		  }
+		
 			MainPlayer.Update();
 			
 			// Check if the player has hit the exit
 			if(checkSpherePlaneCollision(MainPlayer.boundingSphere, CurrentLevel.ExitPlane) != null)
-			{
 				SetGameState_Beat_Level();	
-			}
+				
+				
+		  // Update the lights to turn on when the switch is pressed
+		  Light1_Enabled = false;
+		  for(var i = 0; i < CurrentLevel.Switches.length; i++)
+		  {
+		    if(CurrentLevel.Switches[i].pressed)
+		    {
+		      Light1_Enabled = true;
+		      Light1_Position = CurrentLevel.Switches[i].object.Position;
+		    }
+		  }
 		}
 		else if(GameState == GAME_STATE.LOADING)
 		{
@@ -404,13 +429,7 @@ function Update()
     }
     lastTime = timeNow;
 }
-function UpdateClones(){
-	for(var x = 0; x < turn; x++){
-		clones[x].updateStateWith(recordings[x].playNextSlice());	
-		if(!clones[x].dead) clones[x].Update();
-		//clones[x].pos[1] = -5;
-	}
-}
+
 function DrawClones(){
 	for(var x = 0; x < turn; x++){
 		mvPushMatrix();	
@@ -457,36 +476,16 @@ function Draw()
 	gl.uniform1i(CurrentShader.Program.Light0_Enabled_Uniform, Light0_Enabled);
   if (Light0_Enabled) 
   {
-      gl.uniform3f(
-          CurrentShader.Program.AmbientColor_Uniform,
-          0.1,
-          0.1,
-          0.1
-      );
-
-      
-      gl.uniform3fv(CurrentShader.Program.Light0_Position_Uniform, [0, 0, 100]);
-
-      gl.uniform3f(
-          CurrentShader.Program.DiffuseColor_Uniform,
-          0.8,
-          0.8,
-          0.8
-      );
-      
-      gl.uniform3f(
-          CurrentShader.Program.SpecularColor_Uniform,
-          0.8,
-          0.8,
-          0.8
-      );
-      
-      gl.uniform1f(
-          CurrentShader.Program.Shininess_Uniform,
-          30.0      
-      );
+    gl.uniform3fv(CurrentShader.Program.Light0_Position_Uniform, [5, 50, -5]);
+    gl.uniform3fv(CurrentShader.Program.Light0_Color_Uniform, [1.0, 1.0, 1.0]);
   }
 	
+	//gl.uniform1i(CurrentShader.Program.Light1_Enabled_Uniform, Light1_Enabled);
+	if(Light1_Enabled)
+	{
+	  //gl.uniform3fv(CurrentShader.Program.Light1_Position_Uniform, Light1_Position);
+    gl.uniform3fv(CurrentShader.Program.Light0_Color_Uniform, [1.0, 0.9, 0.9]);
+	}
 	
 	mat4.perspective(45, gl.viewportWidth / gl.viewportHeight, 1.0, 1000.0, pMatrix);
 	
@@ -516,8 +515,9 @@ function Draw()
 	}
 	else if(GameState == GAME_STATE.PLAYING || GameState == GAME_STATE.PAUSED || GameState == GAME_STATE.BEAT_LEVEL)
 	{
-		CurrentLevel.Draw(CurrentShader.Program);
+		
 		DrawClones(CurrentShader.Program);
+		CurrentLevel.Draw(CurrentShader.Program);
 	}
 
 }

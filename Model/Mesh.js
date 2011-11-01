@@ -162,6 +162,12 @@ function Mesh_Draw()
 	
 	mat4.scale(mvMatrix, this.Scale);
 	
+	// Bind the Color
+	gl.uniform3fv(CurrentShader.Program.AmbientColor_Uniform, [0.1, 0.1, 0.1]);
+	gl.uniform3fv(CurrentShader.Program.DiffuseColor_Uniform, [0.8, 0.8, 0.8]);
+  gl.uniform3fv(CurrentShader.Program.SpecularColor_Uniform,[0.8, 0.8, 0.8]);
+  gl.uniform1f(CurrentShader.Program.Shininess_Uniform, 30.0);
+	
 	// Bind the texture UV
 	gl.uniform1i(CurrentShader.Program.Texture0_Enabled_Uniform, this.Texture != null);
 	

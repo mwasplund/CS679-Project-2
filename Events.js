@@ -94,34 +94,7 @@
       //Debug.Trace("Key = " + Unicode);
       
       switch(Unicode) 
-      {
-        case KEY_SPACEBAR:
-		      if(GameState == STATE_PLAYING && MainPlayer.OnGround)
-			    {
-            Debug.Trace("Player + width = " + MainPlayer.Position.X + MainPlayer.Width);
-            Debug.Trace("Exit   = " + Level.Exit.Position.X);
-            Debug.Trace("Player  = " + MainPlayer.Position.X );
-            Debug.Trace("Exit + width  = " + Level.Exit.Position + Level.Exit.Width);
-            if(MainPlayer.Position.X + MainPlayer.Width > Level.Exit.Position.X &&
-               MainPlayer.Position.X < Level.Exit.Position.X + Level.Exit.Width)
-            {
-              GameState = STATE_WON;
-            }
-          }
-			    else if(GameState == STATE_START)
-			    {
-			      GameState = STATE_PLAYING;
-			    }
-          else if(GameState == STATE_WON)
-          {
-            NextLevel();  
-          }
-          else if(GameState == STATE_DEAD)
-          {
-            RestartLevel();
-          }
-			  
-		      break;
+      {	  
 		      case KEY_A :
               MainPlayer.mLeft = true;              
               break;    
@@ -135,10 +108,12 @@
               MainPlayer.mBackward = true;
               break;    
           case KEY_T :
-              RestartTurn();
+              if(GameState == GAME_STATE.PLAYING)
+                RestartTurn();
               break;    
           case KEY_R :
-              EndTurn();
+              if(GameState == GAME_STATE.PLAYING)
+                EndTurn();
               break;    
           case KEY_LEFT_ARROW :
               MainPlayer.rLeft = true;              

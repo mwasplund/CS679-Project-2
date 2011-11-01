@@ -137,16 +137,11 @@ function Player(){
           }	
         }	
       }
-      
-      
             
       this.UpdateLookAt();
     }
-    
-    
-    // Check if this player had touched a switch
-      CurrentLevel.CheckSwitches(this.boundingSphere);
 	}
+
 	
 	this.UpdateLookAt = function()
 	{

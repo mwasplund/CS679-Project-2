@@ -56,7 +56,7 @@ function Level(i_num)
 
 
     this.Switches.push(new SwitchPad(
-      new Object(GetModel("Brick_Block"), [200, 0, -200], [0,0,0]),
+      new Object(GetModel("SwitchPad"), [200, 0, -200], [0,0,0]),
       new Sphere([200, this.PlayerStart_Pos[1], -200], 15.0),
       new Door(
         new Object(GetModel("W100_Bricks_Exit"), [50, 0, -300], [0,0,0]),
@@ -144,7 +144,6 @@ function Level_CheckSwitches(i_BoundingSphere)
 	}
 }
 
-
 function Level_Draw(i_ShaderProgram)
 {
 
@@ -153,6 +152,7 @@ function Level_Draw(i_ShaderProgram)
 		this.Objects[i].Draw();
 	
 	// Draw all the Switches
+	// Draw Doors/Switches last because they might be see through
 	for(var i = 0; i < this.Switches.length; i++)
 		this.Switches[i].Draw();
 }
