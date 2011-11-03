@@ -24,8 +24,14 @@ function Level(i_num)
 	this.Objects = new Array();
 	this.CollisionPlanes = new Array();
 	this.Switches = new Array();
+	this.numAlottedClones = 1;
+
+
 	if(this.Number == 1)
 	{
+	  // Set number of available clones
+	  this.numAlottedClones = 1;
+
 	  // Player start 
 	  this.PlayerStart_Pos = [15, 50, -15];
 	  this.PlayerStart_Rotate = 270;
@@ -70,7 +76,11 @@ function Level(i_num)
     	this.CollisionPlanes.push(this.Switches[i].door.collisionPlane);
 	}
 	else if(this.Number == 2)
-	{
+	{	 
+	     // Set number of available clones
+       	     this.numAlottedClones = 1;
+
+
 		// Player start 
 		  this.PlayerStart_Pos = [15, 50, -15];
 		  this.PlayerStart_Rotate = 270;
@@ -123,6 +133,9 @@ function Level(i_num)
 	}
 	else if(this.Number == 3)
 	{
+	  // Set number of available clones
+	  this.numAlottedClones = 1;
+
 	  // Player start
 	  this.PlayerStart_Pos = [15, 50, 15];
 	  this.PlayerStart_Rotate = 315;
@@ -218,6 +231,9 @@ function Level(i_num)
 	}
 	else if(this.Number == 4) //CURRENTLY A COPY OF LEVEL ONE. FEEL FREE TO USE AS BASE CODE FOR YOUR LEVEL
 	{
+		// Set number of available clones
+		this.numAlottedClones = 1;
+
 		// Player start 
 		this.PlayerStart_Pos = [15, 50, -15];
 		this.PlayerStart_Rotate = 270;
@@ -266,6 +282,9 @@ function Level(i_num)
 	}
 	else if(this.Number == 5)//CURRENTLY A COPY OF LEVEL ONE. FEEL FREE TO USE AS BASE CODE FOR YOUR LEVEL
 	{
+		// Set number of available clones
+		this.numAlottedClones = 1;
+
 		// Player start 
 		this.PlayerStart_Pos = [15, 50, -15];
 		this.PlayerStart_Rotate = 270;
@@ -314,6 +333,9 @@ function Level(i_num)
 	}
 	else if(this.Number == 6)//CURRENTLY A COPY OF LEVEL ONE. FEEL FREE TO USE AS BASE CODE FOR YOUR LEVEL
 	{
+		// Set number of available clones
+		this.numAlottedClones = 1;
+
 		// Player start 
 		this.PlayerStart_Pos = [15, 50, -15];
 		this.PlayerStart_Rotate = 270;

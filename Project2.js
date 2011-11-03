@@ -297,11 +297,10 @@ function ResetLevel()
   MainPlayer.yaw = CurrentLevel.PlayerStart_Rotate;
   MainPlayer.UpdateLookAt();
   
-  // Reset the clones positions
+	// Reset the clones positions
  	for(var x = 0; x < turn; x++)
  	{
 		vec3.set(CurrentLevel.PlayerStart_Pos, clones[x].pos);
-		//clones[x].pos[1] = 0; // place the player on the ground instead of at eye level
 		clones[x].yaw = CurrentLevel.PlayerStart_Rotate;
 	}
 
