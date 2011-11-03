@@ -44,6 +44,7 @@ var CurrentShader
 var GameState;
 var CurrentLevel;
 var CloneModel;
+var SwitchCount;
 
 /******************************************************/
 /* InitializeWebGL
@@ -226,6 +227,7 @@ function GameLoop()
 function InitializeModels() 
 {
   Models.push(new Model("Brick_Block"));
+  Models.push(new Model("F1600_1000_Bricks"));
   Models.push(new Model("F300_300_Bricks"));
   Models.push(new Model("Human"));
   Models.push(new Model("Lamp"));
@@ -240,18 +242,25 @@ function InitializeModels()
 	Models.push(new Model("Unit_Radius_Sphere"));
 	Models.push(new Model("W100"));
 	Models.push(new Model("W1000_Black"));
+	Models.push(new Model("W1000_Bricks"));
 	Models.push(new Model("W100_Bricks_Exit"));
 	Models.push(new Model("W150"));
 	Models.push(new Model("W200"));
 	Models.push(new Model("W200_Bricks"));
+	Models.push(new Model("W282_Bricks"));
 	Models.push(new Model("W300"));
 	Models.push(new Model("W300_Bricks"));
+	Models.push(new Model("W400_Bricks"));
 	Models.push(new Model("W50"));
+	Models.push(new Model("W500_Bricks"));
 	Models.push(new Model("W600"));
+	Models.push(new Model("W600_Bricks"));
 	Models.push(new Model("W70"));
 	Models.push(new Model("W700"));
-  
-  
+  Models.push(new Model("W700_Bricks"));
+  Models.push(new Model("W800_Bricks"));
+  Models.push(new Model("W900_Bricks"));
+
 	TitleModel = GetModel("Title");
 	CloneModel = GetModel("Pole_Swirly");
 }
@@ -278,7 +287,7 @@ function AreModelsLoaded()
 
 function InitializeLevels() 
 {
-	CurrentLevel = new Level(1);
+	CurrentLevel = new Level(3);
 }
 
 function ResetLevel()
@@ -400,6 +409,13 @@ function Update()
 			{
 		    clones[x].updateStateWith(recordings[x].playNextSlice());
 		    clones[x].Update();
+		    
+		    // Space should cause double time
+		    if(KEY_SPACE_Pressed)
+		    {
+		      clones[x].updateStateWith(recordings[x].playNextSlice());
+		      clones[x].Update();
+		    }
 		  }
 		
 			MainPlayer.Update();
@@ -411,13 +427,11 @@ function Update()
 				
 		  // Update the lights to turn on when the switch is pressed
 		  Light1_Enabled = false;
+		  SwitchCount = 0;
 		  for(var i = 0; i < CurrentLevel.Switches.length; i++)
 		  {
 		    if(CurrentLevel.Switches[i].pressed)
-		    {
-		      Light1_Enabled = true;
-		      Light1_Position = CurrentLevel.Switches[i].object.Position;
-		    }
+		      SwitchCount++;
 		  }
 		}
 		else if(GameState == GAME_STATE.LOADING)
@@ -477,17 +491,17 @@ function Draw()
   if (Light0_Enabled) 
   {
     gl.uniform3fv(CurrentShader.Program.Light0_Position_Uniform, [5, 50, -5]);
-    gl.uniform3fv(CurrentShader.Program.Light0_Color_Uniform, [1.0, 1.0, 1.0]);
+    gl.uniform3fv(CurrentShader.Program.Light0_Color_Uniform, [1.0, 1.0 - SwitchCount * 0.1, 1.0 - SwitchCount * 0.1]);
   }
 	
 	//gl.uniform1i(CurrentShader.Program.Light1_Enabled_Uniform, Light1_Enabled);
 	if(Light1_Enabled)
 	{
 	  //gl.uniform3fv(CurrentShader.Program.Light1_Position_Uniform, Light1_Position);
-    gl.uniform3fv(CurrentShader.Program.Light0_Color_Uniform, [1.0, 0.9, 0.9]);
+    //gl.uniform3fv(CurrentShader.Program.Light0_Color_Uniform, [1.0, 0.9, 0.9]);
 	}
 	
-	mat4.perspective(45, gl.viewportWidth / gl.viewportHeight, 1.0, 1000.0, pMatrix);
+	mat4.perspective(45, gl.viewportWidth / gl.viewportHeight, 2.0, 2000.0, pMatrix);
 	
 	//mat4.identity(mvMatrix);
 	

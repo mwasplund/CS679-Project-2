@@ -79,6 +79,8 @@
   var KEY_LEFT_ARROW_PRESSED  = false;
   var KEY_RIGHT_ARROW_PRESSED = false;
 
+  var KEY_SPACE_Pressed = false;
+
   
   ///////////////////////////////////////////////////////////////////
   // KeyDown
@@ -95,6 +97,9 @@
       
       switch(Unicode) 
       {	  
+          case KEY_SPACEBAR:
+              KEY_SPACE_Pressed = true;
+              break;
 		      case KEY_A :
               MainPlayer.mLeft = true;              
               break;    
@@ -157,6 +162,9 @@
       
       switch(Unicode ) 
       {
+        case KEY_SPACEBAR:
+              KEY_SPACE_Pressed = false;
+              break;
         case KEY_A :
               MainPlayer.mLeft = false;              
               break;    

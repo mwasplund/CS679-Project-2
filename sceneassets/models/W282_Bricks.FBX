@@ -12,9 +12,9 @@ FBXHeaderExtension:  {
         Month: 11
         Day: 2
         Hour: 21
-        Minute: 39
-        Second: 55
-        Millisecond: 96
+        Minute: 40
+        Second: 13
+        Millisecond: 528
     }
     Creator: "FBX SDK/FBX Plugins version 2012.0"
     SceneInfo: "SceneInfo::GlobalInfo", "UserData" {
@@ -30,19 +30,19 @@ FBXHeaderExtension:  {
             Comment: ""
         }
         Properties70:  {
-            P: "DocumentUrl", "KString", "Url", "", "C:\Users\mwasplund\Documents\My Web Sites\mwasplund\cs679\Project2\sceneassets\models\W300_Bricks.FBX"
-            P: "SrcDocumentUrl", "KString", "Url", "", "C:\Users\mwasplund\Documents\My Web Sites\mwasplund\cs679\Project2\sceneassets\models\W300_Bricks.FBX"
+            P: "DocumentUrl", "KString", "Url", "", "C:\Users\mwasplund\Documents\My Web Sites\mwasplund\cs679\Project2\sceneassets\models\W282_Bricks.FBX"
+            P: "SrcDocumentUrl", "KString", "Url", "", "C:\Users\mwasplund\Documents\My Web Sites\mwasplund\cs679\Project2\sceneassets\models\W282_Bricks.FBX"
             P: "Original", "Compound", "", ""
             P: "Original|ApplicationVendor", "KString", "", "", "Autodesk"
             P: "Original|ApplicationName", "KString", "", "", "3ds Max"
             P: "Original|ApplicationVersion", "KString", "", "", "2012"
-            P: "Original|DateTime_GMT", "DateTime", "", "", "03/11/2011 02:39:55.092"
-            P: "Original|FileName", "KString", "", "", "C:\Users\mwasplund\Documents\My Web Sites\mwasplund\cs679\Project2\sceneassets\models\W300_Bricks.FBX"
+            P: "Original|DateTime_GMT", "DateTime", "", "", "03/11/2011 02:40:13.527"
+            P: "Original|FileName", "KString", "", "", "C:\Users\mwasplund\Documents\My Web Sites\mwasplund\cs679\Project2\sceneassets\models\W282_Bricks.FBX"
             P: "LastSaved", "Compound", "", ""
             P: "LastSaved|ApplicationVendor", "KString", "", "", "Autodesk"
             P: "LastSaved|ApplicationName", "KString", "", "", "3ds Max"
             P: "LastSaved|ApplicationVersion", "KString", "", "", "2012"
-            P: "LastSaved|DateTime_GMT", "DateTime", "", "", "03/11/2011 02:39:55.092"
+            P: "LastSaved|DateTime_GMT", "DateTime", "", "", "03/11/2011 02:40:13.527"
         }
     }
 }
@@ -72,7 +72,7 @@ GlobalSettings:  {
 
 Documents:  {
     Count: 1
-    Document: 1678110944, "", "Scene" {
+    Document: 1678113504, "", "Scene" {
         Properties70:  {
             P: "SourceObject", "object", "", ""
             P: "ActiveAnimStackName", "KString", "", "", ""
@@ -295,7 +295,7 @@ Objects:  {
             P: "Color", "ColorRGB", "Color", "",0.694117647058824,0.580392156862745,0.105882352941176
         }
         Vertices: *24 {
-a: -150,-0.5,0,150,-0.5,0,-150,0.5,0,150,0.5,0,-150,-0.5,100,150,-0.5,100,-150,0.5,100,150,0.5,100
+a: -141.5,-0.5,0,141.5,-0.5,0,-141.5,0.5,0,141.5,0.5,0,-141.5,-0.5,100,141.5,-0.5,100,-141.5,0.5,100,141.5,0.5,100
 } 
         PolygonVertexIndex: *36 {
 a: 0,2,-4,3,1,-1,4,5,-8,7,6,-5,0,1,-6,5,4,-1,1,3,-8,7,5,-2,3,2,-7,6,7,-4,2,0,-5,4,6,-3
@@ -319,7 +319,7 @@ a: 0,0,-1,0,0,-1,0,0,-1,0,0,-1,0,0,-1,0,0,-1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1
             MappingInformationType: "ByPolygonVertex"
             ReferenceInformationType: "IndexToDirect"
             UV: *16 {
-a: -0.249250710010529,0.000499516725540161,1.24925065040588,0.000499516725540161,-0.249250710010529,0.000499516725540161,1.24925065040588,0.000499516725540161,-0.249250710010529,0.999500513076782,1.24925065040588,0.999500513076782,-0.249250710010529,0.999500513076782,1.24925065040588,0.999500513076782
+a: -0.206793189048767,0.000499516725540161,1.20679318904877,0.000499516725540161,-0.206793189048767,0.000499516725540161,1.20679318904877,0.000499516725540161,-0.206793189048767,0.999500513076782,1.20679318904877,0.999500513076782,-0.206793189048767,0.999500513076782,1.20679318904877,0.999500513076782
 } 
             UVIndex: *36 {
 a: 0,2,3,3,1,0,4,5,7,7,6,4,0,1,5,5,4,0,1,3,7,7,5,1,3,2,6,6,7,3,2,0,4,4,6,2
@@ -378,7 +378,7 @@ a: 0
         Shading: T
         Culling: "CullingOff"
     }
-    Material: 1386179456, "Material::02 - Default", "" {
+    Material: 1386180656, "Material::02 - Default", "" {
         Version: 102
         ShadingModel: "phong"
         MultiLayer: 0
@@ -400,7 +400,7 @@ a: 0
             P: "Reflectivity", "double", "Number", "",0
         }
     }
-    Video: 1676366128, "Video::Map #3", "Clip" {
+    Video: 1686112528, "Video::Map #3", "Clip" {
         Type: "Clip"
         Properties70:  {
             P: "Path", "KString", "XRefUrl", "", "C:\Users\mwasplund\Documents\My Web Sites\mwasplund\cs679\Project2\sceneassets\images\JP_Brick01_Bump.png"
@@ -409,7 +409,7 @@ a: 0
         Filename: "C:\Users\mwasplund\Documents\My Web Sites\mwasplund\cs679\Project2\sceneassets\images\JP_Brick01_Bump.png"
         RelativeFilename: "..\images\JP_Brick01_Bump.png"
     }
-    Texture: 980699488, "Texture::Map #3", "" {
+    Texture: 980697904, "Texture::Map #3", "" {
         Type: "TextureVideoClip"
         Version: 202
         TextureName: "Texture::Map #3"
@@ -425,9 +425,9 @@ a: 0
         Texture_Alpha_Source: "None"
         Cropping: 0,0,0,0
     }
-    AnimationStack: 1677791616, "AnimStack::Take 001", "" {
+    AnimationStack: 1677818832, "AnimStack::Take 001", "" {
     }
-    AnimationLayer: 988855472, "AnimLayer::BaseLayer", "" {
+    AnimationLayer: 988846112, "AnimLayer::BaseLayer", "" {
     }
 }
 
@@ -440,19 +440,19 @@ Connections:  {
     C: "OO",1687584832,0
     
     ;AnimLayer::BaseLayer, AnimStack::Take 001
-    C: "OO",988855472,1677791616
+    C: "OO",988846112,1677818832
     
     ;Geometry::, Model::Box001
     C: "OO",986616800,1687584832
     
     ;Material::02 - Default, Model::Box001
-    C: "OO",1386179456,1687584832
+    C: "OO",1386180656,1687584832
     
     ;Texture::Map #3, Material::02 - Default
-    C: "OP",980699488,1386179456, "DiffuseColor"
+    C: "OP",980697904,1386180656, "DiffuseColor"
     
     ;Video::Map #3, Texture::Map #3
-    C: "OO",1676366128,980699488
+    C: "OO",1686112528,980697904
 }
 ;Takes section
 ;----------------------------------------------------

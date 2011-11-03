@@ -65,11 +65,10 @@ function Level(i_num)
     ));
     
 	
-	// Add all the doors to the collision Planes
-	for(var i = 0; i < this.Switches.length; i++)
+	  // Add all the doors to the collision Planes
+	  for(var i = 0; i < this.Switches.length; i++)
     	this.CollisionPlanes.push(this.Switches[i].door.collisionPlane);
 	}
-	
 	else if(this.Number == 2)
 	{
 		// Player start 
@@ -122,7 +121,102 @@ function Level(i_num)
 		
 		
 	}
+	else if(this.Number == 3)
+	{
+	  // Player start
+	  this.PlayerStart_Pos = [15, 50, 15];
+	  this.PlayerStart_Rotate = 315;
 	
+	  // Define the exit plane
+	  this.ExitPlane = new Plane([0, 0, 202], [100, 0, 202], [100, 100, 202], [0, 100, 202])
+	  	
+	  // Wall 0
+		this.Objects.push(new Object(GetModel("W500_Bricks"), [0, 0, 250],[0,90,0]));
+		this.CollisionPlanes.push(new Plane([0, 0, 0], [0, 0, 500], [0, 100, 500], [0, 100, 0]));
+    // Wall 1
+    this.Objects.push(new Object(GetModel("W500_Bricks"), [350, 0, 200],[0,0,0]));
+		this.CollisionPlanes.push(new Plane([100, 0, 200], [600, 0, 200], [600, 100, 200], [100, 100, 200]));
+    // Wall 2
+    this.Objects.push(new Object(GetModel("W600_Bricks"), [600, 0, -100],[0,90,0]));
+		this.CollisionPlanes.push(new Plane([600, 0, 200], [600, 0, -400], [600, 100, -400], [600, 100, 200]));
+    // Wall 3
+    this.Objects.push(new Object(GetModel("W400_Bricks"), [200, 0, 0],[0,0,0]));
+		this.CollisionPlanes.push(new Plane([-5, 0, 0], [405, 0, 0], [405, 100, 0], [-5, 100, 0]));
+    // Wall 4
+    this.Objects.push(new Object(GetModel("W200_Bricks"), [400, 0, -100],[0,90,0]));
+		this.CollisionPlanes.push(new Plane([400, 0, 5], [400, 0, -205], [400, 100, -205], [400, 100, 5]));
+    // Wall 5
+    this.Objects.push(new Object(GetModel("W800_Bricks"), [200, 0, -400],[0,0,0]));
+		this.CollisionPlanes.push(new Plane([600, 0, -400], [600, 100, -400], [-200, 100, -400], [-200, 0, -400]));
+    // Wall 6
+    this.Objects.push(new Object(GetModel("W400_Bricks"), [200, 0, -200],[0,0,0]));
+		this.CollisionPlanes.push(new Plane([0, 0, -200], [405, 0, -200], [405, 100, -200], [0, 100, -200]));
+    // Wall 7
+    this.Objects.push(new Object(GetModel("W600_Bricks"), [-200, 0, -100],[0,90,0]));
+		this.CollisionPlanes.push(new Plane([-200, 0, 200], [-200, 100, 200], [-200, 100, -400], [-200, 0, -400]));
+    // Wall 8
+    this.Objects.push(new Object(GetModel("W1000_Bricks"), [100, 0, 400],[0,0,0]));
+		this.CollisionPlanes.push(new Plane([-400, 0, 400], [-400, 100, 400], [600, 100, 400], [600, 0, 400]));
+    // Wall 9
+    this.Objects.push(new Object(GetModel("W700_Bricks"), [-400, 0, 50],[0,90,0]));
+		this.CollisionPlanes.push(new Plane([-400, 0, 400], [-400, 100, 400], [-400, 100, -300], [-400, 0, -300]));
+    // Wall 10
+    this.Objects.push(new Object(GetModel("W282_Bricks"), [-300, 0, -500],[0,-45,0]));
+		this.CollisionPlanes.push(new Plane([-200, 0, -400], [-200, 100, -400], [-400, 100, -600], [-400, 0, -600]));
+    // Wall 11
+    this.Objects.push(new Object(GetModel("W282_Bricks"), [-500, 0, -500],[0,45,0]));
+		this.CollisionPlanes.push(new Plane([-600, 0, -400], [-600, 100, -400], [-400, 100, -600], [-400, 0, -600]));
+    // Wall 12
+    this.Objects.push(new Object(GetModel("W400_Bricks"), [-600, 0, -200],[0,90,0]));
+		this.CollisionPlanes.push(new Plane([-600, 0, 5], [-600, 100, 5], [-600, 100, -400], [-600, 0, -400]));
+    // Wall 13
+    this.Objects.push(new Object(GetModel("W400_Bricks"), [-800, 0, 0],[0,0,0]));
+		this.CollisionPlanes.push(new Plane([-595, 0, 0], [-595, 100, 0], [-1000, 100, 0], [-1000, 0, 0]));
+    // Wall 14
+    this.Objects.push(new Object(GetModel("W200_Bricks"), [-1000, 0, 100],[0,90,0]));
+		this.CollisionPlanes.push(new Plane([-1000, 0, 0], [-1000, 100, 0], [-1000, 100, 200], [-1000, 0, 200]));
+    // Wall 15
+    this.Objects.push(new Object(GetModel("W600_Bricks"), [-700, 0, 200],[0,0,0]));
+		this.CollisionPlanes.push(new Plane([-400, 0, 200], [-400, 100, 200], [-1000, 100, 200], [-1000, 0, 200]));
+
+
+    // Add the floor and roof
+    this.Objects.push(new Object(GetModel("F1600_1000_Bricks"), [-200,0,-100], [0,0,0]));
+    this.Objects.push(new Object(GetModel("F1600_1000_Bricks"), [-200,100,-100], [0,0,0]));
+
+
+    // Add some pretty lamps
+    this.Objects.push(new Object(GetModel("Lamp"), [5,50,-5], [0,0,0]));
+    this.Objects.push(new Object(GetModel("Lamp"), [300-5,50,-5], [0,0,0]));
+    this.Objects.push(new Object(GetModel("Lamp"), [5,50,-300+5], [0,0,0]));
+    this.Objects.push(new Object(GetModel("Lamp"), [300-5,50,-300+5], [0,0,0]));
+
+    // Door 1 Sitch
+    this.Switches.push(new SwitchPad(
+      new Object(GetModel("SwitchPad"), [500, 0, 100], [0,0,0]),
+      new Sphere([500, this.PlayerStart_Pos[1], 100], 15.0),
+      new Door(
+        new Object(GetModel("W200_Bricks"), [500, 0, -200], [0,0,0]),
+        new Plane([400, 0, -200], [600, 0, -200], [600, 100, -200], [400, 100, -200])
+      )
+    ));
+
+    // Exit Sitch
+    this.Switches.push(new SwitchPad(
+      new Object(GetModel("SwitchPad"), [-900, 0, 100], [0,0,0]),
+      new Sphere([-900, this.PlayerStart_Pos[1], 100], 15.0),
+      new Door(
+        new Object(GetModel("W100_Bricks_Exit"), [50, 0, 200], [0,0,0]),
+        new Plane([0, 0, 200], [100, 0, 200], [100, 100, 200], [0, 100, 200])
+      )
+    ));
+    
+	
+	// Add all the doors to the collision Planes
+	for(var i = 0; i < this.Switches.length; i++)
+    	this.CollisionPlanes.push(this.Switches[i].door.collisionPlane);
+	}
+
 }
 
 function Level_ClearSwitches()
