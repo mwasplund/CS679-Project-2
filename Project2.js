@@ -287,7 +287,7 @@ function AreModelsLoaded()
 
 function InitializeLevels() 
 {
-	CurrentLevel = new Level(3);
+	CurrentLevel = new Level(1);
 }
 
 function ResetLevel()

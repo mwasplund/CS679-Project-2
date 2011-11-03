@@ -191,7 +191,7 @@ function Level(i_num)
     this.Objects.push(new Object(GetModel("Lamp"), [5,50,-300+5], [0,0,0]));
     this.Objects.push(new Object(GetModel("Lamp"), [300-5,50,-300+5], [0,0,0]));
 
-    // Door 1 Sitch
+    // Door 1 Switch
     this.Switches.push(new SwitchPad(
       new Object(GetModel("SwitchPad"), [500, 0, 100], [0,0,0]),
       new Sphere([500, this.PlayerStart_Pos[1], 100], 15.0),
@@ -201,7 +201,7 @@ function Level(i_num)
       )
     ));
 
-    // Exit Sitch
+    // Exit Switch
     this.Switches.push(new SwitchPad(
       new Object(GetModel("SwitchPad"), [-900, 0, 100], [0,0,0]),
       new Sphere([-900, this.PlayerStart_Pos[1], 100], 15.0),
@@ -215,6 +215,18 @@ function Level(i_num)
 	// Add all the doors to the collision Planes
 	for(var i = 0; i < this.Switches.length; i++)
     	this.CollisionPlanes.push(this.Switches[i].door.collisionPlane);
+	}
+	else if(this.Number == 4)
+	{
+		//PUT LEVEL 4 CODE HERE
+	}
+	else if(this.Number == 5)
+	{
+		//PUT LEVEL 5 CODE HERE
+	}
+	else if(this.Number == 6)
+	{
+		//ETC...
 	}
 
 }
