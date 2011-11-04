@@ -241,12 +241,15 @@ function InitializeModels()
 	Models.push(new Model("Title"));
 	Models.push(new Model("Unit_Radius_Sphere"));
 	Models.push(new Model("W100"));
+	Models.push(new Model("W100_Bricks"));
 	Models.push(new Model("W1000_Black"));
 	Models.push(new Model("W1000_Bricks"));
 	Models.push(new Model("W100_Bricks_Exit"));
 	Models.push(new Model("W150"));
 	Models.push(new Model("W200"));
 	Models.push(new Model("W200_Bricks"));
+	Models.push(new Model("W200_Bricks_Exit"));
+	Models.push(new Model("W200_Bricks_Window"));
 	Models.push(new Model("W282_Bricks"));
 	Models.push(new Model("W300"));
 	Models.push(new Model("W300_Bricks"));
@@ -403,6 +406,9 @@ function Update()
 		    CurrentLevel.CheckSwitches(clones[x].boundingSphere);
 		  
       recordings[turn].addSlice(MainPlayer);
+      // Record Twice when fast forwarding so it matches up with the other recordins
+      if(KEY_SPACE_Pressed)
+        recordings[turn].addSlice(MainPlayer);
       
 			//Update Clones
 			for(var x = 0; x < turn; x++)
