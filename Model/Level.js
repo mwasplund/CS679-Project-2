@@ -24,8 +24,14 @@ function Level(i_num)
 	this.Objects = new Array();
 	this.CollisionPlanes = new Array();
 	this.Switches = new Array();
+	this.numAlottedClones = 1;
+
+
 	if(this.Number == 1)
 	{
+	  // Set number of available clones
+	  this.numAlottedClones = 1;
+
 	  // Player start 
 	  this.PlayerStart_Pos = [15, 50, -15];
 	  this.PlayerStart_Rotate = 270;
@@ -70,7 +76,11 @@ function Level(i_num)
     	this.CollisionPlanes.push(this.Switches[i].door.collisionPlane);
 	}
 	else if(this.Number == 2)
-	{
+	{	 
+	     // Set number of available clones
+       	     this.numAlottedClones = 1;
+
+
 		// Player start 
 		  this.PlayerStart_Pos = [15, 50, -15];
 		  this.PlayerStart_Rotate = 270;
@@ -123,6 +133,9 @@ function Level(i_num)
 	}
   else if(this.Number == 3)
 	{
+	  // Set number of available clones
+	  this.numAlottedClones = 1;
+
 	  // Player start
 	  this.PlayerStart_Pos = [15, 50, 15];
 	  this.PlayerStart_Rotate = 315;
@@ -191,7 +204,7 @@ function Level(i_num)
     this.Objects.push(new Object(GetModel("Lamp"), [5,50,-300+5], [0,0,0]));
     this.Objects.push(new Object(GetModel("Lamp"), [300-5,50,-300+5], [0,0,0]));
 
-    // Door 1 Sitch
+    // Door 1 Switch
     this.Switches.push(new SwitchPad(
       new Object(GetModel("SwitchPad"), [500, 0, 100], [0,0,0]),
       new Sphere([500, this.PlayerStart_Pos[1], 100], 15.0),
@@ -201,7 +214,7 @@ function Level(i_num)
       )
     ));
 
-    // Exit Sitch
+    // Exit Switch
     this.Switches.push(new SwitchPad(
       new Object(GetModel("SwitchPad"), [-900, 0, 100], [0,0,0]),
       new Sphere([-900, this.PlayerStart_Pos[1], 100], 15.0),
@@ -212,9 +225,170 @@ function Level(i_num)
     ));
     
 	
-	// Add all the doors to the collision Planes
-	for(var i = 0; i < this.Switches.length; i++)
-    	this.CollisionPlanes.push(this.Switches[i].door.collisionPlane);
+		// Add all the doors to the collision Planes
+		for(var i = 0; i < this.Switches.length; i++)
+    		this.CollisionPlanes.push(this.Switches[i].door.collisionPlane);
+	}
+	else if(this.Number == 4) //CURRENTLY A COPY OF LEVEL ONE. FEEL FREE TO USE AS BASE CODE FOR YOUR LEVEL
+	{
+		// Set number of available clones
+		this.numAlottedClones = 1;
+
+		// Player start 
+		this.PlayerStart_Pos = [15, 50, -15];
+		this.PlayerStart_Rotate = 270;
+	
+		// Define the exit plane
+		this.ExitPlane = new Plane([0, 0, -302], [100, 0, -302], [100, 100, -302], [0, 100, -302])
+		this.Objects.push(new Object(GetModel("W300_Bricks"), [0, 0, -350], [0,0,0]));
+	
+		this.Objects.push(new Object(GetModel("W300_Bricks"), [150, 0, 0],[0,0,0])); //0
+		this.CollisionPlanes.push(new Plane([0, 0, 0], [300, 0, 0], [300, 100, 0], [0, 100, 0]));
+		this.Objects.push(new Object(GetModel("W300_Bricks"), [300, 0, -150],[0,90,0])); //0
+		this.CollisionPlanes.push(new Plane([300, 0, 0], [300, 0, -300], [300, 100, -300], [300, 100, 0]));
+		this.Objects.push(new Object(GetModel("W300_Bricks"), [0, 0, -150],[0,90,0])); //0
+		this.CollisionPlanes.push(new Plane([0, 0, 0], [0, 0, -300], [0, 100, -300], [0, 100, 0]));
+		this.Objects.push(new Object(GetModel("W200_Bricks"), [200, 0, -300],[0,0,0])); //0
+		this.CollisionPlanes.push(new Plane([100, 0, -300], [300, 0, -300], [300, 100, -300], [100, 100, -300]));
+   
+		// Add the floor and roof
+		this.Objects.push(new Object(GetModel("F300_300_Bricks"), [150,0,-150], [0,0,0]));
+		this.Objects.push(new Object(GetModel("F300_300_Bricks"), [150,100,-150], [0,0,0]));
+	
+	
+		// Add some pretty lamps
+		this.Objects.push(new Object(GetModel("Lamp"), [5,50,-5], [0,0,0]));
+		this.Objects.push(new Object(GetModel("Lamp"), [300-5,50,-5], [0,0,0]));
+		this.Objects.push(new Object(GetModel("Lamp"), [5,50,-300+5], [0,0,0]));
+		this.Objects.push(new Object(GetModel("Lamp"), [300-5,50,-300+5], [0,0,0]));
+	
+
+		this.Switches.push(
+			new SwitchPad(
+				new Object(GetModel("SwitchPad"), [200, 0, -200], [0,0,0]),
+				new Sphere([200, this.PlayerStart_Pos[1], -200], 15.0),
+				new Door(
+					new Object(GetModel("W100_Bricks_Exit"), [50, 0, -300], [0,0,0]),
+					new Plane([0, 0, -300], [100, 0, -300], [100, 100, -300], [0, 100, -300])
+				)
+			)
+		);
+    
+	
+		// Add all the doors to the collision Planes
+		for(var i = 0; i < this.Switches.length; i++)
+			this.CollisionPlanes.push(this.Switches[i].door.collisionPlane);
+
+	}
+	else if(this.Number == 5)//CURRENTLY A COPY OF LEVEL ONE. FEEL FREE TO USE AS BASE CODE FOR YOUR LEVEL
+	{
+		// Set number of available clones
+		this.numAlottedClones = 1;
+
+		// Player start 
+		this.PlayerStart_Pos = [15, 50, -15];
+		this.PlayerStart_Rotate = 270;
+	
+		// Define the exit plane
+		this.ExitPlane = new Plane([0, 0, -302], [100, 0, -302], [100, 100, -302], [0, 100, -302])
+		this.Objects.push(new Object(GetModel("W300_Bricks"), [0, 0, -350], [0,0,0]));
+	
+		this.Objects.push(new Object(GetModel("W300_Bricks"), [150, 0, 0],[0,0,0])); //0
+		this.CollisionPlanes.push(new Plane([0, 0, 0], [300, 0, 0], [300, 100, 0], [0, 100, 0]));
+		this.Objects.push(new Object(GetModel("W300_Bricks"), [300, 0, -150],[0,90,0])); //0
+		this.CollisionPlanes.push(new Plane([300, 0, 0], [300, 0, -300], [300, 100, -300], [300, 100, 0]));
+		this.Objects.push(new Object(GetModel("W300_Bricks"), [0, 0, -150],[0,90,0])); //0
+		this.CollisionPlanes.push(new Plane([0, 0, 0], [0, 0, -300], [0, 100, -300], [0, 100, 0]));
+		this.Objects.push(new Object(GetModel("W200_Bricks"), [200, 0, -300],[0,0,0])); //0
+		this.CollisionPlanes.push(new Plane([100, 0, -300], [300, 0, -300], [300, 100, -300], [100, 100, -300]));
+   
+		// Add the floor and roof
+		this.Objects.push(new Object(GetModel("F300_300_Bricks"), [150,0,-150], [0,0,0]));
+		this.Objects.push(new Object(GetModel("F300_300_Bricks"), [150,100,-150], [0,0,0]));
+	
+	
+		// Add some pretty lamps
+		this.Objects.push(new Object(GetModel("Lamp"), [5,50,-5], [0,0,0]));
+		this.Objects.push(new Object(GetModel("Lamp"), [300-5,50,-5], [0,0,0]));
+		this.Objects.push(new Object(GetModel("Lamp"), [5,50,-300+5], [0,0,0]));
+		this.Objects.push(new Object(GetModel("Lamp"), [300-5,50,-300+5], [0,0,0]));
+	
+
+		this.Switches.push(
+			new SwitchPad(
+				new Object(GetModel("SwitchPad"), [200, 0, -200], [0,0,0]),
+				new Sphere([200, this.PlayerStart_Pos[1], -200], 15.0),
+				new Door(
+					new Object(GetModel("W100_Bricks_Exit"), [50, 0, -300], [0,0,0]),
+					new Plane([0, 0, -300], [100, 0, -300], [100, 100, -300], [0, 100, -300])
+				)
+			)
+		);
+    
+	
+		// Add all the doors to the collision Planes
+		for(var i = 0; i < this.Switches.length; i++)
+			this.CollisionPlanes.push(this.Switches[i].door.collisionPlane);
+
+	}
+	else if(this.Number == 6)//CURRENTLY A COPY OF LEVEL ONE. FEEL FREE TO USE AS BASE CODE FOR YOUR LEVEL
+	{
+		// Set number of available clones
+		this.numAlottedClones = 1;
+
+		// Player start 
+		this.PlayerStart_Pos = [15, 50, -15];
+		this.PlayerStart_Rotate = 270;
+	
+		// Define the exit plane
+		this.ExitPlane = new Plane([0, 0, -302], [100, 0, -302], [100, 100, -302], [0, 100, -302])
+		this.Objects.push(new Object(GetModel("W300_Bricks"), [0, 0, -350], [0,0,0]));
+	
+		this.Objects.push(new Object(GetModel("W300_Bricks"), [150, 0, 0],[0,0,0])); //0
+		this.CollisionPlanes.push(new Plane([0, 0, 0], [300, 0, 0], [300, 100, 0], [0, 100, 0]));
+		this.Objects.push(new Object(GetModel("W300_Bricks"), [300, 0, -150],[0,90,0])); //0
+		this.CollisionPlanes.push(new Plane([300, 0, 0], [300, 0, -300], [300, 100, -300], [300, 100, 0]));
+		this.Objects.push(new Object(GetModel("W300_Bricks"), [0, 0, -150],[0,90,0])); //0
+		this.CollisionPlanes.push(new Plane([0, 0, 0], [0, 0, -300], [0, 100, -300], [0, 100, 0]));
+		this.Objects.push(new Object(GetModel("W200_Bricks"), [200, 0, -300],[0,0,0])); //0
+		this.CollisionPlanes.push(new Plane([100, 0, -300], [300, 0, -300], [300, 100, -300], [100, 100, -300]));
+   
+		// Add the floor and roof
+		this.Objects.push(new Object(GetModel("F300_300_Bricks"), [150,0,-150], [0,0,0]));
+		this.Objects.push(new Object(GetModel("F300_300_Bricks"), [150,100,-150], [0,0,0]));
+	
+	
+		// Add some pretty lamps
+		this.Objects.push(new Object(GetModel("Lamp"), [5,50,-5], [0,0,0]));
+		this.Objects.push(new Object(GetModel("Lamp"), [300-5,50,-5], [0,0,0]));
+		this.Objects.push(new Object(GetModel("Lamp"), [5,50,-300+5], [0,0,0]));
+		this.Objects.push(new Object(GetModel("Lamp"), [300-5,50,-300+5], [0,0,0]));
+	
+
+		this.Switches.push(
+			new SwitchPad(
+				new Object(GetModel("SwitchPad"), [200, 0, -200], [0,0,0]),
+				new Sphere([200, this.PlayerStart_Pos[1], -200], 15.0),
+				new Door(
+					new Object(GetModel("W100_Bricks_Exit"), [50, 0, -300], [0,0,0]),
+					new Plane([0, 0, -300], [100, 0, -300], [100, 100, -300], [0, 100, -300])
+				)
+			)
+		);
+    
+	
+		// Add all the doors to the collision Planes
+		for(var i = 0; i < this.Switches.length; i++)
+			this.CollisionPlanes.push(this.Switches[i].door.collisionPlane);
+
+	}
+	else if(this.Number == 7)
+	{
+	//PUT LEVEL 5 CODE HERE
+	}
+	else if(this.Number == 8)
+	{
+		//ETC...
 	}
 		else if(this.Number == 4)
 	{
