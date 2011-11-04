@@ -78,7 +78,7 @@ function Level(i_num)
 	else if(this.Number == 2)
 	{	 
 	     // Set number of available clones
-       	     this.numAlottedClones = 2;
+       	     this.numAlottedClones = 1;
 
 
 		// Player start 
@@ -194,7 +194,7 @@ function Level(i_num)
 	else if(this.Number == 3)
 	{
 	  // Set number of available clones
-	  this.numAlottedClones = 4;
+	  this.numAlottedClones = 1;
 
 	  // Player start
 	  this.PlayerStart_Pos = [15, 50, 15];
