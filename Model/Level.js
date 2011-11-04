@@ -75,63 +75,123 @@ function Level(i_num)
 	  for(var i = 0; i < this.Switches.length; i++)
     	this.CollisionPlanes.push(this.Switches[i].door.collisionPlane);
 	}
-	else if(this.Number == 2)
+	else if(this.Number == 3)
 	{	 
 	     // Set number of available clones
        	     this.numAlottedClones = 1;
 
 
 		// Player start 
-		  this.PlayerStart_Pos = [15, 50, -15];
+		//  this.PlayerStart_Pos = [15, 50, -15];
+		  this.PlayerStart_Pos = [15, 80, -685];
 		  this.PlayerStart_Rotate = 270;
 		
 		  // Define the exit plane
-		  this.ExitPlane = new Plane([0, 0, -302], [100, 0, -302], [100, 100, -302], [0, 100, -302])
-		  this.Objects.push(new Object(GetModel("W300_Bricks"), [0, 0, -350], [0,0,0]));
+		  //this.ExitPlane = new Plane([0, 0, -302], [100, 0, -302], [100, 100, -302], [0, 100, -302]);
+		//  this.ExitPlane = new Plane([0, 0, -302], [0, 100, -302], [100, 100, -302], [100, 100, -302]);
+		 // this.Objects.push(new Object(GetModel("W300_Bricks"), [0, 0, -350], [0,0,0]));
+		  
+		//Entrance
+		  
+		this.Objects.push(new Object(GetModel("W100_Bricks"), [50, 0, -700],[0,0,0])); //0
+		this.CollisionPlanes.push(new Plane([0, 0, -700], [0, 100,-700], [100, 100, -700], [100, 0, -700]));
+		//Exit
+		this.Objects.push(new Object(GetModel("W100_Bricks_Exit"), [650, 0, 0],[0,0,0])); //0
+		this.ExitPlane = new Plane([600, 0, 0], [600, 100, 0], [700, 100, 0], [700, 100, 0]);
 		
-		this.Objects.push(new Object(GetModel("W600"), [300, 0, 0],[0,0,0])); //0
-		this.Objects.push(new Object(GetModel("W700"), [0, 0, -350],[0,90,0])); // 1
-		this.Objects.push(new Object(GetModel("W700"), [700, 0, -350],[0,90,0])); //2
+		this.Objects.push(new Object(GetModel("W600_Bricks"), [300, 0, 0],[0,0,0])); //0
+		this.CollisionPlanes.push(new Plane([0, 0, 0], [0, 100, 0], [600, 100, 0], [600, 0, 0]));
 		
-		this.Objects.push(new Object(GetModel("W300"), [350, 0, -150],[0,90,0])); //3
+		this.Objects.push(new Object(GetModel("W700_Bricks"), [0, 0, -350],[0,90,0])); // 1
+		this.CollisionPlanes.push(new Plane([0, 0, -700], [0, 100, -700], [0, 100, 0], [0, 0, 0]));
 		
-		this.Objects.push(new Object(GetModel("W150"), [625, 0, -90],[0,0,0])); //4
-		this.Objects.push(new Object(GetModel("W150"), [500, 0, -180],[0,0,0]));//5
-		this.Objects.push(new Object(GetModel("W70"), [425, 0, -215],[0,90,0])); //6
+		this.Objects.push(new Object(GetModel("W700_Bricks"), [700, 0, -350],[0,90,0])); //2
+		this.CollisionPlanes.push(new Plane([700, 0, -700], [700, 100, -700], [700, 100, 0], [700, 0, 0]));
 		
-		this.Objects.push(new Object(GetModel("W150"), [625, 0, -280],[0,0,0]));  //7
-		this.Objects.push(new Object(GetModel("W300"), [500, 0, -350],[0,90,0]));  //8
-		this.Objects.push(new Object(GetModel("W300"), [350, 0, -400],[0,0,0]));  //9
+		this.Objects.push(new Object(GetModel("W300_Bricks"), [350, 0, -150],[0,90,0])); //3
+		this.CollisionPlanes.push(new Plane([350, 0, -300], [350, 100, -300], [350, 100, 0], [350, 0, 0]));
 		
-		this.Objects.push(new Object(GetModel("W70"), [200, 0, -365],[0,90,0]));  //10
-		this.Objects.push(new Object(GetModel("W200"), [100, 0, -330],[0,0,0]));  //11
-		this.Objects.push(new Object(GetModel("W150"), [200, 0, -180],[0,0,0]));  //12
-		this.Objects.push(new Object(GetModel("W70"), [275, 0, -215],[0,90,0]));  //13
-		this.Objects.push(new Object(GetModel("W150"), [75, 0, -90],[0,0,0]));  //14
+		this.Objects.push(new Object(GetModel("W150_Bricks"), [625, 0, -90],[0,0,0])); //4
+		this.CollisionPlanes.push(new Plane([550, 0, -90], [550, 100, -90], [700, 100, -90], [700, 0, -90]));
 		
-		this.Objects.push(new Object(GetModel("W70"), [100, 0, -400],[0,0,0]));  //15
-		this.Objects.push(new Object(GetModel("W150"), [135, 0, -475],[0,90,0]));  //16
-		this.Objects.push(new Object(GetModel("W150"), [65, 0, -550],[0,90,0]));  //17
-		this.Objects.push(new Object(GetModel("W200"), [165, 0, -625],[0,0,0]));  //18
+		this.Objects.push(new Object(GetModel("W150_Bricks"), [500, 0, -180],[0,0,0]));//5
+		this.CollisionPlanes.push(new Plane([575, 0, -180], [575, 100, -180], [425, 100, -180], [425, 0, -180]));
 		
-		this.Objects.push(new Object(GetModel("W70"), [265, 0, -590],[0,90,0]));  //19
-		this.Objects.push(new Object(GetModel("W70"), [230, 0, -555],[0,0,0]));  //20
-		this.Objects.push(new Object(GetModel("W200"), [400, 0, -500],[0,0,0]));  //21
+		this.Objects.push(new Object(GetModel("W70_Bricks"), [425, 0, -215],[0,90,0])); //6
+		this.CollisionPlanes.push(new Plane([425, 0, -250], [425, 100, -250], [425, 100, -180], [425, 0, -180]));
 		
-		this.Objects.push(new Object(GetModel("W50"), [525, 0, -500],[0,0,0]));  //22
-		this.Objects.push(new Object(GetModel("W70"), [550, 0, -535],[0,90,0]));  //23
-		this.Objects.push(new Object(GetModel("W300"), [640, 0, -550],[0,90,0]));  //24
-		this.Objects.push(new Object(GetModel("W70"), [605, 0, -400],[0,0,0]));  //25
+		this.Objects.push(new Object(GetModel("W150_Bricks"), [625, 0, -280],[0,0,0]));  //7
+		this.CollisionPlanes.push(new Plane([550, 0, -280], [550, 100, -280], [700, 100, -280], [700, 0, -280]));
 		
-		this.Objects.push(new Object(GetModel("W70"), [310, 0, -665],[0,90,0]));  //26
-		this.Objects.push(new Object(GetModel("W70"), [400, 0, -665],[0,90,0]));  //27
-		this.Objects.push(new Object(GetModel("W150"), [470, 0, -630],[0,0,0]));  //28
+		this.Objects.push(new Object(GetModel("W300_Bricks"), [500, 0, -350],[0,90,0]));  //8
+		this.CollisionPlanes.push(new Plane([500, 0, -200], [500, 100, -200], [500, 100, -500], [500, 0, -500]));
 		
-		this.Objects.push(new Object(GetModel("W600"), [400, 0, -700],[0,0,0]));  //28
+		this.Objects.push(new Object(GetModel("W300_Bricks"), [350, 0, -400],[0,0,0]));  //9
+		this.CollisionPlanes.push(new Plane([200, 0, -400], [200, 100, -400], [500, 100, -400], [500, 0, -400]));
+		
+		this.Objects.push(new Object(GetModel("W70_Bricks"), [200, 0, -365],[0,90,0]));  //10
+		this.CollisionPlanes.push(new Plane([200, 0, -330], [200, 100, -330], [200, 100, -400], [200, 0, -400]));
+		
+		this.Objects.push(new Object(GetModel("W200_Bricks"), [100, 0, -330],[0,0,0]));  //11
+		this.CollisionPlanes.push(new Plane([200, 0, -330], [200, 100, -330], [0, 100, -330], [0, 0, -330]));
+		
+		this.Objects.push(new Object(GetModel("W150_Bricks"), [200, 0, -180],[0,0,0]));  //12
+		this.CollisionPlanes.push(new Plane([275, 0, -180], [275, 100, -180], [125, 100, -180], [125, 0, -180]));
+		
+		this.Objects.push(new Object(GetModel("W70_Bricks"), [275, 0, -215],[0,90,0]));  //13
+		this.CollisionPlanes.push(new Plane([275, 0, -250], [275, 100, -250], [275, 100, -180], [275, 0, -180]));
+		
+		this.Objects.push(new Object(GetModel("W150_Bricks"), [75, 0, -90],[0,0,0]));  //14
+		this.CollisionPlanes.push(new Plane([0, 0, -90], [0, 100, -90], [150, 100, -90], [150, 0, -90]));
+		
+		this.Objects.push(new Object(GetModel("W70_Bricks"), [100, 0, -400],[0,0,0]));  //15
+		this.CollisionPlanes.push(new Plane([135, 0, -400], [135, 100, -400], [65, 100, -400], [65, 0, -400]));
+		
+		this.Objects.push(new Object(GetModel("W150_Bricks"), [135, 0, -475],[0,90,0]));  //16
+		this.CollisionPlanes.push(new Plane([135, 0, -550], [135, 100, -550], [135, 100, -400], [135, 0, -400]));
+		
+		this.Objects.push(new Object(GetModel("W150_Bricks"), [65, 0, -550],[0,90,0]));  //17
+		this.CollisionPlanes.push(new Plane([65, 0, -475], [65, 100, -475], [65, 100, -625], [65, 0, -625]));
+		
+		this.Objects.push(new Object(GetModel("W200_Bricks"), [165, 0, -625],[0,0,0]));  //18
+		this.CollisionPlanes.push(new Plane([265, 0, -625], [265, 100, -625], [65, 100, -625], [65, 0, -625]));
+		
+		this.Objects.push(new Object(GetModel("W70_Bricks"), [265, 0, -590],[0,90,0]));  //19
+		this.CollisionPlanes.push(new Plane([265, 0, -555], [265, 100, -555], [265, 100, -625], [265, 0, -625]));
+		
+		this.Objects.push(new Object(GetModel("W70_Bricks"), [230, 0, -555],[0,0,0]));  //20
+		this.CollisionPlanes.push(new Plane([195, 0, -555], [195, 100, -555], [265, 100, -555], [265, 0, -555]));
+		
+		this.Objects.push(new Object(GetModel("W200_Bricks"), [400, 0, -500],[0,0,0]));  //21
+		this.CollisionPlanes.push(new Plane([300, 0, -500], [300, 100, -500], [500, 100, -500], [500, 0, -500]));
+		
+		this.Objects.push(new Object(GetModel("W50_Bricks"), [525, 0, -500],[0,0,0]));  //22
+		this.CollisionPlanes.push(new Plane([500, 0, -500], [500, 100, -500], [550, 100, -500], [550, 0, -500]));
+		
+		this.Objects.push(new Object(GetModel("W70_Bricks"), [550, 0, -535],[0,90,0]));  //23
+		this.CollisionPlanes.push(new Plane([550, 0, -500], [550, 100, -500], [550, 100, -570], [550, 0, -570]));
+		
+		this.Objects.push(new Object(GetModel("W300_Bricks"), [640, 0, -550],[0,90,0]));  //24
+		this.CollisionPlanes.push(new Plane([640, 0, -400], [640, 100, -400], [640, 100, -600], [640, 0, -600]));
+		
+		this.Objects.push(new Object(GetModel("W70_Bricks"), [605, 0, -400],[0,0,0]));  //25
+		this.CollisionPlanes.push(new Plane([640, 0, -400], [640, 100, -400], [570, 100, -400], [570, 0, -400]));
+		
+		this.Objects.push(new Object(GetModel("W70_Bricks"), [310, 0, -665],[0,90,0]));  //26
+		this.CollisionPlanes.push(new Plane([310, 0, -630], [310, 100, -630], [310, 100, -700], [310, 0, -700]));
+		
+		this.Objects.push(new Object(GetModel("W70_Bricks"), [400, 0, -665],[0,90,0]));  //27
+		this.CollisionPlanes.push(new Plane([400, 0, -630], [400, 100, -630], [400, 100, -700], [400, 0, -700]));
+		
+		this.Objects.push(new Object(GetModel("W150_Bricks"), [470, 0, -630],[0,0,0]));  //28
+		this.CollisionPlanes.push(new Plane([395, 0, -630], [395, 100, -630], [545, 100, -630], [545, 0, -630]));
+		
+		this.Objects.push(new Object(GetModel("W600_Bricks"), [400, 0, -700],[0,0,0]));  //28
+		this.CollisionPlanes.push(new Plane([700, 0, -700], [700, 100, -700], [100, 100, -700], [100, 0, -700]));
 		
 		
 	}
-	else if(this.Number == 3)
+	else if(this.Number == 2)
 	{
 	  // Set number of available clones
 	  this.numAlottedClones = 1;

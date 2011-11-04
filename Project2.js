@@ -240,11 +240,15 @@ function InitializeModels()
 	Models.push(new Model("TestCube"));
 	Models.push(new Model("Title"));
 	Models.push(new Model("Unit_Radius_Sphere"));
+	Models.push(new Model("W50_Bricks"));
 	Models.push(new Model("W100"));
+	Models.push(new Model("W100_Bricks"))
 	Models.push(new Model("W1000_Black"));
 	Models.push(new Model("W1000_Bricks"));
 	Models.push(new Model("W100_Bricks_Exit"));
 	Models.push(new Model("W150"));
+	Models.push(new Model("W150_Bricks"));
+	Models.push(new Model("W70_Bricks"));
 	Models.push(new Model("W200"));
 	Models.push(new Model("W200_Bricks"));
 	Models.push(new Model("W282_Bricks"));
