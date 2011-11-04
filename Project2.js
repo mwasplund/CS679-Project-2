@@ -464,6 +464,12 @@ function DrawClones(){
 	}
 }
 function EndTurn(){
+	if(turn > CurrentLevel.numAlottedClones-1)
+	{
+		clones.splice(0,1);
+		recordings.splice(0,1);
+		turn--;
+	}
 	clones[turn] = new Player();
 	turn++;
 	ResetRecordings();
