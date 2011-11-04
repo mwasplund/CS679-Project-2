@@ -527,7 +527,7 @@ function Draw()
 	{
 		mvPushMatrix();
 		mat4.translate(mvMatrix, [0,-10,100]);
-		mat4.rotate(mvMatrix, degToRad(20), [0, 1, 0]);
+		mat4.rotate(mvMatrix, degToRad(200), [0, 1, 0]);
 		var TimeTest = GetShader("TimeTest");
 		TitleModel.Draw(CurrentShader.Program);
 		mvPopMatrix();
