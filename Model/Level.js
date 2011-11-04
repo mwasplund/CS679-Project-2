@@ -75,10 +75,10 @@ function Level(i_num)
 	  for(var i = 0; i < this.Switches.length; i++)
     	this.CollisionPlanes.push(this.Switches[i].door.collisionPlane);
 	}
-	else if(this.Number == 3)
+	else if(this.Number == 2)
 	{	 
 	     // Set number of available clones
-       	     this.numAlottedClones = 1;
+       	     this.numAlottedClones = 2;
 
 
 		// Player start 
@@ -191,10 +191,10 @@ function Level(i_num)
 		
 		
 	}
-	else if(this.Number == 4)
+	else if(this.Number == 3)
 	{
 	  // Set number of available clones
-	  this.numAlottedClones = 1;
+	  this.numAlottedClones = 4;
 
 	  // Player start
 	  this.PlayerStart_Pos = [15, 50, 15];
