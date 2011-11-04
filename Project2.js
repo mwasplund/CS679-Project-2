@@ -406,8 +406,8 @@ function Update()
 		  
       recordings[turn].addSlice(MainPlayer);
       // Record Twice when fast forwarding so it matches up with the other recordins
-      if(KEY_SPACE_Pressed)
-        recordings[turn].addSlice(MainPlayer);
+      //if(KEY_SPACE_Pressed)
+      //  recordings[turn].addSlice(MainPlayer);
       
 			//Update Clones
 			for(var x = 0; x < turn; x++)
@@ -416,11 +416,11 @@ function Update()
 		    clones[x].Update();
 		    
 		    // Space should cause double time
-		    if(KEY_SPACE_Pressed)
-		    {
-		      clones[x].updateStateWith(recordings[x].playNextSlice());
-		      clones[x].Update();
-		    }
+		   // if(KEY_SPACE_Pressed)
+		   // {
+		   ////   clones[x].updateStateWith(recordings[x].playNextSlice());
+		    //  clones[x].Update();
+		    //}
 		  }
 		
 			MainPlayer.Update();

@@ -199,11 +199,31 @@ function Level(i_num)
 
 
     // Add some pretty lamps
-    this.Objects.push(new Object(GetModel("Lamp"), [5,50,-5], [0,0,0]));
+    this.Objects.push(new Object(GetModel("Lamp"), [15,50,-5], [0,0,0]));
     this.Objects.push(new Object(GetModel("Lamp"), [300-5,50,-5], [0,0,0]));
-    this.Objects.push(new Object(GetModel("Lamp"), [5,50,-300+5], [0,0,0]));
-    this.Objects.push(new Object(GetModel("Lamp"), [300-5,50,-300+5], [0,0,0]));
+	
+	this.Objects.push(new Object(GetModel("Lamp"), [15,50,+5], [0,0,0]));
+    this.Objects.push(new Object(GetModel("Lamp"), [300-5,50,+5], [0,0,0]));
+	
+    this.Objects.push(new Object(GetModel("Lamp"), [15,50,-200+5], [0,0,0]));
+    this.Objects.push(new Object(GetModel("Lamp"), [300-5,50,-200+5], [0,0,0]));
 
+	this.Objects.push(new Object(GetModel("Lamp"), [15,50,-200-5], [0,0,0]));
+    this.Objects.push(new Object(GetModel("Lamp"), [300-5,50,-200-5], [0,0,0]));
+	
+	this.Objects.push(new Object(GetModel("Lamp"), [15,50,-400+5], [0,0,0]));
+    this.Objects.push(new Object(GetModel("Lamp"), [300-5,50,-400+5], [0,0,0]));
+	
+	this.Objects.push(new Object(GetModel("Lamp"), [-200-5,50,0], [0,0,0]));
+	this.Objects.push(new Object(GetModel("Lamp"), [-200+5,50,0], [0,0,0]));
+	this.Objects.push(new Object(GetModel("Lamp"), [-400-5,50,0], [0,0,0]));
+	this.Objects.push(new Object(GetModel("Lamp"), [-400+5,50,0], [0,0,0]));
+	
+	this.Objects.push(new Object(GetModel("Lamp"), [-200,50,400-5], [0,0,0]));
+	
+	this.Objects.push(new Object(GetModel("Lamp"), [-800,50,0+5], [0,0,0]));
+	this.Objects.push(new Object(GetModel("Lamp"), [-800,50,200-5], [0,0,0]));
+	
     // Door 1 Switch
     this.Switches.push(new SwitchPad(
       new Object(GetModel("SwitchPad"), [500, 0, 100], [0,0,0]),
