@@ -251,6 +251,8 @@ function InitializeModels()
 	Models.push(new Model("W70_Bricks"));
 	Models.push(new Model("W200"));
 	Models.push(new Model("W200_Bricks"));
+	Models.push(new Model("W200_Bricks_Exit"));
+	Models.push(new Model("W200_Bricks_Window"));
 	Models.push(new Model("W282_Bricks"));
 	Models.push(new Model("W300"));
 	Models.push(new Model("W300_Bricks"));
@@ -406,6 +408,9 @@ function Update()
 		    CurrentLevel.CheckSwitches(clones[x].boundingSphere);
 		  
       recordings[turn].addSlice(MainPlayer);
+      // Record Twice when fast forwarding so it matches up with the other recordins
+      //if(KEY_SPACE_Pressed)
+      //  recordings[turn].addSlice(MainPlayer);
       
 			//Update Clones
 			for(var x = 0; x < turn; x++)
@@ -414,11 +419,11 @@ function Update()
 		    clones[x].Update();
 		    
 		    // Space should cause double time
-		    if(KEY_SPACE_Pressed)
-		    {
-		      clones[x].updateStateWith(recordings[x].playNextSlice());
-		      clones[x].Update();
-		    }
+		   // if(KEY_SPACE_Pressed)
+		   // {
+		   ////   clones[x].updateStateWith(recordings[x].playNextSlice());
+		    //  clones[x].Update();
+		    //}
 		  }
 		
 			MainPlayer.Update();
@@ -525,7 +530,7 @@ function Draw()
 	{
 		mvPushMatrix();
 		mat4.translate(mvMatrix, [0,-10,100]);
-		mat4.rotate(mvMatrix, degToRad(20), [0, 1, 0]);
+		mat4.rotate(mvMatrix, degToRad(200), [0, 1, 0]);
 		var TimeTest = GetShader("TimeTest");
 		TitleModel.Draw(CurrentShader.Program);
 		mvPopMatrix();
